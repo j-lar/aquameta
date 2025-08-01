@@ -159,12 +159,12 @@ go build
 
 This should create a binary called `./aquameta`.
 
-5. Edit `conf/boot.conf` to match your PostgreSQL settings.
+5. Edit `conf/boot.toml` to match your PostgreSQL settings.
 
 ```bash
 cd conf/
 cp boot.toml.dist boot.toml
-vi boot.toml
+vi boot.toml ## Set "Role" and "Password" to the username and password created in step #1 above. Update the [AquametaUser] section with your preferred details.
 cd ../
 ```
 
