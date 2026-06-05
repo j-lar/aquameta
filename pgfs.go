@@ -5,7 +5,9 @@ import (
     "context"
     "log"
     "os"
+    "os/exec"
     "fmt"
+    "strings"
     "syscall"
 
     "github.com/jackc/pgx/v4/pgxpool"
@@ -23,6 +25,9 @@ func pgfs(config tomlConfig, dbpool *pgxpool.Pool, fuseDone chan bool) {
     } else {
 
         log.Printf("Mounting PGFS Filesystem: %s\n\n", config.PGFS.MountDirectory)
+
+        // Clear any stale mount left by a previous crashed instance.
+        exec.Command("fusermount", "-uz", config.PGFS.MountDirectory).Run()
 
         c, err := fuse.Mount(
             config.PGFS.MountDirectory,
@@ -231,6 +236,14 @@ func (TableDir) Attr(ctx context.Context, a *fuse.Attr) error {
 }
 
 func (d TableDir) Lookup(ctx context.Context, name string) (fs.Node, error) {
+    if name == "by-name" {
+        labelCol := getLabelColumn(ctx, d.fs.dbpool, d.schema_name, d.table_name)
+        if labelCol != "" && labelCol != d.pk_column_name {
+            return ByNameDir{d.fs, d.schema_name, d.table_name, d.pk_column_name, labelCol}, nil
+        }
+        return nil, fuse.ENOENT
+    }
+
     var exists bool
     q := fmt.Sprintf("select exists(select 1 from %s.%s where %s::text=%s)",
         pq.QuoteIdentifier(d.schema_name),
@@ -282,6 +295,131 @@ func (d TableDir) ReadDirAll(ctx context.Context) ([]fuse.Dirent, error) {
         log.Fatal("TableDir ReadDirAll(): Error iterating rows", rows.Err())
     }
 
+    labelCol := getLabelColumn(ctx, d.fs.dbpool, d.schema_name, d.table_name)
+    if labelCol != "" && labelCol != d.pk_column_name {
+        dirDirs = append(dirDirs, fuse.Dirent{
+            Inode: 2,
+            Name:  "by-name",
+            Type:  fuse.DT_Dir,
+        })
+    }
+
+    return dirDirs, nil
+}
+
+
+//
+// getLabelColumn
+//
+// Calls navigation.label_column() to find the best human-readable label column
+// for a relation. Returns "" if the navigation extension is not installed or
+// the relation has no suitable label column. Never crashes the daemon.
+//
+
+func getLabelColumn(ctx context.Context, dbpool *pgxpool.Pool, schema, table string) string {
+    var labelCol *string
+    q := fmt.Sprintf("select navigation.label_column(%s, %s)",
+        pq.QuoteLiteral(schema),
+        pq.QuoteLiteral(table))
+    err := dbpool.QueryRow(ctx, q).Scan(&labelCol)
+    if err != nil || labelCol == nil {
+        return ""
+    }
+    return *labelCol
+}
+
+
+//
+// ByNameDir
+//
+// Virtual directory inside a TableDir that exposes rows by their label column
+// value instead of UUID. e.g. pgfs/widget/widget/by-name/my_widget/html
+//
+// Label column is determined by navigation.label_column() — probe order:
+// name > title > label > description > path > first PK.
+// Only present when the label column differs from the PK (otherwise by-name
+// would just mirror the parent UUID listing).
+//
+// Non-unique label values: ReadDirAll returns DISTINCT labels; Lookup picks
+// the row with the lowest PK deterministically. Later collisions are hidden
+// from by-name but remain reachable via the UUID path.
+//
+
+type ByNameDir struct {
+    fs             FS
+    schema_name    string
+    table_name     string
+    pk_column_name string
+    label_column   string
+}
+
+func (ByNameDir) Attr(ctx context.Context, a *fuse.Attr) error {
+    a.Inode = 1
+    a.Uid = uint32(syscall.Geteuid())
+    a.Gid = uint32(syscall.Getegid())
+    a.Mode = os.ModeDir | 0o500
+    return nil
+}
+
+func (d ByNameDir) Lookup(ctx context.Context, name string) (fs.Node, error) {
+    // FUSE path components cannot contain '/' — skip lookup for such values.
+    if strings.Contains(name, "/") {
+        return nil, fuse.ENOENT
+    }
+    var pkValue string
+    q := fmt.Sprintf(
+        "select %s::text from %s.%s where %s::text=%s and %s is not null order by %s limit 1",
+        pq.QuoteIdentifier(d.pk_column_name),
+        pq.QuoteIdentifier(d.schema_name),
+        pq.QuoteIdentifier(d.table_name),
+        pq.QuoteIdentifier(d.label_column),
+        pq.QuoteLiteral(name),
+        pq.QuoteIdentifier(d.label_column),
+        pq.QuoteIdentifier(d.pk_column_name),
+    )
+    err := d.fs.dbpool.QueryRow(ctx, q).Scan(&pkValue)
+    if err != nil {
+        return nil, fuse.ENOENT
+    }
+    return RowDir{d.fs, d.schema_name, d.table_name, d.pk_column_name, pkValue}, nil
+}
+
+func (d ByNameDir) ReadDirAll(ctx context.Context) ([]fuse.Dirent, error) {
+    q := fmt.Sprintf(
+        "select distinct %s::text from %s.%s where %s is not null order by 1",
+        pq.QuoteIdentifier(d.label_column),
+        pq.QuoteIdentifier(d.schema_name),
+        pq.QuoteIdentifier(d.table_name),
+        pq.QuoteIdentifier(d.label_column),
+    )
+    rows, err := d.fs.dbpool.Query(ctx, q)
+    if err != nil {
+        log.Println("ByNameDir ReadDirAll(): Error querying database: ", err)
+        return nil, fuse.EIO
+    }
+    defer rows.Close()
+
+    var dirDirs []fuse.Dirent
+    for rows.Next() {
+        var labelValue string
+        if err := rows.Scan(&labelValue); err != nil {
+            log.Println("ByNameDir ReadDirAll(): Error scanning row: ", err)
+            continue
+        }
+        // FUSE directory entry names cannot contain '/'; skip such labels.
+        if strings.Contains(labelValue, "/") {
+            continue
+        }
+        dirDirs = append(dirDirs, fuse.Dirent{
+            Inode: 2,
+            Name:  labelValue,
+            Type:  fuse.DT_Dir,
+        })
+    }
+    if rows.Err() != nil {
+        log.Println("ByNameDir ReadDirAll(): Error iterating rows: ", rows.Err())
+        return nil, fuse.EIO
+    }
     return dirDirs, nil
 }
 
@@ -462,17 +600,21 @@ func (ff FieldFile) ReadAll(ctx context.Context) ([]byte, error) {
 
 
 func (ff FieldFile) Write(ctx context.Context, req *fuse.WriteRequest, resp *fuse.WriteResponse) error {
-    /*
-    log.Printf("######## FieldFile Write():\n    req.Offset: %d\n    req.Data: %s...",
-        req.Offset, req.Data[0:19])
-    log.Printf("         fileBuffers[%s] %s", key, fileBuffers[key]);
-    */
-
     var key = ff.schema_name+"/"+ff.table_name+"/"+ff.pk_value+"/"+ff.column_name
-    fileBuffers[key] = fileBuffers[key] + string(req.Data)
+
+    // Grow buffer to accommodate write at offset
+    end := int(req.Offset) + len(req.Data)
+    buf := []byte(fileBuffers[key])
+    if end > len(buf) {
+        grown := make([]byte, end)
+        copy(grown, buf)
+        buf = grown
+    }
+    copy(buf[req.Offset:], req.Data)
+    fileBuffers[key] = string(buf)
 
     resp.Size = len(req.Data)
-	return nil
+    return nil
 }
 
 
@@ -501,26 +643,8 @@ func (ff FieldFile) Fsync(ctx context.Context, req *fuse.FsyncRequest) error {
 }
 
 
-func (ff FieldFile) Flush(ctx context.Context, req *fuse.WriteRequest, resp *fuse.WriteResponse) error {
-    log.Fatal("######## Flush() called and we don't know what this does.")
-
-/*
-    fs.mu.Lock()
-    defer fs.mu.Unlock()
-
-    q := fmt.sprintf("update %s.%s set %s = %s where %s = %s",
-         pq.quoteidentifier(ff.schema_name),
-         pq.quoteidentifier(ff.table_name),
-         pq.quoteidentifier(ff.column_name),
-         pq.quoteliteral(string(req.data)),
-         pq.quoteidentifier(ff.pk_column_name),
-         pq.quoteliteral(ff.pk_value))
-    _, err := ff.fs.dbpool.exec(context.background(), q)
-    if err != nil {
-        // handle error
-        log.printf("fieldfile flush(): update stmt failed. ",q,err)
-    }
-*/
-
+func (ff FieldFile) Flush(ctx context.Context, req *fuse.FlushRequest) error {
+    // Flush fires on file close; writes are committed to DB on explicit Fsync.
+    // Nothing to do here.
     return nil
 }

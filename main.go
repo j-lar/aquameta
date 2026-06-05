@@ -1,6 +1,7 @@
 package main
 
 import (
+    "bytes"
     "context"
     "flag"
     "fmt"
@@ -175,17 +176,23 @@ func main() {
     //
     // - install aquameta extensions
     //
-    var ct int
-    dbQuery := fmt.Sprintf("select count(*) as ct from pg_catalog.pg_extension where extname in ('meta','meta_triggers','pg_bundle','event','endpoint','ide','documentation','widget','semantics')")
-    err = dbpool.QueryRow(context.Background(), dbQuery).Scan(&ct)
+    // Check install status: pg_extension for packaged extensions, schema check for pg_bundle
+    var extCt int
+    err = dbpool.QueryRow(context.Background(),
+        "select count(*) from pg_catalog.pg_extension where extname in ('meta','meta_triggers','event','endpoint','ide','documentation','widget','semantics')").Scan(&extCt)
+    if err != nil {
+        log.Fatalf("Unable to check extension status: %v", err)
+    }
+    var bundleInstalled bool
+    err = dbpool.QueryRow(context.Background(),
+        "select exists(select 1 from information_schema.schemata where schema_name = 'bundle')").Scan(&bundleInstalled)
+    if err != nil {
+        log.Fatalf("Unable to check bundle status: %v", err)
+    }
     log.Print("Checking for Aquameta installation....")
 
-    // TODO: handle this with a flag instead. Stop installing by default.
-    if ct != 9 {
+    if extCt != 8 || !bundleInstalled {
 
-        //
-        // install aquameta extensions
-        //
         log.Print("Aquameta is not installed on this database.  Installing...")
 
         if config.Database.Mode == "embedded" {
@@ -194,15 +201,55 @@ func main() {
             log.Print("Extensions copied to PostgreSQL's extensions directory.")
         }
 
+        // Install packaged extensions
         installQueries := [...]string{
             "create extension if not exists hstore schema public",
             "create extension if not exists \"uuid-ossp\" schema public",
-            // "create extension if not exists pg_uuidv7 schema public",
             "create extension if not exists pgcrypto schema public",
             "create extension if not exists postgres_fdw schema public",
             "create extension meta version '0.5.0'",
-            "create extension meta_triggers version '0.5.0'",
-            "create extension pg_bundle version '0.5.0'",
+            "create extension meta_triggers version '0.5.0'"}
+
+        for i := 0; i < len(installQueries); i++ {
+            log.Print(installQueries[i])
+            _, err := dbpool.Exec(context.Background(), installQueries[i])
+            if err != nil {
+                log.Fatalf("Unable to install extensions: %v", err)
+            }
+        }
+
+        // Load pg_bundle directly via psql (not packaged as CREATE EXTENSION)
+        if !bundleInstalled {
+            log.Print("Loading pg_bundle SQL directly...")
+            pgBundleDir := workingDirectory + "/extensions/pg_bundle"
+            pgBundleFiles := []string{
+                "_begin.sql", "types.sql", "util.sql", "hash.sql", "rowset.sql",
+                "core.sql", "trackable.sql", "track.sql", "stage.sql", "commit.sql",
+                "checkout.sql", "stash.sql", "import-export.sql", "remote.sql",
+                "merge.sql", "status.sql", "history.sql", "setup.sql", "_end.sql"}
+            var bundleSQL []byte
+            for _, f := range pgBundleFiles {
+                content, err := os.ReadFile(pgBundleDir + "/" + f)
+                if err != nil {
+                    log.Fatalf("Cannot read pg_bundle file %s: %v", f, err)
+                }
+                bundleSQL = append(bundleSQL, content...)
+            }
+            connStr := fmt.Sprintf("postgresql://%s:%s@%s:%d/%s",
+                config.Database.Role, config.Database.Password,
+                config.Database.Host, config.Database.Port,
+                config.Database.DatabaseName)
+            cmd := exec.Command("psql", "--set=ON_ERROR_STOP=on", connStr)
+            cmd.Stdin = bytes.NewReader(bundleSQL)
+            out, err := cmd.CombinedOutput()
+            if err != nil {
+                log.Fatalf("Failed to load pg_bundle: %v\n%s", err, out)
+            }
+            log.Print("pg_bundle loaded successfully.")
+        }
+
+        // Install remaining packaged extensions
+        remainingQueries := [...]string{
             "create extension event version '0.5.0'",
             "create extension endpoint version '0.5.0'",
             "create extension widget version '0.5.0'",
@@ -210,14 +257,11 @@ func main() {
             "create extension ide version '0.5.0'",
             "create extension documentation version '0.5.0'"}
 
-        for i := 0; i < len(installQueries); i++ {
-            log.Print(installQueries[i])
-            _, err := dbpool.Exec(context.Background(), installQueries[i])
+        for i := 0; i < len(remainingQueries); i++ {
+            log.Print(remainingQueries[i])
+            _, err := dbpool.Exec(context.Background(), remainingQueries[i])
             if err != nil {
                 log.Fatalf("Unable to install extensions: %v", err)
-                if config.Database.Mode == "embedded" {
-                    epg.Stop()
-                }
             }
         }
         log.Print("Extensions were successfully installed.")
