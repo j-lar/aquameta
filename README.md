@@ -8,10 +8,12 @@ Contents
 - [Status](#status)
 - [Overview](#overview)
 - [Core Extensions](#core-extensions)
+- [PGFS](#pgfs)
 - [User Interface](#user-interface)
 - [Download](#download)
 - [Install From Source](#install-from-source)
 - [Usage](#usage)
+- [AI Development](#ai-development)
 - [History](#history)
 
 Status
@@ -29,13 +31,14 @@ Aquameta is an "all database" web development stack, an attempt to make web
 development more modular, simple, coherent and fun by making everything data.
 See [Motivation](#motivation) for more.
 
-Under the hood, Aquameta is organized into seven PostgreSQL extensions, that
-each corresponds to a layer or tool in a typical web stack.  The database
+Under the hood, Aquameta is organized into PostgreSQL extensions, each
+corresponding to a layer or tool in a typical web stack.  The database
 schema contains ~60 tables, ~50 views and ~90 stored procedures that together
 make a minimalist, fairly unopinionated web stack that should be familiar to
 most web developers, except that it's all in the database.  A thin
-[Golang](http://golang.org/) daemon handles the connection to the database and 
-runs a web server. 
+[Golang](http://golang.org/) daemon handles the connection to the database,
+runs a web server, and mounts a FUSE filesystem ([PGFS](#pgfs)) that exposes
+every database row as a file.
 
 Core Extensions
 ---------------
@@ -59,9 +62,53 @@ Core Extensions
   for HTML, CSS and Javascript, and a mechanism for attaching JS dependencies.
 - [semantics](extensions/semantics) - Schema decorators, for describing tables
   and columns, and binding custom UI widgets handlers for display and edit.
+- [ai](extensions/ai) - Agentic substrate.  Agents are PostgreSQL roles with
+  named capabilities (schema-level grants).  Sessions are conversational
+  containers; runs are discrete work units tracking intent and action as rows.
+  Everything is bundle-tracked so agent history is version-controlled alongside
+  the code it produces.
+- [navigation](extensions/navigation) - Live code inventory and full-text
+  search across all DB-resident code (widgets, resources, stored procedures).
+  `navigation.inventory()` enumerates every code-bearing surface;
+  `navigation.search()` queries across them.  Both accept an optional
+  `bundle_names` filter.  Because it queries live rows, results are always
+  current — no stale index.
+- [advisor](extensions/advisor) - Pre-loaded expert advisor persona.  An
+  advisor is a named Claude API persona with a corpus of context documents
+  stored as bundle-tracked rows.  Every invocation is a ledger row.
 
 Together, these extensions make a simple, fairly un-opinionated web stack
 (other than that whole all-data thing).
+
+
+PGFS
+----
+
+The Go daemon mounts a [FUSE](https://en.wikipedia.org/wiki/Filesystem_in_Userspace)
+filesystem at the `pgfs/` directory that exposes every tracked schema, table,
+and row as a directory hierarchy:
+
+```
+pgfs/
+  <schema>/
+    <table>/
+      <row-uuid>/
+        <column>         ← read/write field value as a plain file
+      by-name/
+        <label-value>/   ← same RowDir, addressed by name/title/path column
+          <column>
+```
+
+`by-name` is a virtual subdirectory present on any table that has a
+human-readable label column (`name`, `title`, `label`, `path`, or similar).
+It is resolved via `navigation.label_column()` at query time, so no
+configuration is needed.  The canonical row is still addressable by UUID;
+`by-name` is a convenience lens.
+
+Field files are readable and writable.  A write buffers the data; an explicit
+`fsync` (or editor save) commits it to the database via `UPDATE`.  This means
+any tool that can write a file — `vim`, `sed`, a shell script, or an agent
+reading and writing paths — can modify any database row without SQL.
 
 
 User Interface
@@ -185,6 +232,19 @@ Usage
 -----
 
 See the (paltry) [documentation](docs/).
+
+
+AI Development
+--------------
+
+Two files orient AI coding assistants to this project:
+
+- **[CLAUDE.md](CLAUDE.md)** — project context for [Claude Code](https://claude.ai/code):
+  architecture overview, extension layout, bundle system, session protocol,
+  and the companion bundle (DB rows as session continuity).
+- **[AGENTS.md](AGENTS.md)** — agent guidelines: how to read the codebase,
+  which interface to prefer for which operation, and conventions for using the
+  `ai`, `navigation`, and `advisor` extensions.
 
 
 History
