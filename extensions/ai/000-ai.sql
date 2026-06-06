@@ -314,7 +314,7 @@ create table ai.run_commit (
 /*******************************************************************************
  * ai.experiment — log and queue of experiments run against the ai schema
  *
- * status values: pending | complete | deferred | cancelled
+ * status values: pending | complete | deferred | abandoned
  * findings: null until the experiment completes; free text
  ******************************************************************************/
 
@@ -323,7 +323,7 @@ create table ai.experiment (
     name        text not null,
     description text,
     status      text not null default 'pending'
-                     check (status in ('pending', 'complete', 'deferred', 'cancelled')),
+                     check (status in ('pending', 'complete', 'deferred', 'abandoned')),
     findings    text,
     created_at  timestamptz not null default now()
 );
