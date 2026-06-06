@@ -57,6 +57,8 @@ begin
         join ai.capability c on c.id = ac.capability_id
         where ac.agent_id = OLD.id
     loop
+        execute format('alter default privileges in schema %I revoke %s on tables from %I',
+            _cap.schema_name, _cap.privilege, _role_name);
         execute format('revoke %s on all tables in schema %I from %I',
             _cap.privilege, _cap.schema_name, _role_name);
         execute format('revoke usage on schema %I from %I', _cap.schema_name, _role_name);

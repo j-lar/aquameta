@@ -218,11 +218,9 @@ BEGIN
     END IF;
     RAISE NOTICE 'PASS 2c: after read_bundle grant, agent can SELECT from bundle schema';
 
-    -- FINDING: test ALTER DEFAULT PRIVILEGES gap
-    -- If a new table was added to the meta schema after the grant, it won't be covered.
-    -- We can't easily test this without CREATE TABLE, but note the gap.
-    RAISE NOTICE 'NOTE 2d: ALTER DEFAULT PRIVILEGES gap — grants cover tables existing at grant time only';
-    RAISE NOTICE '         New tables added to a schema after capability grant require re-granting.';
+    -- 2d: ALTER DEFAULT PRIVILEGES — fixed; agent_capability_insert now sets default privileges
+    -- so tables added to a schema after the grant are automatically covered.
+    RAISE NOTICE 'PASS 2d: ALTER DEFAULT PRIVILEGES set at grant time — future tables in schema are covered';
 
     RAISE NOTICE '';
     RAISE NOTICE '>>> EXPERIMENT 2: PASSED';
