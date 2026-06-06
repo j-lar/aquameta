@@ -29,26 +29,24 @@ SELECT value FROM companion.context WHERE key = 'session_startup';
 ```
 Execute the queries it returns. If the DB is unavailable, fall back to `MEMO.md` if present.
 
-### Identity
+### Identity and Run Binding
 
-Confirm your agent row exists:
+Open a session and run **only when Aquameta work is about to begin** (not at harness startup). Pure ideation sessions leave no DB rows.
+
 ```sql
-SELECT id, name FROM ai.agent WHERE name = 'your_agent_name';
+-- Switch to your agent role first
+SET ROLE ai_agent_<your_agent_name>;
+
+-- Open session (creates ai.session + binds to ai.active_run)
+SELECT ai.open_session('optional title');
+
+-- Open run when the first substantive task arrives
+SELECT ai.open_run('summary of first instruction');
 ```
 
-Open a session at session start (identity binding — no intent yet):
-```sql
-INSERT INTO ai.session (agent_id, title, started_at)
-VALUES (:agent_id, 'session YYYY-MM-DD', now())
-RETURNING id;
-```
+`ai.open_session()` derives your agent name from `current_user` (strips `ai_agent_` prefix). It must match a row in `ai.agent`. `ai.open_run()` requires an open session.
 
-Open a run when the first substantive task arrives:
-```sql
-INSERT INTO ai.run (session_id, intent, status, started_at)
-VALUES (:session_id, 'summary of first instruction', 'running', now())
-RETURNING id;
-```
+All `bundle.commit()` calls automatically record `ai.run_commit` when a run is bound. Without a bound run, `bundle.commit()` emits a NOTICE but still commits.
 
 ### Orientation
 
@@ -80,10 +78,10 @@ INSERT INTO ai.experiment (name, description, status) VALUES ('Name', 'Descripti
 
 ### Session End
 
-Close your run and session, then commit:
+Close run and session, then commit:
 ```sql
-UPDATE ai.run SET status = 'complete', completed_at = now() WHERE id = :run_id;
-UPDATE ai.session SET ended_at = now() WHERE id = :session_id;
+SELECT ai.close_run();     -- marks run 'completed', unbinds it
+SELECT ai.close_session(); -- marks session ended, removes binding row
 
 SELECT bundle.stage_tracked_rows('companion.claude_code.aquameta');
 SELECT bundle.commit('companion.claude_code.aquameta', 'end-of-session update',
