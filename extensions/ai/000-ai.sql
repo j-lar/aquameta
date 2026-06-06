@@ -330,6 +330,46 @@ create table ai.experiment (
 
 
 /*******************************************************************************
+ * ai.outbox
+ *
+ * Ephemeral dispatch queue for the NOTIFY-based run queue.
+ * Producer inserts a row; trigger fires pg_notify('ai_run_pending', run_id).
+ * Consumer calls ai.claim_next_run() which atomically deletes and returns run_id.
+ * Rows are deleted on claim — outbox is transient, ai.run is the durable record.
+ ******************************************************************************/
+
+create table ai.outbox (
+    id         uuid        not null default public.uuid_generate_v4() primary key,
+    run_id     uuid        not null references ai.run(id),
+    created_at timestamptz not null default now()
+);
+
+create or replace function ai.notify_outbox_insert() returns trigger as $$
+begin
+    perform pg_notify('ai_run_pending', NEW.run_id::text);
+    return NEW;
+end;
+$$ language plpgsql;
+
+create trigger ai_outbox_notify
+    after insert on ai.outbox
+    for each row execute function ai.notify_outbox_insert();
+
+-- Atomically claims the oldest pending run: deletes the outbox row, returns run_id.
+-- FOR UPDATE SKIP LOCKED is safe under concurrent consumers.
+create or replace function ai.claim_next_run() returns uuid as $$
+    delete from ai.outbox
+    where id = (
+        select id from ai.outbox
+        order by created_at
+        for update skip locked
+        limit 1
+    )
+    returning run_id;
+$$ language sql;
+
+
+/*******************************************************************************
  * Views
  ******************************************************************************/
 
