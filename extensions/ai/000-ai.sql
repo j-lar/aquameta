@@ -212,6 +212,12 @@ insert into ai.capability (name, description, schema_name, privilege) values
  *
  * Conversational context container. One agent, many runs.
  * title and context are mutable — agents can update their own session state.
+ *
+ * Established context keys (jsonb scratchpad, all optional):
+ *   working_bundle      text   — active bundle name for commits this session
+ *   interface           text   — how the agent is running: 'cli' | 'pgfs'
+ *   environment         text   — host context, e.g. 'lxc+fuse'
+ *   claude_code_version text   — model/harness version string
  ******************************************************************************/
 
 create table ai.session (
@@ -308,7 +314,7 @@ create table ai.run_commit (
 /*******************************************************************************
  * ai.experiment — log and queue of experiments run against the ai schema
  *
- * status values: pending | running | complete | abandoned
+ * status values: pending | complete | deferred | cancelled
  * findings: null until the experiment completes; free text
  ******************************************************************************/
 
@@ -316,7 +322,8 @@ create table ai.experiment (
     id          uuid not null default public.uuid_generate_v4() primary key,
     name        text not null,
     description text,
-    status      text not null default 'pending',
+    status      text not null default 'pending'
+                     check (status in ('pending', 'complete', 'deferred', 'cancelled')),
     findings    text,
     created_at  timestamptz not null default now()
 );
