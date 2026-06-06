@@ -15,10 +15,114 @@ This means:
 
 When you make a change, ask: **what row changes?** Then ask which interface is most appropriate to make that change through.
 
+## Session Protocol
+
+Session continuity lives in the `companion.claude_code.aquameta` bundle as DB rows — not files.
+
+### Bootstrap
+
+DB: `localhost:5432 / database: aquameta / user: aquameta / password: aquameta`
+
+First, fetch the full startup protocol from the DB:
+```sql
+SELECT value FROM companion.context WHERE key = 'session_startup';
+```
+Execute the queries it returns. If the DB is unavailable, fall back to `MEMO.md` if present.
+
+### Identity
+
+Confirm your agent row exists:
+```sql
+SELECT id, name FROM ai.agent WHERE name = 'your_agent_name';
+```
+
+Open a session at session start (identity binding — no intent yet):
+```sql
+INSERT INTO ai.session (agent_id, title, started_at)
+VALUES (:agent_id, 'session YYYY-MM-DD', now())
+RETURNING id;
+```
+
+Open a run when the first substantive task arrives:
+```sql
+INSERT INTO ai.run (session_id, intent, status, started_at)
+VALUES (:session_id, 'summary of first instruction', 'running', now())
+RETURNING id;
+```
+
+### Orientation
+
+```sql
+-- Current state, recent decisions and notes
+SELECT type, title, body
+FROM companion.session_brief
+ORDER BY type, updated_at DESC;
+
+-- Pending experiment backlog
+SELECT name, description
+FROM ai.experiment
+WHERE status = 'pending'
+ORDER BY created_at;
+```
+
+### Writing to the Companion Bundle
+
+```sql
+-- New note (topic: finding | architecture | convention | reference | open_question)
+INSERT INTO companion.note (topic, title, body) VALUES ('finding', 'Title', 'Body...');
+
+-- New decision
+INSERT INTO companion.decision (title, decision, rationale) VALUES ('What', 'Choice', 'Why');
+
+-- New experiment
+INSERT INTO ai.experiment (name, description, status) VALUES ('Name', 'Description', 'pending');
+```
+
+### Session End
+
+Close your run and session, then commit:
+```sql
+UPDATE ai.run SET status = 'complete', completed_at = now() WHERE id = :run_id;
+UPDATE ai.session SET ended_at = now() WHERE id = :session_id;
+
+SELECT bundle.stage_tracked_rows('companion.claude_code.aquameta');
+SELECT bundle.commit('companion.claude_code.aquameta', 'end-of-session update',
+                     'your_agent_name', 'your_agent@example.com');
+```
+
+### Bundle Row Lifecycle (Onboarding Checklist)
+
+New agents consistently hit the same errors. Follow this exactly for new rows:
+
+1. **INSERT** the row into the target table
+2. **Track** it in the repository:
+   ```sql
+   SELECT bundle.track_untracked_row(
+     'bundle_name',
+     ('schema_name', 'table_name', ARRAY['id'], ARRAY['<uuid>'])::meta.row_id
+   );
+   ```
+3. **Stage** all tracked changes:
+   ```sql
+   SELECT bundle.stage_tracked_rows('bundle_name');
+   ```
+4. **Commit**:
+   ```sql
+   SELECT bundle.commit('bundle_name', 'message', 'agent_name', 'agent@example.com');
+   ```
+
+Common pitfalls:
+- The table is `bundle.repository`, not `bundle.bundle`
+- `stage_tracked_row()` (singular) fails on untracked rows — use `track_untracked_row()` first for new rows
+- `meta.row_id` composite type: `(schema_name text, relation_name text, pk_column_names text[], pk_values text[])`
+- Run `\df bundle.stage_tracked_row` to verify function signatures before calling
+
+---
+
 ## Reading the Codebase
 
 **Start here for orientation:**
-1. `CLAUDE.md` — full architecture map, key files, extension layout, bundle system
+1. `CLAUDE.md` — Claude Code-specific config; also has full architecture map, key files, extension layout
 2. `extensions/<name>/000-*.sql` — data model for each subsystem
 3. `extensions/<name>/001-*.sql` — functions/procedures for that subsystem
 4. `main.go` — HTTP route wiring and startup sequence

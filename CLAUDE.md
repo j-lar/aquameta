@@ -132,26 +132,12 @@ App bundles: `games.snake`, `ui.fsm`, `ui.layout`, `ui.tags`.
 
 ## Session Protocol
 
-Session continuity lives in the **`companion.claude_code.aquameta`** bundle as DB rows — not in files. MEMO.md is retained as a fallback but is no longer the primary source of truth.
+See [AGENTS.md](AGENTS.md) for the full cross-agent session protocol — DB connection, identity, orientation queries, companion bundle writes, and bundle row lifecycle checklist. The steps below are Claude Code-specific.
 
 ### Session Start
 
-Run these two queries to orient before doing anything else:
+Use the `session-start` skill rather than running orientation queries manually. Verify the environment:
 
-```sql
--- Full context: state, decisions, notes
-SELECT type, title, body
-FROM companion.session_brief
-ORDER BY type, updated_at DESC;
-
--- Pending experiment backlog
-SELECT name, status, description
-FROM ai.experiment
-WHERE status = 'pending'
-ORDER BY created_at;
-```
-
-Also verify the environment:
 ```bash
 systemctl status aquameta   # service running?
 ls pgfs/ai/                  # FUSE mounted?
@@ -159,38 +145,15 @@ ls pgfs/ai/                  # FUSE mounted?
 
 ### Session End
 
-Update context rows to reflect what changed, then commit:
+Update context rows, then commit with Claude's author identity:
 
 ```sql
--- Update current state
 UPDATE companion.context SET value = '...' WHERE key = 'current_focus';
 UPDATE companion.context SET value = '...' WHERE key = 'last_session';
 
--- Commit the bundle
 SELECT bundle.stage_tracked_rows('companion.claude_code.aquameta');
 SELECT bundle.commit('companion.claude_code.aquameta', 'end-of-session update', 'claude_code', 'claude@aquameta.org');
 ```
-
-### Adding to the Companion Bundle
-
-**New note** (architecture insight, finding, convention, reference, open_question):
-```sql
-INSERT INTO companion.note (topic, title, body) VALUES ('finding', 'Short title', 'Full body...');
-```
-
-**New decision** (design choice with rationale):
-```sql
-INSERT INTO companion.decision (title, decision, rationale) VALUES ('What', 'The choice', 'Why');
-```
-
-**New experiment** (backlog item or completed run):
-```sql
-INSERT INTO ai.experiment (name, description, status) VALUES ('Name', 'What to investigate', 'pending');
--- When complete:
-UPDATE ai.experiment SET status = 'complete', findings = '...' WHERE name = '...';
-```
-
-After any of the above, stage and commit the companion bundle (session end, or any natural checkpoint).
 
 ### PGFS Access
 
