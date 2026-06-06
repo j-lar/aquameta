@@ -9,6 +9,7 @@ intent, writes the response as an ai.message row, and marks the run complete.
 Startup drain ensures runs queued while the harness was down are not lost.
 """
 
+import re
 import select
 import sys
 import logging
@@ -35,8 +36,30 @@ def claim(conn) -> str | None:
     return row[0] if row else None
 
 
+def resolve_agent_role(conn, run_id: str) -> str:
+    """Derive the pg role for the agent that owns this run. Fails hard if unresolvable."""
+    with conn.cursor() as cur:
+        cur.execute("""
+            SELECT a.name
+            FROM ai.run r
+            JOIN ai.session s ON r.session_id = s.id
+            JOIN ai.agent a ON s.agent_id = a.id
+            WHERE r.id = %s
+        """, (run_id,))
+        row = cur.fetchone()
+    if not row:
+        raise RuntimeError(f"run {run_id}: cannot resolve agent — run or session missing")
+    agent_name = row[0]
+    if not re.fullmatch(r'[a-zA-Z0-9_]+', agent_name):
+        raise RuntimeError(f"run {run_id}: agent name {agent_name!r} contains invalid characters")
+    return f"ai_agent_{agent_name}"
+
+
 def process(conn, run_id: str) -> None:
     log.info("processing run %s", run_id)
+
+    pg_role = resolve_agent_role(conn, run_id)
+    log.info("run %s → agent role %s", run_id, pg_role)
 
     with conn.cursor() as cur:
         cur.execute("SELECT intent FROM ai.run WHERE id = %s", (run_id,))
@@ -63,6 +86,9 @@ def process(conn, run_id: str) -> None:
         error = content
 
     with conn.cursor() as cur:
+        # SET ROLE so any writes (including future bundle.commit calls) carry
+        # verifiable attribution via ai.active_run binding_key = current_user
+        cur.execute(f"SET ROLE {pg_role}")
         cur.execute(
             "INSERT INTO ai.message (run_id, role, content) VALUES (%s, 'agent', %s)",
             (run_id, content),
@@ -71,6 +97,10 @@ def process(conn, run_id: str) -> None:
             "UPDATE ai.run SET status = %s, completed_at = %s, error = %s WHERE id = %s",
             (status, datetime.now(timezone.utc), error, run_id),
         )
+    conn.commit()
+    # SET ROLE persists for the session; reset so subsequent claims run as superuser
+    with conn.cursor() as cur:
+        cur.execute("RESET ROLE")
     conn.commit()
     log.info("run %s → %s", run_id, status)
 
