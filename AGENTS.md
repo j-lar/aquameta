@@ -29,9 +29,39 @@ SELECT value FROM companion.context WHERE key = 'session_startup';
 ```
 Execute the queries it returns. If the DB is unavailable, fall back to `MEMO.md` if present.
 
+### Agent Registration
+
+Before opening a session, verify your agent identity exists in the database:
+
+```sql
+SELECT name FROM ai.agent WHERE name = '<your_agent_name>';
+```
+
+If it does not exist, register yourself. At minimum, an agent needs `read_ai`,
+`read_meta`, and `write_ai` to manage sessions and runs:
+
+```sql
+-- Create the agent row (triggers creation of the ai_agent_<name> PostgreSQL role)
+INSERT INTO ai.agent (name, description, model)
+VALUES ('<your_agent_name>', '<description>', '<model>');
+
+-- Grant minimum capabilities for session protocol
+INSERT INTO ai.agent_capability (agent_id, capability_id)
+SELECT a.id, c.id
+FROM ai.agent a
+CROSS JOIN ai.capability c
+WHERE a.name = '<your_agent_name>'
+  AND c.name IN ('read_ai', 'read_meta', 'write_ai');
+```
+
+Track the new rows in `io.bundle.ai.core`, stage, and commit (see Bundle Row
+Lifecycle below). Additional capabilities (`read_bundle`, `write_widget`, etc.)
+can be granted later as needed for the work.
+
 ### Identity and Run Binding
 
-Open a session and run **only when Aquameta work is about to begin** (not at harness startup). Pure ideation sessions leave no DB rows.
+Open a session and run **only when Aquameta work is about to begin** (not at
+harness startup). Pure ideation sessions leave no DB rows.
 
 ```sql
 -- Switch to your agent role first
@@ -44,7 +74,9 @@ SELECT ai.open_session('optional title');
 SELECT ai.open_run('summary of first instruction');
 ```
 
-`ai.open_session()` derives your agent name from `current_user` (strips `ai_agent_` prefix). It must match a row in `ai.agent`. `ai.open_run()` requires an open session.
+`ai.open_session()` derives your agent name from `current_user` (strips
+`ai_agent_` prefix). It must match a row in `ai.agent`. `ai.open_run()`
+requires an open session.
 
 All `bundle.commit()` calls automatically record `ai.run_commit` when a run is bound. Without a bound run, `bundle.commit()` emits a NOTICE but still commits.
 

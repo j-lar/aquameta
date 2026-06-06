@@ -17,7 +17,7 @@ from datetime import datetime, timezone
 import psycopg2
 import anthropic
 
-DSN = "host=localhost port=5432 dbname=aquameta user=aquameta password=aquameta"
+DSN = "host=localhost port=5432 dbname=aquameta user=aquameta password=aquameta client_encoding=UTF8"
 MODEL = "claude-sonnet-4-6"
 MAX_TOKENS = 8096
 CHANNEL = "ai_run_pending"
