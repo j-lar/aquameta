@@ -93,11 +93,12 @@ create table ai.capability (
  * ai.agent_capability
  *
  * Grants a capability to an agent.
- * INSERT fires GRANT privilege ON ALL TABLES IN SCHEMA to the agent's pg role.
- * DELETE fires REVOKE.
+ * INSERT fires GRANT privilege ON ALL TABLES IN SCHEMA to the agent's pg role,
+ * plus ALTER DEFAULT PRIVILEGES so tables added to the schema later are covered.
+ * DELETE fires the corresponding REVOKEs.
  *
- * Note: grants cover tables existing at grant time. Future tables in the schema
- * require re-granting (ALTER DEFAULT PRIVILEGES) — tracked as a known gap.
+ * Trust boundary: the schema is the unit of agent access. If a schema needs
+ * both agent-visible and agent-restricted tables, split it into two schemas.
  ******************************************************************************/
 
 create table ai.agent_capability (
@@ -125,6 +126,8 @@ begin
     execute format('grant usage on schema %I to %I', _schema_name, _role_name);
     execute format('grant %s on all tables in schema %I to %I',
         _privilege, _schema_name, _role_name);
+    execute format('alter default privileges in schema %I grant %s on tables to %I',
+        _schema_name, _privilege, _role_name);
     return NEW;
 end;
 $$ language plpgsql;
@@ -154,6 +157,8 @@ begin
 
     _role_name := 'ai_agent_' || _agent_name;
 
+    execute format('alter default privileges in schema %I revoke %s on tables from %I',
+        _schema_name, _privilege, _role_name);
     execute format('revoke %s on all tables in schema %I from %I',
         _privilege, _schema_name, _role_name);
 
