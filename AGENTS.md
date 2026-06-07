@@ -33,7 +33,9 @@ Execute the queries it returns. If the DB is unavailable, fall back to `MEMO.md`
 
 Before opening a session, verify your agent identity exists in the database:
 
-**Naming convention:** use your harness name in `snake_case` — e.g. `claude_code`, `kimi_code`, `codex`. Do not shorten to just the model name (`claude`, `kimi`). If a prior session note used a different name, prefer the `snake_case` harness name to avoid duplicate agent rows.
+**Your agent name should be declared in your tool's own config** (e.g. `CLAUDE.md` for Claude Code, a system prompt or config file for other harnesses) — not discovered by querying the DB. If you were not told your agent name explicitly, check your tool config before proceeding. Do not assume you are the first registered agent you find.
+
+**Naming convention:** use your harness name in `snake_case` — e.g. `claude_code`, `claude_haiku`, `kimi_code`, `codex`. Do not shorten to just the model name (`claude`, `kimi`). Sub-agents spawned by a parent session use their own model-derived name, not the parent's.
 
 ```sql
 SELECT name FROM ai.agent WHERE name = '<your_agent_name>';

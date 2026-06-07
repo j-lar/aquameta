@@ -130,6 +130,24 @@ App bundles: `games.snake`, `ui.fsm`, `ui.layout`, `ui.tags`.
 - `scripts/create_extensions.sql` installs all extensions
 - `bundles/export-all.sh` exports all tracked bundles to JSON
 
+## Agent Identity
+
+This Claude Code session runs as agent **`claude_code`** in the Aquameta AI substrate.
+
+Sub-agents spawned via the Agent tool have their own identities based on model:
+
+| Model | Agent name |
+|---|---|
+| claude-sonnet-4-6 (this session) | `claude_code` |
+| claude-haiku-4-5 | `claude_haiku` |
+| claude-opus-4-8 | `claude_opus` |
+
+**When spawning a sub-agent for any Aquameta DB work**, always declare its identity explicitly in the prompt — do not let the sub-agent discover or guess it. Example addition to any sub-agent prompt:
+
+> Your agent name in the Aquameta DB is `claude_haiku`. Use this name when checking `ai.agent`, registering if missing, and opening your session via `SET ROLE ai_agent_claude_haiku`.
+
+Without this, sub-agents will find `claude_code` in the DB and assume that identity, misattributing their work.
+
 ## Session Protocol
 
 See [AGENTS.md](AGENTS.md) for the full cross-agent session protocol — DB connection, identity, orientation queries, companion bundle writes, and bundle row lifecycle checklist. The steps below are Claude Code-specific.
