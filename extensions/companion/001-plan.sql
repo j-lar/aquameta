@@ -45,6 +45,7 @@ CREATE TABLE companion.plan_step (
     agent_id    uuid        REFERENCES ai.agent(id),
     claimed_at  timestamptz,
     result      text,
+    experiment_id uuid       REFERENCES ai.experiment(id),
     created_at  timestamptz NOT NULL DEFAULT now(),
     updated_at  timestamptz NOT NULL DEFAULT now(),
     UNIQUE (plan_id, position)
