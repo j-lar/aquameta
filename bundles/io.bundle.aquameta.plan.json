@@ -9,6 +9,10 @@
             "value": "6"
         },
         {
+            "hash": "\\xedf87dc4a0543f8a53840ad417377cd03d942f9e32e74575cfc4dcd45049223f",
+            "value": "\"d8d4d299-de64-452a-863e-09f45db053cb\""
+        },
+        {
             "hash": "\\x8c36cc2ade4d370bdb43bff2129679b970a9975350ac552d04363b791b3bc115",
             "value": "\"Separate the Aquameta source code repo from the installed instance used for bundle/app development. Eliminate the git-repo-as-agent-trigger problem, clarify the two-daemon setup, and establish clean promotion paths from experiment → bundle → distribution.\""
         },
@@ -33,6 +37,18 @@
             "value": null
         },
         {
+            "hash": "\\x3b0631801e300574f3d9c6f3ad49bf9e82d78e6cc5274b641d54aa6069d0fb90",
+            "value": "\"Add one section to AGENTS.md: git repos associated with bundles are export artifacts. Agents must never edit files in a bundle git working tree directly. The editing surfaces are psql, PGFS, and the IDE. bundle.commit() is the version control primitive; git push is downstream.\\nDone when: AGENTS.md updated, companion.decision row recorded.\""
+        },
+        {
+            "hash": "\\x7d2b69818a791d2ecc36ba38f2f4d88160b447f41deddf282b4e859728620204",
+            "value": "\"The bundle.commit() NOTIFY outbox already exists (io.bundle.ai.core, ai.outbox). Add a consumer that: receives bundle_commit NOTIFY, exports the bundle in the agreed format, runs git add + git commit + git push to bundle.repository.git_url.\\nConsumer can be a Go goroutine in the daemon or an external process. Decide based on whether it needs to run as the daemon user or can be a separate service.\\nDone when: committing a bundle with git_url set results in a new commit appearing in the remote git repo.\""
+        },
+        {
+            "hash": "\\x3cec7b0b17e3d3430435791555828d0236cf7ab9c0272967edfc2c19224ccc76",
+            "value": "\"44079e6f-f095-458a-8dd1-4ed94280c5a2\""
+        },
+        {
             "hash": "\\x66678a988066630fd94618ee56dfac3da34031245b16e7350eab8e924d3e943a",
             "value": "\"8a9fb1ab-3112-4ec2-8397-40b259e0f703\""
         },
@@ -41,8 +57,20 @@
             "value": "\"Run bundle.uncommitted_changes() and examine untracked rows by schema. Decide what to commit to bundles, what to discard. This must happen before any filesystem moves.\\nDone when: all live DB state is either committed to a bundle or explicitly discarded.\""
         },
         {
+            "hash": "\\xaf8bf0dcbdef8da473f382306f21e5fcc1dce12bf9c7bca1c2d054eadb875dff",
+            "value": "\"1d53920d-e49f-4f8a-b16d-84a6ce9cf08c\""
+        },
+        {
+            "hash": "\\x0e0b34c1dcb5fb5f68b6e49a99ee03c69e3b8c9afa2d9af6deae8b43e3e6dc95",
+            "value": "\"Design the export format for git-hosted bundles\""
+        },
+        {
             "hash": "\\x0ecd683a06afcba74d144be0998c44ebe86b2d6c0b14a391b2d90d80f5eed591",
             "value": "\"72856c78-1125-4839-bc05-91e25100db14\""
+        },
+        {
+            "hash": "\\x10fa518a7a8fd1cf0ab10f4be8683e11449428a74ecaec1f25505a85c76f5823",
+            "value": "\"2026-06-07T22:42:27.80523+00:00\""
         },
         {
             "hash": "\\x4e07408562bedb8b60ce05c1decfe3ad16b72230967de01f640b7e4729b49fce",
@@ -51,6 +79,10 @@
         {
             "hash": "\\x4b227777d4dd1fc61c6f884f48641d02b4d121d3fd328cb08b5531fcacdabf8a",
             "value": "4"
+        },
+        {
+            "hash": "\\x8a09eb1af669107c5b570bd0bc16c3a1a9fd657cfc07bef8abea62cbc95dc3a0",
+            "value": "\"569f21b0-6f74-49bd-9df8-438934232649\""
         },
         {
             "hash": "\\x2428ac15e030eba999645fab40a1dcb4460e80c4af13e9694b8655177ffed860",
@@ -73,16 +105,36 @@
             "value": "\"Export all bundles to JSON\""
         },
         {
+            "hash": "\\x006d1144ef5345572910542a0a5621dfdec1a3975193550f1239b0184fd0a714",
+            "value": "\"8eb869ff-9234-44f1-8b56-a7b3f99bf11b\""
+        },
+        {
             "hash": "\\xedd770b99184b5832abc629dec83ebea95c16a417439472f095e4d3abb02fe7d",
             "value": "\"Workspace Separation: source vs bundle/app dev\""
+        },
+        {
+            "hash": "\\x67cc64aa565f2c4620fcbea599dd7368cf9100336ab205eed31159b30d3407c7",
+            "value": "\"Decide what the git repo contains: (a) raw bundle JSON snapshot (current export format), (b) per-row files organized by relation (more diff-friendly), or (c) hybrid. The NOTIFY outbox consumer writes this format on each bundle commit.\\nKey tradeoff: raw JSON is simple but noisy in git diff; per-row files are diff-friendly but require a structured directory layout and an import reader that understands it.\\nDone when: format decision recorded as a companion.decision row.\""
+        },
+        {
+            "hash": "\\xd30e5f878ea0491932a328340d84e65b0d88a51c6e4b80f525dfd99b14eb21de",
+            "value": "\"Add git_url to bundle.repository\""
         },
         {
             "hash": "\\xbbaf174fb66b46d00bbbc04e307b76a747a01b8835b7332f17f7ced72638b6cc",
             "value": "\"Tighten agent scope constraints\""
         },
         {
+            "hash": "\\x0223a3eead2b681d49d6f80e7d661acdc5cae0731b9323faaebb394d956698d1",
+            "value": "\"Add git_url to bundle.repository and implement the NOTIFY outbox consumer that exports + pushes on each bundle commit. Git is a distribution/backup transport, not a peer editing surface — the DB remains canonical. Best implemented after workspace separation step 5 (clean install path) but not blocked by it.\""
+        },
+        {
             "hash": "\\x12adac54ac6f7140109391b670b3cbcd51f083d8f5ee62ce26857c794ed67d36",
             "value": "\"pending\""
+        },
+        {
+            "hash": "\\xf902709475a6835171d079551194d6d45c8b479ba2ece896e4b10348f65bd1c5",
+            "value": "\"Implement bundle.import_from_git(url)\""
         },
         {
             "hash": "\\xef2d127de37b942baad06145e54b0c619a1f22327b2ebbcfbec78f5564afe39d",
@@ -93,12 +145,40 @@
             "value": "\"Audit untracked bundle rows\""
         },
         {
+            "hash": "\\x5eae904cdd7bc0f15b545dca0a1122e1f803c26c93ffbf0badc083d36985d4e5",
+            "value": "\"ac4fd1cb-ffd0-49d1-9925-8ded708dc595\""
+        },
+        {
+            "hash": "\\x99ce6349dc7075ad146011ffe54b511021f42ea9cf0be211695b097da278726c",
+            "value": "\"f4d985c0-dd89-47c8-8704-d401e3f0287c\""
+        },
+        {
+            "hash": "\\xc6e75bad9a85af851647eb89b66454ed7d0f3a9ace2823afffc476a91ff35af0",
+            "value": "\"Per-bundle git repository integration\""
+        },
+        {
+            "hash": "\\x4f5755776287d8093167f6265d0ef032d51b420dc3b09561d2e3906e26199749",
+            "value": "\"Document the canonical-DB invariant in AGENTS.md\""
+        },
+        {
             "hash": "\\x67969126b785904c77c20c24fe54a982f44c7f4ebd4e795c228c734e0f512b9a",
             "value": "\"fedcd130-de9a-4833-abef-9dd00ed57f48\""
         },
         {
+            "hash": "\\xba94f35ef99c8a0c445ae6b13acabb35948ac27ea1357693de6bd1d70cd3879e",
+            "value": "\"ALTER TABLE bundle.repository ADD COLUMN git_url text. Nullable — bundles without a remote are fine. Update the bundle extension SQL file (extensions/bundle/) to match. No behavior change yet; this is schema only.\\nDone when: column exists, extension SQL updated, bundle.commit() on io.bundle.core.repository reflects the change.\""
+        },
+        {
+            "hash": "\\x47c2b9f137194845de04205d92006ba97280518486c2f1934fb9b5524d0ec47f",
+            "value": "\"Counterpart to the push: given a git URL, clone or pull the export, import the bundle JSON (or per-row format) into the local DB via the existing import machinery.\\nThis is the distribution mechanism — share a bundle by sharing a URL.\\nDone when: bundle.import_from_git('https://example.com/my-bundle.git') imports the bundle and it appears in bundle.repository.\""
+        },
+        {
             "hash": "\\x8e84bb0edc29c75bfe16176a81821b3c8744c80b4ea31e8a4d048622e5496acb",
             "value": "\"Remove .git from the installed Aquameta path (or use a non-repo install path)\""
+        },
+        {
+            "hash": "\\x6ee17488b964aa7ffa3c2b2610c25982a4c1b5504f9cb2d099a0073bc6958801",
+            "value": "\"Implement NOTIFY outbox consumer for git push\""
         },
         {
             "hash": "\\x6555c188249aff317d5b5ddd2c29b5094369831ca69c729f703a8780b10fa7df",
@@ -471,11 +551,320 @@
             },
             "repository_id": "4d7d5909-3249-4c6f-abb2-7490a030b86a",
             "merge_parent_id": null
+        },
+        {
+            "id": "64e61ebc-1407-471d-a9eb-534331de6856",
+            "message": "add per-bundle git integration plan (5 steps) + experiment",
+            "version": null,
+            "parent_id": "93f4f00c-a6e1-456f-a5bb-7f4e2ec62836",
+            "jsonb_rows": [
+                {
+                    "pk_values": [
+                        "1d53920d-e49f-4f8a-b16d-84a6ce9cf08c"
+                    ],
+                    "schema_name": "companion",
+                    "relation_name": "plan",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "11c46df8-6fde-4471-93bd-4b33c44511eb"
+                    ],
+                    "schema_name": "companion",
+                    "relation_name": "plan",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "d13ebba5-6c40-4910-993c-1afc1ab7a63a"
+                    ],
+                    "schema_name": "companion",
+                    "relation_name": "plan_step",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "b820da21-3346-4deb-a0d5-838420b93b75"
+                    ],
+                    "schema_name": "companion",
+                    "relation_name": "plan_step",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "fedcd130-de9a-4833-abef-9dd00ed57f48"
+                    ],
+                    "schema_name": "companion",
+                    "relation_name": "plan_step",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "9ced0b19-1fe7-4577-b208-97393c6fee3f"
+                    ],
+                    "schema_name": "companion",
+                    "relation_name": "plan_step",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "72856c78-1125-4839-bc05-91e25100db14"
+                    ],
+                    "schema_name": "companion",
+                    "relation_name": "plan_step",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "8eb869ff-9234-44f1-8b56-a7b3f99bf11b"
+                    ],
+                    "schema_name": "companion",
+                    "relation_name": "plan_step",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "f4d985c0-dd89-47c8-8704-d401e3f0287c"
+                    ],
+                    "schema_name": "companion",
+                    "relation_name": "plan_step",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "44079e6f-f095-458a-8dd1-4ed94280c5a2"
+                    ],
+                    "schema_name": "companion",
+                    "relation_name": "plan_step",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "ac4fd1cb-ffd0-49d1-9925-8ded708dc595"
+                    ],
+                    "schema_name": "companion",
+                    "relation_name": "plan_step",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "569f21b0-6f74-49bd-9df8-438934232649"
+                    ],
+                    "schema_name": "companion",
+                    "relation_name": "plan_step",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "8a9fb1ab-3112-4ec2-8397-40b259e0f703"
+                    ],
+                    "schema_name": "companion",
+                    "relation_name": "plan_step",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                }
+            ],
+            "author_name": "claude_code",
+            "commit_time": "2026-06-07T22:42:39.541004+00:00",
+            "author_email": "claude@aquameta.org",
+            "jsonb_fields": {
+                "{\"pk_values\": [\"11c46df8-6fde-4471-93bd-4b33c44511eb\"], \"schema_name\": \"companion\", \"relation_name\": \"plan\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\xe87c80ef79ee9512f00320e7ef2a9ca9e38851863a8017e4431e17e6d690c887",
+                    "title": "\\xedd770b99184b5832abc629dec83ebea95c16a417439472f095e4d3abb02fe7d",
+                    "status": "\\xdb0fb2bf5ebc424454c3e11b5ee8bfb43af24a52e561aa49e94143831dc6fd93",
+                    "created_at": "\\x2428ac15e030eba999645fab40a1dcb4460e80c4af13e9694b8655177ffed860",
+                    "updated_at": "\\x2428ac15e030eba999645fab40a1dcb4460e80c4af13e9694b8655177ffed860",
+                    "description": "\\x8c36cc2ade4d370bdb43bff2129679b970a9975350ac552d04363b791b3bc115"
+                },
+                "{\"pk_values\": [\"1d53920d-e49f-4f8a-b16d-84a6ce9cf08c\"], \"schema_name\": \"companion\", \"relation_name\": \"plan\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\xaf8bf0dcbdef8da473f382306f21e5fcc1dce12bf9c7bca1c2d054eadb875dff",
+                    "title": "\\xc6e75bad9a85af851647eb89b66454ed7d0f3a9ace2823afffc476a91ff35af0",
+                    "status": "\\xdb0fb2bf5ebc424454c3e11b5ee8bfb43af24a52e561aa49e94143831dc6fd93",
+                    "created_at": "\\x10fa518a7a8fd1cf0ab10f4be8683e11449428a74ecaec1f25505a85c76f5823",
+                    "updated_at": "\\x10fa518a7a8fd1cf0ab10f4be8683e11449428a74ecaec1f25505a85c76f5823",
+                    "description": "\\x0223a3eead2b681d49d6f80e7d661acdc5cae0731b9323faaebb394d956698d1"
+                },
+                "{\"pk_values\": [\"44079e6f-f095-458a-8dd1-4ed94280c5a2\"], \"schema_name\": \"companion\", \"relation_name\": \"plan_step\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\x3cec7b0b17e3d3430435791555828d0236cf7ab9c0272967edfc2c19224ccc76",
+                    "title": "\\xd30e5f878ea0491932a328340d84e65b0d88a51c6e4b80f525dfd99b14eb21de",
+                    "detail": "\\xba94f35ef99c8a0c445ae6b13acabb35948ac27ea1357693de6bd1d70cd3879e",
+                    "result": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "status": "\\x12adac54ac6f7140109391b670b3cbcd51f083d8f5ee62ce26857c794ed67d36",
+                    "plan_id": "\\xaf8bf0dcbdef8da473f382306f21e5fcc1dce12bf9c7bca1c2d054eadb875dff",
+                    "agent_id": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "position": "\\x6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b",
+                    "claimed_at": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "created_at": "\\x10fa518a7a8fd1cf0ab10f4be8683e11449428a74ecaec1f25505a85c76f5823",
+                    "updated_at": "\\x10fa518a7a8fd1cf0ab10f4be8683e11449428a74ecaec1f25505a85c76f5823",
+                    "experiment_id": "\\xedf87dc4a0543f8a53840ad417377cd03d942f9e32e74575cfc4dcd45049223f"
+                },
+                "{\"pk_values\": [\"569f21b0-6f74-49bd-9df8-438934232649\"], \"schema_name\": \"companion\", \"relation_name\": \"plan_step\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\x8a09eb1af669107c5b570bd0bc16c3a1a9fd657cfc07bef8abea62cbc95dc3a0",
+                    "title": "\\x4f5755776287d8093167f6265d0ef032d51b420dc3b09561d2e3906e26199749",
+                    "detail": "\\x3b0631801e300574f3d9c6f3ad49bf9e82d78e6cc5274b641d54aa6069d0fb90",
+                    "result": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "status": "\\x12adac54ac6f7140109391b670b3cbcd51f083d8f5ee62ce26857c794ed67d36",
+                    "plan_id": "\\xaf8bf0dcbdef8da473f382306f21e5fcc1dce12bf9c7bca1c2d054eadb875dff",
+                    "agent_id": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "position": "\\xef2d127de37b942baad06145e54b0c619a1f22327b2ebbcfbec78f5564afe39d",
+                    "claimed_at": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "created_at": "\\x10fa518a7a8fd1cf0ab10f4be8683e11449428a74ecaec1f25505a85c76f5823",
+                    "updated_at": "\\x10fa518a7a8fd1cf0ab10f4be8683e11449428a74ecaec1f25505a85c76f5823",
+                    "experiment_id": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9"
+                },
+                "{\"pk_values\": [\"72856c78-1125-4839-bc05-91e25100db14\"], \"schema_name\": \"companion\", \"relation_name\": \"plan_step\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\x0ecd683a06afcba74d144be0998c44ebe86b2d6c0b14a391b2d90d80f5eed591",
+                    "title": "\\xdf399d9ae52e8fef9cb76603bdd38c55fe76a42d9e171e89dae578fc02660f62",
+                    "detail": "\\x4bd4d65b8b01e7f903a14aa489118d5c047bdb42100d31ee27951c09cc4577aa",
+                    "result": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "status": "\\x12adac54ac6f7140109391b670b3cbcd51f083d8f5ee62ce26857c794ed67d36",
+                    "plan_id": "\\xe87c80ef79ee9512f00320e7ef2a9ca9e38851863a8017e4431e17e6d690c887",
+                    "agent_id": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "position": "\\x6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b",
+                    "claimed_at": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "created_at": "\\x9318de12c0cfc8dba209c73d4e70f1b16c92b152c734e7035ad26735c639ce7a",
+                    "updated_at": "\\x9318de12c0cfc8dba209c73d4e70f1b16c92b152c734e7035ad26735c639ce7a"
+                },
+                "{\"pk_values\": [\"8a9fb1ab-3112-4ec2-8397-40b259e0f703\"], \"schema_name\": \"companion\", \"relation_name\": \"plan_step\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\x66678a988066630fd94618ee56dfac3da34031245b16e7350eab8e924d3e943a",
+                    "title": "\\xfd89bb8b61ae7c62dd61db9822e3b5e90c9693843e651571f87f1cd891e0b5e1",
+                    "detail": "\\x66c6944a9e496b16f93b615952036918b3881608f72e6979342fd44d41552344",
+                    "result": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "status": "\\x12adac54ac6f7140109391b670b3cbcd51f083d8f5ee62ce26857c794ed67d36",
+                    "plan_id": "\\xe87c80ef79ee9512f00320e7ef2a9ca9e38851863a8017e4431e17e6d690c887",
+                    "agent_id": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "position": "\\xd4735e3a265e16eee03f59718b9b5d03019c07d8b6c51f90da3a666eec13ab35",
+                    "claimed_at": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "created_at": "\\x9318de12c0cfc8dba209c73d4e70f1b16c92b152c734e7035ad26735c639ce7a",
+                    "updated_at": "\\x9318de12c0cfc8dba209c73d4e70f1b16c92b152c734e7035ad26735c639ce7a"
+                },
+                "{\"pk_values\": [\"8eb869ff-9234-44f1-8b56-a7b3f99bf11b\"], \"schema_name\": \"companion\", \"relation_name\": \"plan_step\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\x006d1144ef5345572910542a0a5621dfdec1a3975193550f1239b0184fd0a714",
+                    "title": "\\xf902709475a6835171d079551194d6d45c8b479ba2ece896e4b10348f65bd1c5",
+                    "detail": "\\x47c2b9f137194845de04205d92006ba97280518486c2f1934fb9b5524d0ec47f",
+                    "result": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "status": "\\x12adac54ac6f7140109391b670b3cbcd51f083d8f5ee62ce26857c794ed67d36",
+                    "plan_id": "\\xaf8bf0dcbdef8da473f382306f21e5fcc1dce12bf9c7bca1c2d054eadb875dff",
+                    "agent_id": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "position": "\\x4b227777d4dd1fc61c6f884f48641d02b4d121d3fd328cb08b5531fcacdabf8a",
+                    "claimed_at": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "created_at": "\\x10fa518a7a8fd1cf0ab10f4be8683e11449428a74ecaec1f25505a85c76f5823",
+                    "updated_at": "\\x10fa518a7a8fd1cf0ab10f4be8683e11449428a74ecaec1f25505a85c76f5823",
+                    "experiment_id": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9"
+                },
+                "{\"pk_values\": [\"9ced0b19-1fe7-4577-b208-97393c6fee3f\"], \"schema_name\": \"companion\", \"relation_name\": \"plan_step\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\x6555c188249aff317d5b5ddd2c29b5094369831ca69c729f703a8780b10fa7df",
+                    "title": "\\x182f80bb9a29aa8352348795216eaa5076bbd750278dde8fcda92ad00a0ba200",
+                    "detail": "\\x211df33242e7ee0af53a65edc9af6f4ccb92d1e12babe5412ec1b1c8a6593427",
+                    "result": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "status": "\\x12adac54ac6f7140109391b670b3cbcd51f083d8f5ee62ce26857c794ed67d36",
+                    "plan_id": "\\xe87c80ef79ee9512f00320e7ef2a9ca9e38851863a8017e4431e17e6d690c887",
+                    "agent_id": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "position": "\\x4b227777d4dd1fc61c6f884f48641d02b4d121d3fd328cb08b5531fcacdabf8a",
+                    "claimed_at": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "created_at": "\\x9318de12c0cfc8dba209c73d4e70f1b16c92b152c734e7035ad26735c639ce7a",
+                    "updated_at": "\\x9318de12c0cfc8dba209c73d4e70f1b16c92b152c734e7035ad26735c639ce7a"
+                },
+                "{\"pk_values\": [\"ac4fd1cb-ffd0-49d1-9925-8ded708dc595\"], \"schema_name\": \"companion\", \"relation_name\": \"plan_step\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\x5eae904cdd7bc0f15b545dca0a1122e1f803c26c93ffbf0badc083d36985d4e5",
+                    "title": "\\x0e0b34c1dcb5fb5f68b6e49a99ee03c69e3b8c9afa2d9af6deae8b43e3e6dc95",
+                    "detail": "\\x67cc64aa565f2c4620fcbea599dd7368cf9100336ab205eed31159b30d3407c7",
+                    "result": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "status": "\\x12adac54ac6f7140109391b670b3cbcd51f083d8f5ee62ce26857c794ed67d36",
+                    "plan_id": "\\xaf8bf0dcbdef8da473f382306f21e5fcc1dce12bf9c7bca1c2d054eadb875dff",
+                    "agent_id": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "position": "\\xd4735e3a265e16eee03f59718b9b5d03019c07d8b6c51f90da3a666eec13ab35",
+                    "claimed_at": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "created_at": "\\x10fa518a7a8fd1cf0ab10f4be8683e11449428a74ecaec1f25505a85c76f5823",
+                    "updated_at": "\\x10fa518a7a8fd1cf0ab10f4be8683e11449428a74ecaec1f25505a85c76f5823",
+                    "experiment_id": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9"
+                },
+                "{\"pk_values\": [\"b820da21-3346-4deb-a0d5-838420b93b75\"], \"schema_name\": \"companion\", \"relation_name\": \"plan_step\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\xf507aa0a921b6ad73dd0dec2fdc275ce1dd5a7fc3758ab071f3ae855910d4f11",
+                    "title": "\\x1ca008d680aee38080db8464ff7a90a78ed5830e2d1d5aa599ccb16fe60fa475",
+                    "detail": "\\xe3b631748ac12a8c0446d2a951fcca7e1ecfbf836213eec0bd2f14ea90424a7f",
+                    "result": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "status": "\\x12adac54ac6f7140109391b670b3cbcd51f083d8f5ee62ce26857c794ed67d36",
+                    "plan_id": "\\xe87c80ef79ee9512f00320e7ef2a9ca9e38851863a8017e4431e17e6d690c887",
+                    "agent_id": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "position": "\\x4e07408562bedb8b60ce05c1decfe3ad16b72230967de01f640b7e4729b49fce",
+                    "claimed_at": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "created_at": "\\x9318de12c0cfc8dba209c73d4e70f1b16c92b152c734e7035ad26735c639ce7a",
+                    "updated_at": "\\x9318de12c0cfc8dba209c73d4e70f1b16c92b152c734e7035ad26735c639ce7a"
+                },
+                "{\"pk_values\": [\"d13ebba5-6c40-4910-993c-1afc1ab7a63a\"], \"schema_name\": \"companion\", \"relation_name\": \"plan_step\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\xe8700e3ab1181de3c43709c6b869f97a1187eed905b4a1636d10bb0ddd9f5954",
+                    "title": "\\x8e84bb0edc29c75bfe16176a81821b3c8744c80b4ea31e8a4d048622e5496acb",
+                    "detail": "\\xb6d950d5ab962d4a65d1462adb4db7e806b09e72a9bee70a7cd70f9ac740af7e",
+                    "result": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "status": "\\x12adac54ac6f7140109391b670b3cbcd51f083d8f5ee62ce26857c794ed67d36",
+                    "plan_id": "\\xe87c80ef79ee9512f00320e7ef2a9ca9e38851863a8017e4431e17e6d690c887",
+                    "agent_id": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "position": "\\xef2d127de37b942baad06145e54b0c619a1f22327b2ebbcfbec78f5564afe39d",
+                    "claimed_at": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "created_at": "\\x9318de12c0cfc8dba209c73d4e70f1b16c92b152c734e7035ad26735c639ce7a",
+                    "updated_at": "\\x9318de12c0cfc8dba209c73d4e70f1b16c92b152c734e7035ad26735c639ce7a"
+                },
+                "{\"pk_values\": [\"f4d985c0-dd89-47c8-8704-d401e3f0287c\"], \"schema_name\": \"companion\", \"relation_name\": \"plan_step\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\x99ce6349dc7075ad146011ffe54b511021f42ea9cf0be211695b097da278726c",
+                    "title": "\\x6ee17488b964aa7ffa3c2b2610c25982a4c1b5504f9cb2d099a0073bc6958801",
+                    "detail": "\\x7d2b69818a791d2ecc36ba38f2f4d88160b447f41deddf282b4e859728620204",
+                    "result": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "status": "\\x12adac54ac6f7140109391b670b3cbcd51f083d8f5ee62ce26857c794ed67d36",
+                    "plan_id": "\\xaf8bf0dcbdef8da473f382306f21e5fcc1dce12bf9c7bca1c2d054eadb875dff",
+                    "agent_id": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "position": "\\x4e07408562bedb8b60ce05c1decfe3ad16b72230967de01f640b7e4729b49fce",
+                    "claimed_at": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "created_at": "\\x10fa518a7a8fd1cf0ab10f4be8683e11449428a74ecaec1f25505a85c76f5823",
+                    "updated_at": "\\x10fa518a7a8fd1cf0ab10f4be8683e11449428a74ecaec1f25505a85c76f5823",
+                    "experiment_id": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9"
+                },
+                "{\"pk_values\": [\"fedcd130-de9a-4833-abef-9dd00ed57f48\"], \"schema_name\": \"companion\", \"relation_name\": \"plan_step\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\x67969126b785904c77c20c24fe54a982f44c7f4ebd4e795c228c734e0f512b9a",
+                    "title": "\\xbbaf174fb66b46d00bbbc04e307b76a747a01b8835b7332f17f7ced72638b6cc",
+                    "detail": "\\xd34402e2c0690722072f02885714c2d35fb02dc3d75589687470c3346b579928",
+                    "result": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "status": "\\x12adac54ac6f7140109391b670b3cbcd51f083d8f5ee62ce26857c794ed67d36",
+                    "plan_id": "\\xe87c80ef79ee9512f00320e7ef2a9ca9e38851863a8017e4431e17e6d690c887",
+                    "agent_id": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "position": "\\xe7f6c011776e8db7cd330b54174fd76f7d0216b612387a5ffcfb81e6f0919683",
+                    "claimed_at": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "created_at": "\\x9318de12c0cfc8dba209c73d4e70f1b16c92b152c734e7035ad26735c639ce7a",
+                    "updated_at": "\\x9318de12c0cfc8dba209c73d4e70f1b16c92b152c734e7035ad26735c639ce7a"
+                }
+            },
+            "repository_id": "4d7d5909-3249-4c6f-abb2-7490a030b86a",
+            "merge_parent_id": null
         }
     ],
     "repository": {
         "id": "4d7d5909-3249-4c6f-abb2-7490a030b86a",
         "name": "io.bundle.aquameta.plan",
-        "head_commit_id": "93f4f00c-a6e1-456f-a5bb-7f4e2ec62836"
+        "head_commit_id": "64e61ebc-1407-471d-a9eb-534331de6856"
     }
 }
