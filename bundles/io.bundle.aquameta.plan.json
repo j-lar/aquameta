@@ -1,0 +1,310 @@
+{
+    "blobs": [
+        {
+            "hash": "\\x9318de12c0cfc8dba209c73d4e70f1b16c92b152c734e7035ad26735c639ce7a",
+            "value": "\"2026-06-07T22:26:23.967711+00:00\""
+        },
+        {
+            "hash": "\\xe7f6c011776e8db7cd330b54174fd76f7d0216b612387a5ffcfb81e6f0919683",
+            "value": "6"
+        },
+        {
+            "hash": "\\x8c36cc2ade4d370bdb43bff2129679b970a9975350ac552d04363b791b3bc115",
+            "value": "\"Separate the Aquameta source code repo from the installed instance used for bundle/app development. Eliminate the git-repo-as-agent-trigger problem, clarify the two-daemon setup, and establish clean promotion paths from experiment → bundle → distribution.\""
+        },
+        {
+            "hash": "\\x66c6944a9e496b16f93b615952036918b3881608f72e6979342fd44d41552344",
+            "value": "\"Run bundles/export-all.sh to snapshot current committed bundle state into JSON files in the repo. This makes bundle state durable in git before any DB or filesystem changes.\\nDone when: bundles/*.json files are current and git-committed on dev.\""
+        },
+        {
+            "hash": "\\xe87c80ef79ee9512f00320e7ef2a9ca9e38851863a8017e4431e17e6d690c887",
+            "value": "\"11c46df8-6fde-4471-93bd-4b33c44511eb\""
+        },
+        {
+            "hash": "\\xf507aa0a921b6ad73dd0dec2fdc275ce1dd5a7fc3758ab071f3ae855910d4f11",
+            "value": "\"b820da21-3346-4deb-a0d5-838420b93b75\""
+        },
+        {
+            "hash": "\\xe3b631748ac12a8c0446d2a951fcca7e1ecfbf836213eec0bd2f14ea90424a7f",
+            "value": "\"CREATE DATABASE aquameta_dev; load all extensions from the dev branch source (scripts/create_extensions.sql or equivalent). This becomes the test target for source-level changes.\\nDone when: psql aquameta_dev shows all extensions installed, daemon not yet pointed at it.\""
+        },
+        {
+            "hash": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+            "value": null
+        },
+        {
+            "hash": "\\x66678a988066630fd94618ee56dfac3da34031245b16e7350eab8e924d3e943a",
+            "value": "\"8a9fb1ab-3112-4ec2-8397-40b259e0f703\""
+        },
+        {
+            "hash": "\\x4bd4d65b8b01e7f903a14aa489118d5c047bdb42100d31ee27951c09cc4577aa",
+            "value": "\"Run bundle.uncommitted_changes() and examine untracked rows by schema. Decide what to commit to bundles, what to discard. This must happen before any filesystem moves.\\nDone when: all live DB state is either committed to a bundle or explicitly discarded.\""
+        },
+        {
+            "hash": "\\x0ecd683a06afcba74d144be0998c44ebe86b2d6c0b14a391b2d90d80f5eed591",
+            "value": "\"72856c78-1125-4839-bc05-91e25100db14\""
+        },
+        {
+            "hash": "\\x4e07408562bedb8b60ce05c1decfe3ad16b72230967de01f640b7e4729b49fce",
+            "value": "3"
+        },
+        {
+            "hash": "\\x4b227777d4dd1fc61c6f884f48641d02b4d121d3fd328cb08b5531fcacdabf8a",
+            "value": "4"
+        },
+        {
+            "hash": "\\x2428ac15e030eba999645fab40a1dcb4460e80c4af13e9694b8655177ffed860",
+            "value": "\"2026-06-07T22:25:56.486852+00:00\""
+        },
+        {
+            "hash": "\\x1ca008d680aee38080db8464ff7a90a78ed5830e2d1d5aa599ccb16fe60fa475",
+            "value": "\"Create aquameta_dev database\""
+        },
+        {
+            "hash": "\\xe8700e3ab1181de3c43709c6b869f97a1187eed905b4a1636d10bb0ddd9f5954",
+            "value": "\"d13ebba5-6c40-4910-993c-1afc1ab7a63a\""
+        },
+        {
+            "hash": "\\x6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b",
+            "value": "1"
+        },
+        {
+            "hash": "\\xfd89bb8b61ae7c62dd61db9822e3b5e90c9693843e651571f87f1cd891e0b5e1",
+            "value": "\"Export all bundles to JSON\""
+        },
+        {
+            "hash": "\\xedd770b99184b5832abc629dec83ebea95c16a417439472f095e4d3abb02fe7d",
+            "value": "\"Workspace Separation: source vs bundle/app dev\""
+        },
+        {
+            "hash": "\\xbbaf174fb66b46d00bbbc04e307b76a747a01b8835b7332f17f7ced72638b6cc",
+            "value": "\"Tighten agent scope constraints\""
+        },
+        {
+            "hash": "\\x12adac54ac6f7140109391b670b3cbcd51f083d8f5ee62ce26857c794ed67d36",
+            "value": "\"pending\""
+        },
+        {
+            "hash": "\\xef2d127de37b942baad06145e54b0c619a1f22327b2ebbcfbec78f5564afe39d",
+            "value": "5"
+        },
+        {
+            "hash": "\\xdf399d9ae52e8fef9cb76603bdd38c55fe76a42d9e171e89dae578fc02660f62",
+            "value": "\"Audit untracked bundle rows\""
+        },
+        {
+            "hash": "\\x67969126b785904c77c20c24fe54a982f44c7f4ebd4e795c228c734e0f512b9a",
+            "value": "\"fedcd130-de9a-4833-abef-9dd00ed57f48\""
+        },
+        {
+            "hash": "\\x8e84bb0edc29c75bfe16176a81821b3c8744c80b4ea31e8a4d048622e5496acb",
+            "value": "\"Remove .git from the installed Aquameta path (or use a non-repo install path)\""
+        },
+        {
+            "hash": "\\x6555c188249aff317d5b5ddd2c29b5094369831ca69c729f703a8780b10fa7df",
+            "value": "\"9ced0b19-1fe7-4577-b208-97393c6fee3f\""
+        },
+        {
+            "hash": "\\xb6d950d5ab962d4a65d1462adb4db7e806b09e72a9bee70a7cd70f9ac740af7e",
+            "value": "\"The installed Aquameta instance should not be a git working tree — agents working on bundles/apps should not see .git/ and infer git-centric change tracking. Either install from a clean checkout to a separate path, or restructure so the running instance directory is not the repo root.\\nDone when: the path agents work in for bundle/app work has no .git/ directory.\""
+        },
+        {
+            "hash": "\\x211df33242e7ee0af53a65edc9af6f4ccb92d1e12babe5412ec1b1c8a6593427",
+            "value": "\"Copy conf/bootloader.toml to conf/bootloader-dev.toml, point at aquameta_dev, different HTTP port (e.g. 8081). Verify both daemons start cleanly.\\nDone when: two daemon processes running, each serving a distinct DB on distinct ports.\""
+        },
+        {
+            "hash": "\\x182f80bb9a29aa8352348795216eaa5076bbd750278dde8fcda92ad00a0ba200",
+            "value": "\"Configure second daemon instance\""
+        },
+        {
+            "hash": "\\xd4735e3a265e16eee03f59718b9b5d03019c07d8b6c51f90da3a666eec13ab35",
+            "value": "2"
+        },
+        {
+            "hash": "\\xd34402e2c0690722072f02885714c2d35fb02dc3d75589687470c3346b579928",
+            "value": "\"Add explicit scope constraints to CLAUDE.md and AGENTS.md: agents doing bundle/app work must not write to extensions/*.sql or *.go files. When a source-level problem is found, the protocol is: log companion note, open GitHub issue, stop.\\nDone when: constraint is documented in AGENTS.md and a companion.decision row records it.\""
+        },
+        {
+            "hash": "\\xdb0fb2bf5ebc424454c3e11b5ee8bfb43af24a52e561aa49e94143831dc6fd93",
+            "value": "\"active\""
+        }
+    ],
+    "commits": [
+        {
+            "id": "5af5d927-8d9f-4407-97bc-e1961aca4803",
+            "message": "initial: workspace separation plan (6 steps)",
+            "version": null,
+            "parent_id": null,
+            "jsonb_rows": [
+                {
+                    "pk_values": [
+                        "11c46df8-6fde-4471-93bd-4b33c44511eb"
+                    ],
+                    "schema_name": "companion",
+                    "relation_name": "plan",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "8a9fb1ab-3112-4ec2-8397-40b259e0f703"
+                    ],
+                    "schema_name": "companion",
+                    "relation_name": "plan_step",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "d13ebba5-6c40-4910-993c-1afc1ab7a63a"
+                    ],
+                    "schema_name": "companion",
+                    "relation_name": "plan_step",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "b820da21-3346-4deb-a0d5-838420b93b75"
+                    ],
+                    "schema_name": "companion",
+                    "relation_name": "plan_step",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "fedcd130-de9a-4833-abef-9dd00ed57f48"
+                    ],
+                    "schema_name": "companion",
+                    "relation_name": "plan_step",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "9ced0b19-1fe7-4577-b208-97393c6fee3f"
+                    ],
+                    "schema_name": "companion",
+                    "relation_name": "plan_step",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "72856c78-1125-4839-bc05-91e25100db14"
+                    ],
+                    "schema_name": "companion",
+                    "relation_name": "plan_step",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                }
+            ],
+            "author_name": "claude_code",
+            "commit_time": "2026-06-07T22:26:32.783383+00:00",
+            "author_email": "claude@aquameta.org",
+            "jsonb_fields": {
+                "{\"pk_values\": [\"11c46df8-6fde-4471-93bd-4b33c44511eb\"], \"schema_name\": \"companion\", \"relation_name\": \"plan\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\xe87c80ef79ee9512f00320e7ef2a9ca9e38851863a8017e4431e17e6d690c887",
+                    "title": "\\xedd770b99184b5832abc629dec83ebea95c16a417439472f095e4d3abb02fe7d",
+                    "status": "\\xdb0fb2bf5ebc424454c3e11b5ee8bfb43af24a52e561aa49e94143831dc6fd93",
+                    "created_at": "\\x2428ac15e030eba999645fab40a1dcb4460e80c4af13e9694b8655177ffed860",
+                    "updated_at": "\\x2428ac15e030eba999645fab40a1dcb4460e80c4af13e9694b8655177ffed860",
+                    "description": "\\x8c36cc2ade4d370bdb43bff2129679b970a9975350ac552d04363b791b3bc115"
+                },
+                "{\"pk_values\": [\"72856c78-1125-4839-bc05-91e25100db14\"], \"schema_name\": \"companion\", \"relation_name\": \"plan_step\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\x0ecd683a06afcba74d144be0998c44ebe86b2d6c0b14a391b2d90d80f5eed591",
+                    "title": "\\xdf399d9ae52e8fef9cb76603bdd38c55fe76a42d9e171e89dae578fc02660f62",
+                    "detail": "\\x4bd4d65b8b01e7f903a14aa489118d5c047bdb42100d31ee27951c09cc4577aa",
+                    "result": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "status": "\\x12adac54ac6f7140109391b670b3cbcd51f083d8f5ee62ce26857c794ed67d36",
+                    "plan_id": "\\xe87c80ef79ee9512f00320e7ef2a9ca9e38851863a8017e4431e17e6d690c887",
+                    "agent_id": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "position": "\\x6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b",
+                    "claimed_at": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "created_at": "\\x9318de12c0cfc8dba209c73d4e70f1b16c92b152c734e7035ad26735c639ce7a",
+                    "updated_at": "\\x9318de12c0cfc8dba209c73d4e70f1b16c92b152c734e7035ad26735c639ce7a"
+                },
+                "{\"pk_values\": [\"8a9fb1ab-3112-4ec2-8397-40b259e0f703\"], \"schema_name\": \"companion\", \"relation_name\": \"plan_step\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\x66678a988066630fd94618ee56dfac3da34031245b16e7350eab8e924d3e943a",
+                    "title": "\\xfd89bb8b61ae7c62dd61db9822e3b5e90c9693843e651571f87f1cd891e0b5e1",
+                    "detail": "\\x66c6944a9e496b16f93b615952036918b3881608f72e6979342fd44d41552344",
+                    "result": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "status": "\\x12adac54ac6f7140109391b670b3cbcd51f083d8f5ee62ce26857c794ed67d36",
+                    "plan_id": "\\xe87c80ef79ee9512f00320e7ef2a9ca9e38851863a8017e4431e17e6d690c887",
+                    "agent_id": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "position": "\\xd4735e3a265e16eee03f59718b9b5d03019c07d8b6c51f90da3a666eec13ab35",
+                    "claimed_at": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "created_at": "\\x9318de12c0cfc8dba209c73d4e70f1b16c92b152c734e7035ad26735c639ce7a",
+                    "updated_at": "\\x9318de12c0cfc8dba209c73d4e70f1b16c92b152c734e7035ad26735c639ce7a"
+                },
+                "{\"pk_values\": [\"9ced0b19-1fe7-4577-b208-97393c6fee3f\"], \"schema_name\": \"companion\", \"relation_name\": \"plan_step\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\x6555c188249aff317d5b5ddd2c29b5094369831ca69c729f703a8780b10fa7df",
+                    "title": "\\x182f80bb9a29aa8352348795216eaa5076bbd750278dde8fcda92ad00a0ba200",
+                    "detail": "\\x211df33242e7ee0af53a65edc9af6f4ccb92d1e12babe5412ec1b1c8a6593427",
+                    "result": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "status": "\\x12adac54ac6f7140109391b670b3cbcd51f083d8f5ee62ce26857c794ed67d36",
+                    "plan_id": "\\xe87c80ef79ee9512f00320e7ef2a9ca9e38851863a8017e4431e17e6d690c887",
+                    "agent_id": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "position": "\\x4b227777d4dd1fc61c6f884f48641d02b4d121d3fd328cb08b5531fcacdabf8a",
+                    "claimed_at": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "created_at": "\\x9318de12c0cfc8dba209c73d4e70f1b16c92b152c734e7035ad26735c639ce7a",
+                    "updated_at": "\\x9318de12c0cfc8dba209c73d4e70f1b16c92b152c734e7035ad26735c639ce7a"
+                },
+                "{\"pk_values\": [\"b820da21-3346-4deb-a0d5-838420b93b75\"], \"schema_name\": \"companion\", \"relation_name\": \"plan_step\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\xf507aa0a921b6ad73dd0dec2fdc275ce1dd5a7fc3758ab071f3ae855910d4f11",
+                    "title": "\\x1ca008d680aee38080db8464ff7a90a78ed5830e2d1d5aa599ccb16fe60fa475",
+                    "detail": "\\xe3b631748ac12a8c0446d2a951fcca7e1ecfbf836213eec0bd2f14ea90424a7f",
+                    "result": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "status": "\\x12adac54ac6f7140109391b670b3cbcd51f083d8f5ee62ce26857c794ed67d36",
+                    "plan_id": "\\xe87c80ef79ee9512f00320e7ef2a9ca9e38851863a8017e4431e17e6d690c887",
+                    "agent_id": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "position": "\\x4e07408562bedb8b60ce05c1decfe3ad16b72230967de01f640b7e4729b49fce",
+                    "claimed_at": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "created_at": "\\x9318de12c0cfc8dba209c73d4e70f1b16c92b152c734e7035ad26735c639ce7a",
+                    "updated_at": "\\x9318de12c0cfc8dba209c73d4e70f1b16c92b152c734e7035ad26735c639ce7a"
+                },
+                "{\"pk_values\": [\"d13ebba5-6c40-4910-993c-1afc1ab7a63a\"], \"schema_name\": \"companion\", \"relation_name\": \"plan_step\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\xe8700e3ab1181de3c43709c6b869f97a1187eed905b4a1636d10bb0ddd9f5954",
+                    "title": "\\x8e84bb0edc29c75bfe16176a81821b3c8744c80b4ea31e8a4d048622e5496acb",
+                    "detail": "\\xb6d950d5ab962d4a65d1462adb4db7e806b09e72a9bee70a7cd70f9ac740af7e",
+                    "result": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "status": "\\x12adac54ac6f7140109391b670b3cbcd51f083d8f5ee62ce26857c794ed67d36",
+                    "plan_id": "\\xe87c80ef79ee9512f00320e7ef2a9ca9e38851863a8017e4431e17e6d690c887",
+                    "agent_id": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "position": "\\xef2d127de37b942baad06145e54b0c619a1f22327b2ebbcfbec78f5564afe39d",
+                    "claimed_at": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "created_at": "\\x9318de12c0cfc8dba209c73d4e70f1b16c92b152c734e7035ad26735c639ce7a",
+                    "updated_at": "\\x9318de12c0cfc8dba209c73d4e70f1b16c92b152c734e7035ad26735c639ce7a"
+                },
+                "{\"pk_values\": [\"fedcd130-de9a-4833-abef-9dd00ed57f48\"], \"schema_name\": \"companion\", \"relation_name\": \"plan_step\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\x67969126b785904c77c20c24fe54a982f44c7f4ebd4e795c228c734e0f512b9a",
+                    "title": "\\xbbaf174fb66b46d00bbbc04e307b76a747a01b8835b7332f17f7ced72638b6cc",
+                    "detail": "\\xd34402e2c0690722072f02885714c2d35fb02dc3d75589687470c3346b579928",
+                    "result": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "status": "\\x12adac54ac6f7140109391b670b3cbcd51f083d8f5ee62ce26857c794ed67d36",
+                    "plan_id": "\\xe87c80ef79ee9512f00320e7ef2a9ca9e38851863a8017e4431e17e6d690c887",
+                    "agent_id": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "position": "\\xe7f6c011776e8db7cd330b54174fd76f7d0216b612387a5ffcfb81e6f0919683",
+                    "claimed_at": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "created_at": "\\x9318de12c0cfc8dba209c73d4e70f1b16c92b152c734e7035ad26735c639ce7a",
+                    "updated_at": "\\x9318de12c0cfc8dba209c73d4e70f1b16c92b152c734e7035ad26735c639ce7a"
+                }
+            },
+            "repository_id": "4d7d5909-3249-4c6f-abb2-7490a030b86a",
+            "merge_parent_id": null
+        }
+    ],
+    "repository": {
+        "id": "4d7d5909-3249-4c6f-abb2-7490a030b86a",
+        "name": "io.bundle.aquameta.plan",
+        "head_commit_id": "5af5d927-8d9f-4407-97bc-e1961aca4803"
+    }
+}
