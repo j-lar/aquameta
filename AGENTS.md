@@ -33,6 +33,8 @@ Execute the queries it returns. If the DB is unavailable, fall back to `MEMO.md`
 
 Before opening a session, verify your agent identity exists in the database:
 
+**Naming convention:** use your harness name in `snake_case` — e.g. `claude_code`, `kimi_code`, `codex`. Do not shorten to just the model name (`claude`, `kimi`). If a prior session note used a different name, prefer the `snake_case` harness name to avoid duplicate agent rows.
+
 ```sql
 SELECT name FROM ai.agent WHERE name = '<your_agent_name>';
 ```
@@ -110,15 +112,26 @@ INSERT INTO ai.experiment (name, description, status) VALUES ('Name', 'Descripti
 
 ### Session End
 
-Close run and session, then commit:
-```sql
-SELECT ai.close_run();     -- marks run 'completed', unbinds it
-SELECT ai.close_session(); -- marks session ended, removes binding row
+Before closing, write at least one `finding` note covering anything you had to figure out that was not in AGENTS.md — ambiguous instructions, missing privileges, unexpected errors, extra steps required. This is not optional. These findings are the primary mechanism by which the onboarding protocol improves across sessions.
 
+```sql
+-- Required: one or more findings about what was missing, ambiguous, or surprising
+INSERT INTO companion.note (topic, title, body)
+VALUES ('finding', 'Short title', 'What happened, why it was unclear, suggested fix.');
+```
+
+Then commit **before** closing the run (so the final commit is attributed), then close:
+
+```sql
 SELECT bundle.stage_tracked_rows('companion.claude_code.aquameta');
 SELECT bundle.commit('companion.claude_code.aquameta', 'end-of-session update',
                      'your_agent_name', 'your_agent@example.com');
+
+SELECT ai.close_run();     -- marks run 'completed', unbinds it
+SELECT ai.close_session(); -- marks session ended, removes binding row
 ```
+
+Note: `close_run()` must come **after** `bundle.commit()`. If the run is closed first, the final commit loses its `ai.run_commit` attribution link.
 
 ### Bundle Row Lifecycle (Onboarding Checklist)
 
@@ -146,6 +159,7 @@ Common pitfalls:
 - `stage_tracked_row()` (singular) fails on untracked rows — use `track_untracked_row()` first for new rows
 - `meta.row_id` composite type: `(schema_name text, relation_name text, pk_column_names text[], pk_values text[])`
 - Run `\df bundle.stage_tracked_row` to verify function signatures before calling
+- **Verify the PK column name** with `\d table_name` before calling `track_untracked_row()` — the PK is not always `id` (e.g. `ai.agent_capability` has a synthetic `id` PK, not the natural key `(agent_id, capability_id)`)
 
 ---
 
