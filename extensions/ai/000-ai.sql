@@ -194,17 +194,19 @@ create trigger agent_capability_delete_trigger
  ******************************************************************************/
 
 insert into ai.capability (name, description, schema_name, privilege) values
-    ('read_meta',      'Read schema catalog',           'meta',      'SELECT'),
-    ('read_bundle',    'Read version control data',     'bundle',    'SELECT'),
-    ('write_bundle',   'Commit and manage bundles',     'bundle',    'ALL'),
-    ('read_widget',    'Read widget definitions',       'widget',    'SELECT'),
-    ('write_widget',   'Create and modify widgets',     'widget',    'ALL'),
-    ('read_endpoint',  'Read endpoint routes/resources','endpoint',  'SELECT'),
-    ('write_endpoint', 'Manage endpoint routes',        'endpoint',  'ALL'),
-    ('read_semantics', 'Read semantic annotations',     'semantics', 'SELECT'),
-    ('write_semantics','Write semantic annotations',    'semantics', 'ALL'),
-    ('read_ai',        'Read agent/session data',       'ai',        'SELECT'),
-    ('write_ai',       'Write agent/session data',      'ai',        'ALL');
+    ('read_meta',       'Read schema catalog',           'meta',      'SELECT'),
+    ('read_bundle',     'Read version control data',     'bundle',    'SELECT'),
+    ('write_bundle',    'Commit and manage bundles',     'bundle',    'ALL'),
+    ('read_widget',     'Read widget definitions',       'widget',    'SELECT'),
+    ('write_widget',    'Create and modify widgets',     'widget',    'ALL'),
+    ('read_endpoint',   'Read endpoint routes/resources','endpoint',  'SELECT'),
+    ('write_endpoint',  'Manage endpoint routes',        'endpoint',  'ALL'),
+    ('read_semantics',  'Read semantic annotations',     'semantics', 'SELECT'),
+    ('write_semantics', 'Write semantic annotations',    'semantics', 'ALL'),
+    ('read_ai',         'Read agent/session data',       'ai',        'SELECT'),
+    ('write_ai',        'Write agent/session data',      'ai',        'ALL'),
+    ('read_companion',  'Read companion session data',   'companion', 'SELECT'),
+    ('write_companion', 'Write companion session data',  'companion', 'ALL');
 
 
 /*******************************************************************************
