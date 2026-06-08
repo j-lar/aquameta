@@ -17,6 +17,10 @@
             "value": "\"Separate the Aquameta source code repo from the installed instance used for bundle/app development. Eliminate the git-repo-as-agent-trigger problem, clarify the two-daemon setup, and establish clean promotion paths from experiment → bundle → distribution.\""
         },
         {
+            "hash": "\\x0c6eb602d313d142430ab7c6bac71b7b22b29efaca5e434cb1fa10ce1442fc92",
+            "value": "\"Step needs clearer v1 scoping. \\\"Import from git\\\" implies full bidirectional sync with merge semantics, conflict detection, and history negotiation. That is a large project. For v1, scope this to: given a git URL and ref, export the bundle JSON at that ref and import it as a fresh bundle (overwrite semantics, no merge). Merge and conflict resolution can be a later experiment. Update the detail to reflect this scope.\""
+        },
+        {
             "hash": "\\x66c6944a9e496b16f93b615952036918b3881608f72e6979342fd44d41552344",
             "value": "\"Run bundles/export-all.sh to snapshot current committed bundle state into JSON files in the repo. This makes bundle state durable in git before any DB or filesystem changes.\\nDone when: bundles/*.json files are current and git-committed on dev.\""
         },
@@ -33,12 +37,24 @@
             "value": "\"CREATE DATABASE aquameta_dev; load all extensions from the dev branch source (scripts/create_extensions.sql or equivalent). This becomes the test target for source-level changes.\\nDone when: psql aquameta_dev shows all extensions installed, daemon not yet pointed at it.\""
         },
         {
+            "hash": "\\xf827e15e665a22c19ea6ab836884399f58d321382af4baaaff4dfeced030e9a5",
+            "value": "\"changes_requested\""
+        },
+        {
+            "hash": "\\x874aa7de964d6bc6787e25ef3f670a7ed65eabb551b28313246da59896c054cf",
+            "value": "\"Review target for hardening companion.plan, companion.plan_step, and companion.plan_review after early multi-agent workflow testing.\""
+        },
+        {
             "hash": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
             "value": null
         },
         {
             "hash": "\\x3b0631801e300574f3d9c6f3ad49bf9e82d78e6cc5274b641d54aa6069d0fb90",
             "value": "\"Add one section to AGENTS.md: git repos associated with bundles are export artifacts. Agents must never edit files in a bundle git working tree directly. The editing surfaces are psql, PGFS, and the IDE. bundle.commit() is the version control primitive; git push is downstream.\\nDone when: AGENTS.md updated, companion.decision row recorded.\""
+        },
+        {
+            "hash": "\\x55edf5e350ef6a814fd5d146fbe1bba0342686d316a17fa3173709d9d4103bb6",
+            "value": "\"ad438d08-adeb-437f-ae1a-88f24cebf505\""
         },
         {
             "hash": "\\x7d2b69818a791d2ecc36ba38f2f4d88160b447f41deddf282b4e859728620204",
@@ -49,6 +65,18 @@
             "value": "\"44079e6f-f095-458a-8dd1-4ed94280c5a2\""
         },
         {
+            "hash": "\\xd0ab2ea6acf26dad2d146ce324a119cffd7f43d29ef69fcb2a9aa069554f33d7",
+            "value": "\"2026-06-08T00:01:33.012723+00:00\""
+        },
+        {
+            "hash": "\\x7b92de7d08814ff2863dbd0239cdcb3cd107364ebf588b5d95693527f066f106",
+            "value": "\"blocked\""
+        },
+        {
+            "hash": "\\xb2026a3362bc2bc9d14644f0571a811e0c5f568c5ada9b1cc306415b050c0b65",
+            "value": "\"Plan is well-scoped but step ordering has a safety issue. Step 6 (tighten agent scope constraints) should come before step 3-5 filesystem/daemon changes. If an agent encounters a bug in the dev daemon or writes to extensions/*.sql between steps 3 and 6, the scope constraint has not been documented yet. Recommend moving scope documentation to position 1 or 2.\""
+        },
+        {
             "hash": "\\x66678a988066630fd94618ee56dfac3da34031245b16e7350eab8e924d3e943a",
             "value": "\"8a9fb1ab-3112-4ec2-8397-40b259e0f703\""
         },
@@ -57,8 +85,24 @@
             "value": "\"Run bundle.uncommitted_changes() and examine untracked rows by schema. Decide what to commit to bundles, what to discard. This must happen before any filesystem moves.\\nDone when: all live DB state is either committed to a bundle or explicitly discarded.\""
         },
         {
+            "hash": "\\xfdbdd871d2e8dddbc72f115b13da2170d8445c7a8cba753d56b203046721ecbd",
+            "value": "\"08152279-c92d-46e5-ac4e-f871c0a023f6\""
+        },
+        {
+            "hash": "\\xd830f4533bf106a6c717a38dbd7017462a0aa74f43852a0c500dd8f69c1805cd",
+            "value": "\"5a4e67ee-8cfc-445c-9e6c-a944f5a4bf30\""
+        },
+        {
             "hash": "\\xaf8bf0dcbdef8da473f382306f21e5fcc1dce12bf9c7bca1c2d054eadb875dff",
             "value": "\"1d53920d-e49f-4f8a-b16d-84a6ce9cf08c\""
+        },
+        {
+            "hash": "\\x0ef6fed3fc0d0a39adfe456df1c7e49445199d22143ecb10066632097df158c4",
+            "value": "\"2026-06-08T00:01:33.01656+00:00\""
+        },
+        {
+            "hash": "\\x1850a5f1f127f1242c52a9f1763152af05addb73d40f559ca156c1c662b84380",
+            "value": "\"This step should move earlier in the plan — ideally to position 1 or 2. The filesystem and daemon changes in steps 3-5 create new surfaces for agents to interact with. If scope constraints are not documented first, agents may write to extensions/*.sql or modify Go source files in the dev instance before the guardrails are in place. Recommend reordering before execution.\""
         },
         {
             "hash": "\\x0e0b34c1dcb5fb5f68b6e49a99ee03c69e3b8c9afa2d9af6deae8b43e3e6dc95",
@@ -105,6 +149,14 @@
             "value": "\"Export all bundles to JSON\""
         },
         {
+            "hash": "\\x239b5874d83736dba3f1199d3f78425b73b37878ea86fbedd51f80c62ccaa5c5",
+            "value": "\"2026-06-08T00:01:33.014726+00:00\""
+        },
+        {
+            "hash": "\\xd4257c964ed927db1549210b687a8c4aa3c3cfd456314ed66cd3f907e944d3e8",
+            "value": "\"Companion plan schema hardening\""
+        },
+        {
             "hash": "\\x006d1144ef5345572910542a0a5621dfdec1a3975193550f1239b0184fd0a714",
             "value": "\"8eb869ff-9234-44f1-8b56-a7b3f99bf11b\""
         },
@@ -125,12 +177,52 @@
             "value": "\"Tighten agent scope constraints\""
         },
         {
+            "hash": "\\xe996ee63bc2d00dfcba6388c8ddeee47d4fbce806e00f97d2e6f15e8e697e6cf",
+            "value": "\"finding\""
+        },
+        {
+            "hash": "\\xefacd32255dc8b951484bd0d8a544cc1d5c7c8c06047b5bf9183d310af808ff5",
+            "value": "\"a22547c4-37f2-4252-b4c6-891096dd98fd\""
+        },
+        {
+            "hash": "\\xd198bfb812c9e9809c07fbb9c337c562af6e3173105ad5c9ec32a1976aae03be",
+            "value": "\"857af9fb-52a0-4d56-a2f3-0fa351e609ea\""
+        },
+        {
+            "hash": "\\x76993e15abd3a728b9c989b13d69d08ef53da2115d38c0715bbacc0b63475a85",
+            "value": "\"91a3d861-cf71-4509-bbf6-f3f71204892a\""
+        },
+        {
+            "hash": "\\xef1b6975b408925878433e783088544db70c2f757a826db74b626b84f93f459e",
+            "value": "\"2026-06-08T00:01:50.039835+00:00\""
+        },
+        {
+            "hash": "\\x53883d2f626a07b590239855dbb4cc662f67b0e92bc6951cec3a933b93b89f56",
+            "value": "\"Review protocol: findings should land in plan_review, not companion.note\""
+        },
+        {
+            "hash": "\\x6b633ac5be6932b18d65f2152e1b0e06ee93ee0b209992dc547f12a8b544c262",
+            "value": "\"460cc8d8-4695-480f-8999-61db6c1b17bc\""
+        },
+        {
+            "hash": "\\xabf8aaae85e873d9dadf7999187017b2e4f8893dae6f6a0a26ba7e543802d237",
+            "value": "\"2026-06-08T00:01:33.010926+00:00\""
+        },
+        {
             "hash": "\\x0223a3eead2b681d49d6f80e7d661acdc5cae0731b9323faaebb394d956698d1",
             "value": "\"Add git_url to bundle.repository and implement the NOTIFY outbox consumer that exports + pushes on each bundle commit. Git is a distribution/backup transport, not a peer editing surface — the DB remains canonical. Best implemented after workspace separation step 5 (clean install path) but not blocked by it.\""
         },
         {
+            "hash": "\\x5343c4b739141b93efdd3d7bd841aeaf9e5b2ab79260511f3064481125d4625c",
+            "value": "\"2026-06-08T00:07:18.303034+00:00\""
+        },
+        {
             "hash": "\\x12adac54ac6f7140109391b670b3cbcd51f083d8f5ee62ce26857c794ed67d36",
             "value": "\"pending\""
+        },
+        {
+            "hash": "\\x9900c5c3cbf780f100062a1fc517c053b35e6b1468edfd6b38f64285edee3f49",
+            "value": "\"Factual error: The detail says \\\"The bundle.commit() NOTIFY outbox already exists (io.bundle.ai.core, ai.outbox)\\\". This is incorrect. ai.outbox is for ai.run queueing (channel ai_run_pending); bundle.commit() does not emit any NOTIFY today. A new outbox table + trigger for bundle commits must be designed and built. Do not proceed until the plan is corrected to acknowledge this new infrastructure requirement.\""
         },
         {
             "hash": "\\xf902709475a6835171d079551194d6d45c8b479ba2ece896e4b10348f65bd1c5",
@@ -145,8 +237,20 @@
             "value": "\"Audit untracked bundle rows\""
         },
         {
+            "hash": "\\x4c7595e07ba4d07a49b773f0796eaafa05da353716e205cd47b36f984a2c31d0",
+            "value": "\"When reviewing plans, the new companion.plan_review table is the correct destination for structured feedback. companion.note is for cross-cutting findings and orientation. I initially wrote my plan review to companion.note before the user corrected me. The plan_review schema (immutable rows, latest-outcome-wins, claimable_step filtering) is well-designed for this. Future sessions should default to plan_review for plan feedback and reserve companion.note for non-plan findings.\""
+        },
+        {
             "hash": "\\x5eae904cdd7bc0f15b545dca0a1122e1f803c26c93ffbf0badc083d36985d4e5",
             "value": "\"ac4fd1cb-ffd0-49d1-9925-8ded708dc595\""
+        },
+        {
+            "hash": "\\xbc3ba523d8784da46d621fdbdcb095af9a819141277cc1a896cf52a35a75993a",
+            "value": "\"fc2af8ce-7e2d-4a8e-8726-7b4ea2468b68\""
+        },
+        {
+            "hash": "\\x068da2c4432231022ce480e87c52aa9a949088e5f5b8c3db9532ceb03f8c5a71",
+            "value": "\"08d40a95-18d0-4548-8a55-6a46bff9a24b\""
         },
         {
             "hash": "\\x99ce6349dc7075ad146011ffe54b511021f42ea9cf0be211695b097da278726c",
@@ -159,6 +263,10 @@
         {
             "hash": "\\x4f5755776287d8093167f6265d0ef032d51b420dc3b09561d2e3906e26199749",
             "value": "\"Document the canonical-DB invariant in AGENTS.md\""
+        },
+        {
+            "hash": "\\xeaffc78fb85b6f7767bdc364dcaf4113325d8dc0652cc785680b0237ef794335",
+            "value": "\"Codex review of the companion plan feature.\\n\\nWhat works: the persisted plan data is coherent. At review time there were two active plans, eleven pending steps, contiguous step positions starting at 1, no claimed/running steps missing agents, and no staged/offstage drift in io.bundle.aquameta.plan.\\n\\nChanges requested before this becomes a dependable cross-agent coordination primitive:\\n1. Add DB-level checks for plan_step.position > 0 and nonblank companion.plan.title / companion.plan_step.title. The current NOT NULL checks still allow empty titles and negative positions.\\n2. Add DB-level checks that claimed/running steps have agent_id and claimed_at. The documented compare-and-swap claim convention works for cooperative SQL agents, but PGFS/REST/SQL all write the same rows, so invalid states should be rejected at the table boundary.\\n3. Decide whether updated_at should use now(), statement_timestamp(), or clock_timestamp(). now() is acceptable for transaction-level freshness, but it does not distinguish multiple updates inside one transaction.\\n4. For the new review feature, consider enforcing nonblank review_text and enforcing that a non-null plan_step_id belongs to the same plan_id. The current comment says this is by convention; a composite FK or trigger would make the row invariant match the model.\\n\\nOverall: the feature is simple and usable, and the session_brief/claimable_step surfaces are the right direction. The remaining work is mostly tightening row invariants so all Aquameta interfaces preserve the same coordination semantics.\""
         },
         {
             "hash": "\\x67969126b785904c77c20c24fe54a982f44c7f4ebd4e795c228c734e0f512b9a",
@@ -177,6 +285,10 @@
             "value": "\"Remove .git from the installed Aquameta path (or use a non-repo install path)\""
         },
         {
+            "hash": "\\x3872ce00613d0f780644726dd412d7667cb051ed9fa7c38e7f86acf412c95287",
+            "value": "\"1806477e-2e2c-42e2-bbd3-4684f203ff2a\""
+        },
+        {
             "hash": "\\x6ee17488b964aa7ffa3c2b2610c25982a4c1b5504f9cb2d099a0073bc6958801",
             "value": "\"Implement NOTIFY outbox consumer for git push\""
         },
@@ -193,8 +305,24 @@
             "value": "\"Copy conf/bootloader.toml to conf/bootloader-dev.toml, point at aquameta_dev, different HTTP port (e.g. 8081). Verify both daemons start cleanly.\\nDone when: two daemon processes running, each serving a distinct DB on distinct ports.\""
         },
         {
+            "hash": "\\x07d3f013f57eaa7bf8bb9bf298c88ceab1c4132947200e77d19ab4f285825803",
+            "value": "\"2026-06-08T00:01:33.007282+00:00\""
+        },
+        {
+            "hash": "\\x575ac1a296372cf032d597b4e99025ec6a5f562ebdc732b48bb8eeca44cde629",
+            "value": "\"7082cbee-37e7-4f34-b574-8b9352889583\""
+        },
+        {
             "hash": "\\x182f80bb9a29aa8352348795216eaa5076bbd750278dde8fcda92ad00a0ba200",
             "value": "\"Configure second daemon instance\""
+        },
+        {
+            "hash": "\\x5ac881fd323acae6928b60505f8d61878e8e4e5296e2a877338ef90b63972589",
+            "value": "\"Good scope overall, but two issues need addressing before execution: (1) Step 3 contains a factual error about an existing bundle.commit outbox — this does not exist yet and must be built. (2) Step 4 (import_from_git) needs v1 scoping to snapshot import only; full merge semantics are much larger. Also consider adding git_branch to bundle.repository alongside git_url, or documenting the assumed default branch.\""
+        },
+        {
+            "hash": "\\x84b3b50c5adc279f37b52d4a558c0e2a53329bcec7c936897e318cdffaf4e80b",
+            "value": "\"9c00075b-0cf7-46ce-9dbc-15de03fe34a0\""
         },
         {
             "hash": "\\xd4735e3a265e16eee03f59718b9b5d03019c07d8b6c51f90da3a666eec13ab35",
@@ -210,6 +338,934 @@
         }
     ],
     "commits": [
+        {
+            "id": "d6e44b11-e1b5-43c5-9d4e-8e8d53ed573f",
+            "message": "kimi_code session: plan reviews + finding note",
+            "version": null,
+            "parent_id": "87200ae0-da6d-4cc1-9970-20622cb0c7bb",
+            "jsonb_rows": [
+                {
+                    "pk_values": [
+                        "1d53920d-e49f-4f8a-b16d-84a6ce9cf08c"
+                    ],
+                    "schema_name": "companion",
+                    "relation_name": "plan",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "11c46df8-6fde-4471-93bd-4b33c44511eb"
+                    ],
+                    "schema_name": "companion",
+                    "relation_name": "plan",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "1806477e-2e2c-42e2-bbd3-4684f203ff2a"
+                    ],
+                    "schema_name": "companion",
+                    "relation_name": "plan",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "fedcd130-de9a-4833-abef-9dd00ed57f48"
+                    ],
+                    "schema_name": "companion",
+                    "relation_name": "plan_step",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "9ced0b19-1fe7-4577-b208-97393c6fee3f"
+                    ],
+                    "schema_name": "companion",
+                    "relation_name": "plan_step",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "72856c78-1125-4839-bc05-91e25100db14"
+                    ],
+                    "schema_name": "companion",
+                    "relation_name": "plan_step",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "f4d985c0-dd89-47c8-8704-d401e3f0287c"
+                    ],
+                    "schema_name": "companion",
+                    "relation_name": "plan_step",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "44079e6f-f095-458a-8dd1-4ed94280c5a2"
+                    ],
+                    "schema_name": "companion",
+                    "relation_name": "plan_step",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "ac4fd1cb-ffd0-49d1-9925-8ded708dc595"
+                    ],
+                    "schema_name": "companion",
+                    "relation_name": "plan_step",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "569f21b0-6f74-49bd-9df8-438934232649"
+                    ],
+                    "schema_name": "companion",
+                    "relation_name": "plan_step",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "8a9fb1ab-3112-4ec2-8397-40b259e0f703"
+                    ],
+                    "schema_name": "companion",
+                    "relation_name": "plan_step",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "8eb869ff-9234-44f1-8b56-a7b3f99bf11b"
+                    ],
+                    "schema_name": "companion",
+                    "relation_name": "plan_step",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "d13ebba5-6c40-4910-993c-1afc1ab7a63a"
+                    ],
+                    "schema_name": "companion",
+                    "relation_name": "plan_step",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "b820da21-3346-4deb-a0d5-838420b93b75"
+                    ],
+                    "schema_name": "companion",
+                    "relation_name": "plan_step",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "7082cbee-37e7-4f34-b574-8b9352889583"
+                    ],
+                    "schema_name": "companion",
+                    "relation_name": "plan_review",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "460cc8d8-4695-480f-8999-61db6c1b17bc"
+                    ],
+                    "schema_name": "companion",
+                    "relation_name": "plan_review",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "08d40a95-18d0-4548-8a55-6a46bff9a24b"
+                    ],
+                    "schema_name": "companion",
+                    "relation_name": "plan_review",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "a22547c4-37f2-4252-b4c6-891096dd98fd"
+                    ],
+                    "schema_name": "companion",
+                    "relation_name": "plan_review",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "08152279-c92d-46e5-ac4e-f871c0a023f6"
+                    ],
+                    "schema_name": "companion",
+                    "relation_name": "plan_review",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "857af9fb-52a0-4d56-a2f3-0fa351e609ea"
+                    ],
+                    "schema_name": "companion",
+                    "relation_name": "plan_review",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "91a3d861-cf71-4509-bbf6-f3f71204892a"
+                    ],
+                    "schema_name": "companion",
+                    "relation_name": "note",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                }
+            ],
+            "author_name": "kimi_code",
+            "commit_time": "2026-06-08T00:07:44.318429+00:00",
+            "author_email": "kimi_code@aquameta.local",
+            "jsonb_fields": {
+                "{\"pk_values\": [\"11c46df8-6fde-4471-93bd-4b33c44511eb\"], \"schema_name\": \"companion\", \"relation_name\": \"plan\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\xe87c80ef79ee9512f00320e7ef2a9ca9e38851863a8017e4431e17e6d690c887",
+                    "title": "\\xedd770b99184b5832abc629dec83ebea95c16a417439472f095e4d3abb02fe7d",
+                    "status": "\\xdb0fb2bf5ebc424454c3e11b5ee8bfb43af24a52e561aa49e94143831dc6fd93",
+                    "created_at": "\\x2428ac15e030eba999645fab40a1dcb4460e80c4af13e9694b8655177ffed860",
+                    "updated_at": "\\x2428ac15e030eba999645fab40a1dcb4460e80c4af13e9694b8655177ffed860",
+                    "description": "\\x8c36cc2ade4d370bdb43bff2129679b970a9975350ac552d04363b791b3bc115"
+                },
+                "{\"pk_values\": [\"1806477e-2e2c-42e2-bbd3-4684f203ff2a\"], \"schema_name\": \"companion\", \"relation_name\": \"plan\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\x3872ce00613d0f780644726dd412d7667cb051ed9fa7c38e7f86acf412c95287",
+                    "title": "\\xd4257c964ed927db1549210b687a8c4aa3c3cfd456314ed66cd3f907e944d3e8",
+                    "status": "\\xdb0fb2bf5ebc424454c3e11b5ee8bfb43af24a52e561aa49e94143831dc6fd93",
+                    "created_at": "\\xef1b6975b408925878433e783088544db70c2f757a826db74b626b84f93f459e",
+                    "updated_at": "\\xef1b6975b408925878433e783088544db70c2f757a826db74b626b84f93f459e",
+                    "description": "\\x874aa7de964d6bc6787e25ef3f670a7ed65eabb551b28313246da59896c054cf"
+                },
+                "{\"pk_values\": [\"1d53920d-e49f-4f8a-b16d-84a6ce9cf08c\"], \"schema_name\": \"companion\", \"relation_name\": \"plan\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\xaf8bf0dcbdef8da473f382306f21e5fcc1dce12bf9c7bca1c2d054eadb875dff",
+                    "title": "\\xc6e75bad9a85af851647eb89b66454ed7d0f3a9ace2823afffc476a91ff35af0",
+                    "status": "\\xdb0fb2bf5ebc424454c3e11b5ee8bfb43af24a52e561aa49e94143831dc6fd93",
+                    "created_at": "\\x10fa518a7a8fd1cf0ab10f4be8683e11449428a74ecaec1f25505a85c76f5823",
+                    "updated_at": "\\x10fa518a7a8fd1cf0ab10f4be8683e11449428a74ecaec1f25505a85c76f5823",
+                    "description": "\\x0223a3eead2b681d49d6f80e7d661acdc5cae0731b9323faaebb394d956698d1"
+                },
+                "{\"pk_values\": [\"91a3d861-cf71-4509-bbf6-f3f71204892a\"], \"schema_name\": \"companion\", \"relation_name\": \"note\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\x76993e15abd3a728b9c989b13d69d08ef53da2115d38c0715bbacc0b63475a85",
+                    "body": "\\x4c7595e07ba4d07a49b773f0796eaafa05da353716e205cd47b36f984a2c31d0",
+                    "title": "\\x53883d2f626a07b590239855dbb4cc662f67b0e92bc6951cec3a933b93b89f56",
+                    "topic": "\\xe996ee63bc2d00dfcba6388c8ddeee47d4fbce806e00f97d2e6f15e8e697e6cf",
+                    "updated_at": "\\x5343c4b739141b93efdd3d7bd841aeaf9e5b2ab79260511f3064481125d4625c"
+                },
+                "{\"pk_values\": [\"44079e6f-f095-458a-8dd1-4ed94280c5a2\"], \"schema_name\": \"companion\", \"relation_name\": \"plan_step\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\x3cec7b0b17e3d3430435791555828d0236cf7ab9c0272967edfc2c19224ccc76",
+                    "title": "\\xd30e5f878ea0491932a328340d84e65b0d88a51c6e4b80f525dfd99b14eb21de",
+                    "detail": "\\xba94f35ef99c8a0c445ae6b13acabb35948ac27ea1357693de6bd1d70cd3879e",
+                    "result": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "status": "\\x12adac54ac6f7140109391b670b3cbcd51f083d8f5ee62ce26857c794ed67d36",
+                    "plan_id": "\\xaf8bf0dcbdef8da473f382306f21e5fcc1dce12bf9c7bca1c2d054eadb875dff",
+                    "agent_id": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "position": "\\x6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b",
+                    "claimed_at": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "created_at": "\\x10fa518a7a8fd1cf0ab10f4be8683e11449428a74ecaec1f25505a85c76f5823",
+                    "updated_at": "\\x10fa518a7a8fd1cf0ab10f4be8683e11449428a74ecaec1f25505a85c76f5823",
+                    "experiment_id": "\\xedf87dc4a0543f8a53840ad417377cd03d942f9e32e74575cfc4dcd45049223f"
+                },
+                "{\"pk_values\": [\"569f21b0-6f74-49bd-9df8-438934232649\"], \"schema_name\": \"companion\", \"relation_name\": \"plan_step\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\x8a09eb1af669107c5b570bd0bc16c3a1a9fd657cfc07bef8abea62cbc95dc3a0",
+                    "title": "\\x4f5755776287d8093167f6265d0ef032d51b420dc3b09561d2e3906e26199749",
+                    "detail": "\\x3b0631801e300574f3d9c6f3ad49bf9e82d78e6cc5274b641d54aa6069d0fb90",
+                    "result": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "status": "\\x12adac54ac6f7140109391b670b3cbcd51f083d8f5ee62ce26857c794ed67d36",
+                    "plan_id": "\\xaf8bf0dcbdef8da473f382306f21e5fcc1dce12bf9c7bca1c2d054eadb875dff",
+                    "agent_id": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "position": "\\xef2d127de37b942baad06145e54b0c619a1f22327b2ebbcfbec78f5564afe39d",
+                    "claimed_at": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "created_at": "\\x10fa518a7a8fd1cf0ab10f4be8683e11449428a74ecaec1f25505a85c76f5823",
+                    "updated_at": "\\x10fa518a7a8fd1cf0ab10f4be8683e11449428a74ecaec1f25505a85c76f5823",
+                    "experiment_id": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9"
+                },
+                "{\"pk_values\": [\"72856c78-1125-4839-bc05-91e25100db14\"], \"schema_name\": \"companion\", \"relation_name\": \"plan_step\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\x0ecd683a06afcba74d144be0998c44ebe86b2d6c0b14a391b2d90d80f5eed591",
+                    "title": "\\xdf399d9ae52e8fef9cb76603bdd38c55fe76a42d9e171e89dae578fc02660f62",
+                    "detail": "\\x4bd4d65b8b01e7f903a14aa489118d5c047bdb42100d31ee27951c09cc4577aa",
+                    "result": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "status": "\\x12adac54ac6f7140109391b670b3cbcd51f083d8f5ee62ce26857c794ed67d36",
+                    "plan_id": "\\xe87c80ef79ee9512f00320e7ef2a9ca9e38851863a8017e4431e17e6d690c887",
+                    "agent_id": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "position": "\\x6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b",
+                    "claimed_at": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "created_at": "\\x9318de12c0cfc8dba209c73d4e70f1b16c92b152c734e7035ad26735c639ce7a",
+                    "updated_at": "\\x9318de12c0cfc8dba209c73d4e70f1b16c92b152c734e7035ad26735c639ce7a"
+                },
+                "{\"pk_values\": [\"8a9fb1ab-3112-4ec2-8397-40b259e0f703\"], \"schema_name\": \"companion\", \"relation_name\": \"plan_step\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\x66678a988066630fd94618ee56dfac3da34031245b16e7350eab8e924d3e943a",
+                    "title": "\\xfd89bb8b61ae7c62dd61db9822e3b5e90c9693843e651571f87f1cd891e0b5e1",
+                    "detail": "\\x66c6944a9e496b16f93b615952036918b3881608f72e6979342fd44d41552344",
+                    "result": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "status": "\\x12adac54ac6f7140109391b670b3cbcd51f083d8f5ee62ce26857c794ed67d36",
+                    "plan_id": "\\xe87c80ef79ee9512f00320e7ef2a9ca9e38851863a8017e4431e17e6d690c887",
+                    "agent_id": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "position": "\\xd4735e3a265e16eee03f59718b9b5d03019c07d8b6c51f90da3a666eec13ab35",
+                    "claimed_at": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "created_at": "\\x9318de12c0cfc8dba209c73d4e70f1b16c92b152c734e7035ad26735c639ce7a",
+                    "updated_at": "\\x9318de12c0cfc8dba209c73d4e70f1b16c92b152c734e7035ad26735c639ce7a"
+                },
+                "{\"pk_values\": [\"8eb869ff-9234-44f1-8b56-a7b3f99bf11b\"], \"schema_name\": \"companion\", \"relation_name\": \"plan_step\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\x006d1144ef5345572910542a0a5621dfdec1a3975193550f1239b0184fd0a714",
+                    "title": "\\xf902709475a6835171d079551194d6d45c8b479ba2ece896e4b10348f65bd1c5",
+                    "detail": "\\x47c2b9f137194845de04205d92006ba97280518486c2f1934fb9b5524d0ec47f",
+                    "result": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "status": "\\x12adac54ac6f7140109391b670b3cbcd51f083d8f5ee62ce26857c794ed67d36",
+                    "plan_id": "\\xaf8bf0dcbdef8da473f382306f21e5fcc1dce12bf9c7bca1c2d054eadb875dff",
+                    "agent_id": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "position": "\\x4b227777d4dd1fc61c6f884f48641d02b4d121d3fd328cb08b5531fcacdabf8a",
+                    "claimed_at": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "created_at": "\\x10fa518a7a8fd1cf0ab10f4be8683e11449428a74ecaec1f25505a85c76f5823",
+                    "updated_at": "\\x10fa518a7a8fd1cf0ab10f4be8683e11449428a74ecaec1f25505a85c76f5823",
+                    "experiment_id": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9"
+                },
+                "{\"pk_values\": [\"9ced0b19-1fe7-4577-b208-97393c6fee3f\"], \"schema_name\": \"companion\", \"relation_name\": \"plan_step\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\x6555c188249aff317d5b5ddd2c29b5094369831ca69c729f703a8780b10fa7df",
+                    "title": "\\x182f80bb9a29aa8352348795216eaa5076bbd750278dde8fcda92ad00a0ba200",
+                    "detail": "\\x211df33242e7ee0af53a65edc9af6f4ccb92d1e12babe5412ec1b1c8a6593427",
+                    "result": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "status": "\\x12adac54ac6f7140109391b670b3cbcd51f083d8f5ee62ce26857c794ed67d36",
+                    "plan_id": "\\xe87c80ef79ee9512f00320e7ef2a9ca9e38851863a8017e4431e17e6d690c887",
+                    "agent_id": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "position": "\\x4b227777d4dd1fc61c6f884f48641d02b4d121d3fd328cb08b5531fcacdabf8a",
+                    "claimed_at": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "created_at": "\\x9318de12c0cfc8dba209c73d4e70f1b16c92b152c734e7035ad26735c639ce7a",
+                    "updated_at": "\\x9318de12c0cfc8dba209c73d4e70f1b16c92b152c734e7035ad26735c639ce7a"
+                },
+                "{\"pk_values\": [\"ac4fd1cb-ffd0-49d1-9925-8ded708dc595\"], \"schema_name\": \"companion\", \"relation_name\": \"plan_step\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\x5eae904cdd7bc0f15b545dca0a1122e1f803c26c93ffbf0badc083d36985d4e5",
+                    "title": "\\x0e0b34c1dcb5fb5f68b6e49a99ee03c69e3b8c9afa2d9af6deae8b43e3e6dc95",
+                    "detail": "\\x67cc64aa565f2c4620fcbea599dd7368cf9100336ab205eed31159b30d3407c7",
+                    "result": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "status": "\\x12adac54ac6f7140109391b670b3cbcd51f083d8f5ee62ce26857c794ed67d36",
+                    "plan_id": "\\xaf8bf0dcbdef8da473f382306f21e5fcc1dce12bf9c7bca1c2d054eadb875dff",
+                    "agent_id": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "position": "\\xd4735e3a265e16eee03f59718b9b5d03019c07d8b6c51f90da3a666eec13ab35",
+                    "claimed_at": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "created_at": "\\x10fa518a7a8fd1cf0ab10f4be8683e11449428a74ecaec1f25505a85c76f5823",
+                    "updated_at": "\\x10fa518a7a8fd1cf0ab10f4be8683e11449428a74ecaec1f25505a85c76f5823",
+                    "experiment_id": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9"
+                },
+                "{\"pk_values\": [\"b820da21-3346-4deb-a0d5-838420b93b75\"], \"schema_name\": \"companion\", \"relation_name\": \"plan_step\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\xf507aa0a921b6ad73dd0dec2fdc275ce1dd5a7fc3758ab071f3ae855910d4f11",
+                    "title": "\\x1ca008d680aee38080db8464ff7a90a78ed5830e2d1d5aa599ccb16fe60fa475",
+                    "detail": "\\xe3b631748ac12a8c0446d2a951fcca7e1ecfbf836213eec0bd2f14ea90424a7f",
+                    "result": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "status": "\\x12adac54ac6f7140109391b670b3cbcd51f083d8f5ee62ce26857c794ed67d36",
+                    "plan_id": "\\xe87c80ef79ee9512f00320e7ef2a9ca9e38851863a8017e4431e17e6d690c887",
+                    "agent_id": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "position": "\\x4e07408562bedb8b60ce05c1decfe3ad16b72230967de01f640b7e4729b49fce",
+                    "claimed_at": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "created_at": "\\x9318de12c0cfc8dba209c73d4e70f1b16c92b152c734e7035ad26735c639ce7a",
+                    "updated_at": "\\x9318de12c0cfc8dba209c73d4e70f1b16c92b152c734e7035ad26735c639ce7a"
+                },
+                "{\"pk_values\": [\"d13ebba5-6c40-4910-993c-1afc1ab7a63a\"], \"schema_name\": \"companion\", \"relation_name\": \"plan_step\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\xe8700e3ab1181de3c43709c6b869f97a1187eed905b4a1636d10bb0ddd9f5954",
+                    "title": "\\x8e84bb0edc29c75bfe16176a81821b3c8744c80b4ea31e8a4d048622e5496acb",
+                    "detail": "\\xb6d950d5ab962d4a65d1462adb4db7e806b09e72a9bee70a7cd70f9ac740af7e",
+                    "result": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "status": "\\x12adac54ac6f7140109391b670b3cbcd51f083d8f5ee62ce26857c794ed67d36",
+                    "plan_id": "\\xe87c80ef79ee9512f00320e7ef2a9ca9e38851863a8017e4431e17e6d690c887",
+                    "agent_id": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "position": "\\xef2d127de37b942baad06145e54b0c619a1f22327b2ebbcfbec78f5564afe39d",
+                    "claimed_at": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "created_at": "\\x9318de12c0cfc8dba209c73d4e70f1b16c92b152c734e7035ad26735c639ce7a",
+                    "updated_at": "\\x9318de12c0cfc8dba209c73d4e70f1b16c92b152c734e7035ad26735c639ce7a"
+                },
+                "{\"pk_values\": [\"f4d985c0-dd89-47c8-8704-d401e3f0287c\"], \"schema_name\": \"companion\", \"relation_name\": \"plan_step\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\x99ce6349dc7075ad146011ffe54b511021f42ea9cf0be211695b097da278726c",
+                    "title": "\\x6ee17488b964aa7ffa3c2b2610c25982a4c1b5504f9cb2d099a0073bc6958801",
+                    "detail": "\\x7d2b69818a791d2ecc36ba38f2f4d88160b447f41deddf282b4e859728620204",
+                    "result": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "status": "\\x12adac54ac6f7140109391b670b3cbcd51f083d8f5ee62ce26857c794ed67d36",
+                    "plan_id": "\\xaf8bf0dcbdef8da473f382306f21e5fcc1dce12bf9c7bca1c2d054eadb875dff",
+                    "agent_id": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "position": "\\x4e07408562bedb8b60ce05c1decfe3ad16b72230967de01f640b7e4729b49fce",
+                    "claimed_at": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "created_at": "\\x10fa518a7a8fd1cf0ab10f4be8683e11449428a74ecaec1f25505a85c76f5823",
+                    "updated_at": "\\x10fa518a7a8fd1cf0ab10f4be8683e11449428a74ecaec1f25505a85c76f5823",
+                    "experiment_id": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9"
+                },
+                "{\"pk_values\": [\"fedcd130-de9a-4833-abef-9dd00ed57f48\"], \"schema_name\": \"companion\", \"relation_name\": \"plan_step\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\x67969126b785904c77c20c24fe54a982f44c7f4ebd4e795c228c734e0f512b9a",
+                    "title": "\\xbbaf174fb66b46d00bbbc04e307b76a747a01b8835b7332f17f7ced72638b6cc",
+                    "detail": "\\xd34402e2c0690722072f02885714c2d35fb02dc3d75589687470c3346b579928",
+                    "result": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "status": "\\x12adac54ac6f7140109391b670b3cbcd51f083d8f5ee62ce26857c794ed67d36",
+                    "plan_id": "\\xe87c80ef79ee9512f00320e7ef2a9ca9e38851863a8017e4431e17e6d690c887",
+                    "agent_id": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "position": "\\xe7f6c011776e8db7cd330b54174fd76f7d0216b612387a5ffcfb81e6f0919683",
+                    "claimed_at": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "created_at": "\\x9318de12c0cfc8dba209c73d4e70f1b16c92b152c734e7035ad26735c639ce7a",
+                    "updated_at": "\\x9318de12c0cfc8dba209c73d4e70f1b16c92b152c734e7035ad26735c639ce7a"
+                },
+                "{\"pk_values\": [\"08152279-c92d-46e5-ac4e-f871c0a023f6\"], \"schema_name\": \"companion\", \"relation_name\": \"plan_review\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\xfdbdd871d2e8dddbc72f115b13da2170d8445c7a8cba753d56b203046721ecbd",
+                    "run_id": "\\xd830f4533bf106a6c717a38dbd7017462a0aa74f43852a0c500dd8f69c1805cd",
+                    "outcome": "\\xf827e15e665a22c19ea6ab836884399f58d321382af4baaaff4dfeced030e9a5",
+                    "plan_id": "\\xaf8bf0dcbdef8da473f382306f21e5fcc1dce12bf9c7bca1c2d054eadb875dff",
+                    "created_at": "\\x239b5874d83736dba3f1199d3f78425b73b37878ea86fbedd51f80c62ccaa5c5",
+                    "review_text": "\\x0c6eb602d313d142430ab7c6bac71b7b22b29efaca5e434cb1fa10ce1442fc92",
+                    "reviewer_id": "\\xbc3ba523d8784da46d621fdbdcb095af9a819141277cc1a896cf52a35a75993a",
+                    "plan_step_id": "\\x006d1144ef5345572910542a0a5621dfdec1a3975193550f1239b0184fd0a714"
+                },
+                "{\"pk_values\": [\"08d40a95-18d0-4548-8a55-6a46bff9a24b\"], \"schema_name\": \"companion\", \"relation_name\": \"plan_review\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\x068da2c4432231022ce480e87c52aa9a949088e5f5b8c3db9532ceb03f8c5a71",
+                    "run_id": "\\xd830f4533bf106a6c717a38dbd7017462a0aa74f43852a0c500dd8f69c1805cd",
+                    "outcome": "\\xf827e15e665a22c19ea6ab836884399f58d321382af4baaaff4dfeced030e9a5",
+                    "plan_id": "\\xaf8bf0dcbdef8da473f382306f21e5fcc1dce12bf9c7bca1c2d054eadb875dff",
+                    "created_at": "\\xabf8aaae85e873d9dadf7999187017b2e4f8893dae6f6a0a26ba7e543802d237",
+                    "review_text": "\\x5ac881fd323acae6928b60505f8d61878e8e4e5296e2a877338ef90b63972589",
+                    "reviewer_id": "\\xbc3ba523d8784da46d621fdbdcb095af9a819141277cc1a896cf52a35a75993a",
+                    "plan_step_id": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9"
+                },
+                "{\"pk_values\": [\"460cc8d8-4695-480f-8999-61db6c1b17bc\"], \"schema_name\": \"companion\", \"relation_name\": \"plan_review\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\x6b633ac5be6932b18d65f2152e1b0e06ee93ee0b209992dc547f12a8b544c262",
+                    "run_id": "\\xd830f4533bf106a6c717a38dbd7017462a0aa74f43852a0c500dd8f69c1805cd",
+                    "outcome": "\\xf827e15e665a22c19ea6ab836884399f58d321382af4baaaff4dfeced030e9a5",
+                    "plan_id": "\\xe87c80ef79ee9512f00320e7ef2a9ca9e38851863a8017e4431e17e6d690c887",
+                    "created_at": "\\x07d3f013f57eaa7bf8bb9bf298c88ceab1c4132947200e77d19ab4f285825803",
+                    "review_text": "\\xb2026a3362bc2bc9d14644f0571a811e0c5f568c5ada9b1cc306415b050c0b65",
+                    "reviewer_id": "\\xbc3ba523d8784da46d621fdbdcb095af9a819141277cc1a896cf52a35a75993a",
+                    "plan_step_id": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9"
+                },
+                "{\"pk_values\": [\"7082cbee-37e7-4f34-b574-8b9352889583\"], \"schema_name\": \"companion\", \"relation_name\": \"plan_review\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\x575ac1a296372cf032d597b4e99025ec6a5f562ebdc732b48bb8eeca44cde629",
+                    "run_id": "\\x84b3b50c5adc279f37b52d4a558c0e2a53329bcec7c936897e318cdffaf4e80b",
+                    "outcome": "\\xf827e15e665a22c19ea6ab836884399f58d321382af4baaaff4dfeced030e9a5",
+                    "plan_id": "\\x3872ce00613d0f780644726dd412d7667cb051ed9fa7c38e7f86acf412c95287",
+                    "created_at": "\\xef1b6975b408925878433e783088544db70c2f757a826db74b626b84f93f459e",
+                    "review_text": "\\xeaffc78fb85b6f7767bdc364dcaf4113325d8dc0652cc785680b0237ef794335",
+                    "reviewer_id": "\\x55edf5e350ef6a814fd5d146fbe1bba0342686d316a17fa3173709d9d4103bb6",
+                    "plan_step_id": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9"
+                },
+                "{\"pk_values\": [\"857af9fb-52a0-4d56-a2f3-0fa351e609ea\"], \"schema_name\": \"companion\", \"relation_name\": \"plan_review\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\xd198bfb812c9e9809c07fbb9c337c562af6e3173105ad5c9ec32a1976aae03be",
+                    "run_id": "\\xd830f4533bf106a6c717a38dbd7017462a0aa74f43852a0c500dd8f69c1805cd",
+                    "outcome": "\\xf827e15e665a22c19ea6ab836884399f58d321382af4baaaff4dfeced030e9a5",
+                    "plan_id": "\\xe87c80ef79ee9512f00320e7ef2a9ca9e38851863a8017e4431e17e6d690c887",
+                    "created_at": "\\x0ef6fed3fc0d0a39adfe456df1c7e49445199d22143ecb10066632097df158c4",
+                    "review_text": "\\x1850a5f1f127f1242c52a9f1763152af05addb73d40f559ca156c1c662b84380",
+                    "reviewer_id": "\\xbc3ba523d8784da46d621fdbdcb095af9a819141277cc1a896cf52a35a75993a",
+                    "plan_step_id": "\\x67969126b785904c77c20c24fe54a982f44c7f4ebd4e795c228c734e0f512b9a"
+                },
+                "{\"pk_values\": [\"a22547c4-37f2-4252-b4c6-891096dd98fd\"], \"schema_name\": \"companion\", \"relation_name\": \"plan_review\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\xefacd32255dc8b951484bd0d8a544cc1d5c7c8c06047b5bf9183d310af808ff5",
+                    "run_id": "\\xd830f4533bf106a6c717a38dbd7017462a0aa74f43852a0c500dd8f69c1805cd",
+                    "outcome": "\\x7b92de7d08814ff2863dbd0239cdcb3cd107364ebf588b5d95693527f066f106",
+                    "plan_id": "\\xaf8bf0dcbdef8da473f382306f21e5fcc1dce12bf9c7bca1c2d054eadb875dff",
+                    "created_at": "\\xd0ab2ea6acf26dad2d146ce324a119cffd7f43d29ef69fcb2a9aa069554f33d7",
+                    "review_text": "\\x9900c5c3cbf780f100062a1fc517c053b35e6b1468edfd6b38f64285edee3f49",
+                    "reviewer_id": "\\xbc3ba523d8784da46d621fdbdcb095af9a819141277cc1a896cf52a35a75993a",
+                    "plan_step_id": "\\x99ce6349dc7075ad146011ffe54b511021f42ea9cf0be211695b097da278726c"
+                }
+            },
+            "repository_id": "4d7d5909-3249-4c6f-abb2-7490a030b86a",
+            "merge_parent_id": null
+        },
+        {
+            "id": "b158e5a1-5258-4d94-9d98-e54ee6177948",
+            "message": "reorder: tighten scope constraints to step 1 (per Kimi review)",
+            "version": null,
+            "parent_id": "d6e44b11-e1b5-43c5-9d4e-8e8d53ed573f",
+            "jsonb_rows": [
+                {
+                    "pk_values": [
+                        "1d53920d-e49f-4f8a-b16d-84a6ce9cf08c"
+                    ],
+                    "schema_name": "companion",
+                    "relation_name": "plan",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "11c46df8-6fde-4471-93bd-4b33c44511eb"
+                    ],
+                    "schema_name": "companion",
+                    "relation_name": "plan",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "1806477e-2e2c-42e2-bbd3-4684f203ff2a"
+                    ],
+                    "schema_name": "companion",
+                    "relation_name": "plan",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "fedcd130-de9a-4833-abef-9dd00ed57f48"
+                    ],
+                    "schema_name": "companion",
+                    "relation_name": "plan_step",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "9ced0b19-1fe7-4577-b208-97393c6fee3f"
+                    ],
+                    "schema_name": "companion",
+                    "relation_name": "plan_step",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "72856c78-1125-4839-bc05-91e25100db14"
+                    ],
+                    "schema_name": "companion",
+                    "relation_name": "plan_step",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "f4d985c0-dd89-47c8-8704-d401e3f0287c"
+                    ],
+                    "schema_name": "companion",
+                    "relation_name": "plan_step",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "44079e6f-f095-458a-8dd1-4ed94280c5a2"
+                    ],
+                    "schema_name": "companion",
+                    "relation_name": "plan_step",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "ac4fd1cb-ffd0-49d1-9925-8ded708dc595"
+                    ],
+                    "schema_name": "companion",
+                    "relation_name": "plan_step",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "569f21b0-6f74-49bd-9df8-438934232649"
+                    ],
+                    "schema_name": "companion",
+                    "relation_name": "plan_step",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "8a9fb1ab-3112-4ec2-8397-40b259e0f703"
+                    ],
+                    "schema_name": "companion",
+                    "relation_name": "plan_step",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "8eb869ff-9234-44f1-8b56-a7b3f99bf11b"
+                    ],
+                    "schema_name": "companion",
+                    "relation_name": "plan_step",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "d13ebba5-6c40-4910-993c-1afc1ab7a63a"
+                    ],
+                    "schema_name": "companion",
+                    "relation_name": "plan_step",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "b820da21-3346-4deb-a0d5-838420b93b75"
+                    ],
+                    "schema_name": "companion",
+                    "relation_name": "plan_step",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "7082cbee-37e7-4f34-b574-8b9352889583"
+                    ],
+                    "schema_name": "companion",
+                    "relation_name": "plan_review",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "460cc8d8-4695-480f-8999-61db6c1b17bc"
+                    ],
+                    "schema_name": "companion",
+                    "relation_name": "plan_review",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "08d40a95-18d0-4548-8a55-6a46bff9a24b"
+                    ],
+                    "schema_name": "companion",
+                    "relation_name": "plan_review",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "a22547c4-37f2-4252-b4c6-891096dd98fd"
+                    ],
+                    "schema_name": "companion",
+                    "relation_name": "plan_review",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "08152279-c92d-46e5-ac4e-f871c0a023f6"
+                    ],
+                    "schema_name": "companion",
+                    "relation_name": "plan_review",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "857af9fb-52a0-4d56-a2f3-0fa351e609ea"
+                    ],
+                    "schema_name": "companion",
+                    "relation_name": "plan_review",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "91a3d861-cf71-4509-bbf6-f3f71204892a"
+                    ],
+                    "schema_name": "companion",
+                    "relation_name": "note",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                }
+            ],
+            "author_name": "claude_code",
+            "commit_time": "2026-06-08T02:23:00.499147+00:00",
+            "author_email": "claude@aquameta.org",
+            "jsonb_fields": {
+                "{\"pk_values\": [\"11c46df8-6fde-4471-93bd-4b33c44511eb\"], \"schema_name\": \"companion\", \"relation_name\": \"plan\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\xe87c80ef79ee9512f00320e7ef2a9ca9e38851863a8017e4431e17e6d690c887",
+                    "title": "\\xedd770b99184b5832abc629dec83ebea95c16a417439472f095e4d3abb02fe7d",
+                    "status": "\\xdb0fb2bf5ebc424454c3e11b5ee8bfb43af24a52e561aa49e94143831dc6fd93",
+                    "created_at": "\\x2428ac15e030eba999645fab40a1dcb4460e80c4af13e9694b8655177ffed860",
+                    "updated_at": "\\x2428ac15e030eba999645fab40a1dcb4460e80c4af13e9694b8655177ffed860",
+                    "description": "\\x8c36cc2ade4d370bdb43bff2129679b970a9975350ac552d04363b791b3bc115"
+                },
+                "{\"pk_values\": [\"1806477e-2e2c-42e2-bbd3-4684f203ff2a\"], \"schema_name\": \"companion\", \"relation_name\": \"plan\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\x3872ce00613d0f780644726dd412d7667cb051ed9fa7c38e7f86acf412c95287",
+                    "title": "\\xd4257c964ed927db1549210b687a8c4aa3c3cfd456314ed66cd3f907e944d3e8",
+                    "status": "\\xdb0fb2bf5ebc424454c3e11b5ee8bfb43af24a52e561aa49e94143831dc6fd93",
+                    "created_at": "\\xef1b6975b408925878433e783088544db70c2f757a826db74b626b84f93f459e",
+                    "updated_at": "\\xef1b6975b408925878433e783088544db70c2f757a826db74b626b84f93f459e",
+                    "description": "\\x874aa7de964d6bc6787e25ef3f670a7ed65eabb551b28313246da59896c054cf"
+                },
+                "{\"pk_values\": [\"1d53920d-e49f-4f8a-b16d-84a6ce9cf08c\"], \"schema_name\": \"companion\", \"relation_name\": \"plan\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\xaf8bf0dcbdef8da473f382306f21e5fcc1dce12bf9c7bca1c2d054eadb875dff",
+                    "title": "\\xc6e75bad9a85af851647eb89b66454ed7d0f3a9ace2823afffc476a91ff35af0",
+                    "status": "\\xdb0fb2bf5ebc424454c3e11b5ee8bfb43af24a52e561aa49e94143831dc6fd93",
+                    "created_at": "\\x10fa518a7a8fd1cf0ab10f4be8683e11449428a74ecaec1f25505a85c76f5823",
+                    "updated_at": "\\x10fa518a7a8fd1cf0ab10f4be8683e11449428a74ecaec1f25505a85c76f5823",
+                    "description": "\\x0223a3eead2b681d49d6f80e7d661acdc5cae0731b9323faaebb394d956698d1"
+                },
+                "{\"pk_values\": [\"91a3d861-cf71-4509-bbf6-f3f71204892a\"], \"schema_name\": \"companion\", \"relation_name\": \"note\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\x76993e15abd3a728b9c989b13d69d08ef53da2115d38c0715bbacc0b63475a85",
+                    "body": "\\x4c7595e07ba4d07a49b773f0796eaafa05da353716e205cd47b36f984a2c31d0",
+                    "title": "\\x53883d2f626a07b590239855dbb4cc662f67b0e92bc6951cec3a933b93b89f56",
+                    "topic": "\\xe996ee63bc2d00dfcba6388c8ddeee47d4fbce806e00f97d2e6f15e8e697e6cf",
+                    "updated_at": "\\x5343c4b739141b93efdd3d7bd841aeaf9e5b2ab79260511f3064481125d4625c"
+                },
+                "{\"pk_values\": [\"44079e6f-f095-458a-8dd1-4ed94280c5a2\"], \"schema_name\": \"companion\", \"relation_name\": \"plan_step\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\x3cec7b0b17e3d3430435791555828d0236cf7ab9c0272967edfc2c19224ccc76",
+                    "title": "\\xd30e5f878ea0491932a328340d84e65b0d88a51c6e4b80f525dfd99b14eb21de",
+                    "detail": "\\xba94f35ef99c8a0c445ae6b13acabb35948ac27ea1357693de6bd1d70cd3879e",
+                    "result": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "status": "\\x12adac54ac6f7140109391b670b3cbcd51f083d8f5ee62ce26857c794ed67d36",
+                    "plan_id": "\\xaf8bf0dcbdef8da473f382306f21e5fcc1dce12bf9c7bca1c2d054eadb875dff",
+                    "agent_id": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "position": "\\x6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b",
+                    "claimed_at": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "created_at": "\\x10fa518a7a8fd1cf0ab10f4be8683e11449428a74ecaec1f25505a85c76f5823",
+                    "updated_at": "\\x10fa518a7a8fd1cf0ab10f4be8683e11449428a74ecaec1f25505a85c76f5823",
+                    "experiment_id": "\\xedf87dc4a0543f8a53840ad417377cd03d942f9e32e74575cfc4dcd45049223f"
+                },
+                "{\"pk_values\": [\"569f21b0-6f74-49bd-9df8-438934232649\"], \"schema_name\": \"companion\", \"relation_name\": \"plan_step\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\x8a09eb1af669107c5b570bd0bc16c3a1a9fd657cfc07bef8abea62cbc95dc3a0",
+                    "title": "\\x4f5755776287d8093167f6265d0ef032d51b420dc3b09561d2e3906e26199749",
+                    "detail": "\\x3b0631801e300574f3d9c6f3ad49bf9e82d78e6cc5274b641d54aa6069d0fb90",
+                    "result": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "status": "\\x12adac54ac6f7140109391b670b3cbcd51f083d8f5ee62ce26857c794ed67d36",
+                    "plan_id": "\\xaf8bf0dcbdef8da473f382306f21e5fcc1dce12bf9c7bca1c2d054eadb875dff",
+                    "agent_id": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "position": "\\xef2d127de37b942baad06145e54b0c619a1f22327b2ebbcfbec78f5564afe39d",
+                    "claimed_at": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "created_at": "\\x10fa518a7a8fd1cf0ab10f4be8683e11449428a74ecaec1f25505a85c76f5823",
+                    "updated_at": "\\x10fa518a7a8fd1cf0ab10f4be8683e11449428a74ecaec1f25505a85c76f5823",
+                    "experiment_id": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9"
+                },
+                "{\"pk_values\": [\"72856c78-1125-4839-bc05-91e25100db14\"], \"schema_name\": \"companion\", \"relation_name\": \"plan_step\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\x0ecd683a06afcba74d144be0998c44ebe86b2d6c0b14a391b2d90d80f5eed591",
+                    "title": "\\xdf399d9ae52e8fef9cb76603bdd38c55fe76a42d9e171e89dae578fc02660f62",
+                    "detail": "\\x4bd4d65b8b01e7f903a14aa489118d5c047bdb42100d31ee27951c09cc4577aa",
+                    "result": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "status": "\\x12adac54ac6f7140109391b670b3cbcd51f083d8f5ee62ce26857c794ed67d36",
+                    "plan_id": "\\xe87c80ef79ee9512f00320e7ef2a9ca9e38851863a8017e4431e17e6d690c887",
+                    "agent_id": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "position": "\\x6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b",
+                    "claimed_at": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "created_at": "\\x9318de12c0cfc8dba209c73d4e70f1b16c92b152c734e7035ad26735c639ce7a",
+                    "updated_at": "\\x9318de12c0cfc8dba209c73d4e70f1b16c92b152c734e7035ad26735c639ce7a"
+                },
+                "{\"pk_values\": [\"8a9fb1ab-3112-4ec2-8397-40b259e0f703\"], \"schema_name\": \"companion\", \"relation_name\": \"plan_step\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\x66678a988066630fd94618ee56dfac3da34031245b16e7350eab8e924d3e943a",
+                    "title": "\\xfd89bb8b61ae7c62dd61db9822e3b5e90c9693843e651571f87f1cd891e0b5e1",
+                    "detail": "\\x66c6944a9e496b16f93b615952036918b3881608f72e6979342fd44d41552344",
+                    "result": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "status": "\\x12adac54ac6f7140109391b670b3cbcd51f083d8f5ee62ce26857c794ed67d36",
+                    "plan_id": "\\xe87c80ef79ee9512f00320e7ef2a9ca9e38851863a8017e4431e17e6d690c887",
+                    "agent_id": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "position": "\\xd4735e3a265e16eee03f59718b9b5d03019c07d8b6c51f90da3a666eec13ab35",
+                    "claimed_at": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "created_at": "\\x9318de12c0cfc8dba209c73d4e70f1b16c92b152c734e7035ad26735c639ce7a",
+                    "updated_at": "\\x9318de12c0cfc8dba209c73d4e70f1b16c92b152c734e7035ad26735c639ce7a"
+                },
+                "{\"pk_values\": [\"8eb869ff-9234-44f1-8b56-a7b3f99bf11b\"], \"schema_name\": \"companion\", \"relation_name\": \"plan_step\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\x006d1144ef5345572910542a0a5621dfdec1a3975193550f1239b0184fd0a714",
+                    "title": "\\xf902709475a6835171d079551194d6d45c8b479ba2ece896e4b10348f65bd1c5",
+                    "detail": "\\x47c2b9f137194845de04205d92006ba97280518486c2f1934fb9b5524d0ec47f",
+                    "result": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "status": "\\x12adac54ac6f7140109391b670b3cbcd51f083d8f5ee62ce26857c794ed67d36",
+                    "plan_id": "\\xaf8bf0dcbdef8da473f382306f21e5fcc1dce12bf9c7bca1c2d054eadb875dff",
+                    "agent_id": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "position": "\\x4b227777d4dd1fc61c6f884f48641d02b4d121d3fd328cb08b5531fcacdabf8a",
+                    "claimed_at": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "created_at": "\\x10fa518a7a8fd1cf0ab10f4be8683e11449428a74ecaec1f25505a85c76f5823",
+                    "updated_at": "\\x10fa518a7a8fd1cf0ab10f4be8683e11449428a74ecaec1f25505a85c76f5823",
+                    "experiment_id": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9"
+                },
+                "{\"pk_values\": [\"9ced0b19-1fe7-4577-b208-97393c6fee3f\"], \"schema_name\": \"companion\", \"relation_name\": \"plan_step\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\x6555c188249aff317d5b5ddd2c29b5094369831ca69c729f703a8780b10fa7df",
+                    "title": "\\x182f80bb9a29aa8352348795216eaa5076bbd750278dde8fcda92ad00a0ba200",
+                    "detail": "\\x211df33242e7ee0af53a65edc9af6f4ccb92d1e12babe5412ec1b1c8a6593427",
+                    "result": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "status": "\\x12adac54ac6f7140109391b670b3cbcd51f083d8f5ee62ce26857c794ed67d36",
+                    "plan_id": "\\xe87c80ef79ee9512f00320e7ef2a9ca9e38851863a8017e4431e17e6d690c887",
+                    "agent_id": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "position": "\\x4b227777d4dd1fc61c6f884f48641d02b4d121d3fd328cb08b5531fcacdabf8a",
+                    "claimed_at": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "created_at": "\\x9318de12c0cfc8dba209c73d4e70f1b16c92b152c734e7035ad26735c639ce7a",
+                    "updated_at": "\\x9318de12c0cfc8dba209c73d4e70f1b16c92b152c734e7035ad26735c639ce7a"
+                },
+                "{\"pk_values\": [\"ac4fd1cb-ffd0-49d1-9925-8ded708dc595\"], \"schema_name\": \"companion\", \"relation_name\": \"plan_step\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\x5eae904cdd7bc0f15b545dca0a1122e1f803c26c93ffbf0badc083d36985d4e5",
+                    "title": "\\x0e0b34c1dcb5fb5f68b6e49a99ee03c69e3b8c9afa2d9af6deae8b43e3e6dc95",
+                    "detail": "\\x67cc64aa565f2c4620fcbea599dd7368cf9100336ab205eed31159b30d3407c7",
+                    "result": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "status": "\\x12adac54ac6f7140109391b670b3cbcd51f083d8f5ee62ce26857c794ed67d36",
+                    "plan_id": "\\xaf8bf0dcbdef8da473f382306f21e5fcc1dce12bf9c7bca1c2d054eadb875dff",
+                    "agent_id": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "position": "\\xd4735e3a265e16eee03f59718b9b5d03019c07d8b6c51f90da3a666eec13ab35",
+                    "claimed_at": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "created_at": "\\x10fa518a7a8fd1cf0ab10f4be8683e11449428a74ecaec1f25505a85c76f5823",
+                    "updated_at": "\\x10fa518a7a8fd1cf0ab10f4be8683e11449428a74ecaec1f25505a85c76f5823",
+                    "experiment_id": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9"
+                },
+                "{\"pk_values\": [\"b820da21-3346-4deb-a0d5-838420b93b75\"], \"schema_name\": \"companion\", \"relation_name\": \"plan_step\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\xf507aa0a921b6ad73dd0dec2fdc275ce1dd5a7fc3758ab071f3ae855910d4f11",
+                    "title": "\\x1ca008d680aee38080db8464ff7a90a78ed5830e2d1d5aa599ccb16fe60fa475",
+                    "detail": "\\xe3b631748ac12a8c0446d2a951fcca7e1ecfbf836213eec0bd2f14ea90424a7f",
+                    "result": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "status": "\\x12adac54ac6f7140109391b670b3cbcd51f083d8f5ee62ce26857c794ed67d36",
+                    "plan_id": "\\xe87c80ef79ee9512f00320e7ef2a9ca9e38851863a8017e4431e17e6d690c887",
+                    "agent_id": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "position": "\\x4e07408562bedb8b60ce05c1decfe3ad16b72230967de01f640b7e4729b49fce",
+                    "claimed_at": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "created_at": "\\x9318de12c0cfc8dba209c73d4e70f1b16c92b152c734e7035ad26735c639ce7a",
+                    "updated_at": "\\x9318de12c0cfc8dba209c73d4e70f1b16c92b152c734e7035ad26735c639ce7a"
+                },
+                "{\"pk_values\": [\"d13ebba5-6c40-4910-993c-1afc1ab7a63a\"], \"schema_name\": \"companion\", \"relation_name\": \"plan_step\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\xe8700e3ab1181de3c43709c6b869f97a1187eed905b4a1636d10bb0ddd9f5954",
+                    "title": "\\x8e84bb0edc29c75bfe16176a81821b3c8744c80b4ea31e8a4d048622e5496acb",
+                    "detail": "\\xb6d950d5ab962d4a65d1462adb4db7e806b09e72a9bee70a7cd70f9ac740af7e",
+                    "result": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "status": "\\x12adac54ac6f7140109391b670b3cbcd51f083d8f5ee62ce26857c794ed67d36",
+                    "plan_id": "\\xe87c80ef79ee9512f00320e7ef2a9ca9e38851863a8017e4431e17e6d690c887",
+                    "agent_id": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "position": "\\xef2d127de37b942baad06145e54b0c619a1f22327b2ebbcfbec78f5564afe39d",
+                    "claimed_at": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "created_at": "\\x9318de12c0cfc8dba209c73d4e70f1b16c92b152c734e7035ad26735c639ce7a",
+                    "updated_at": "\\x9318de12c0cfc8dba209c73d4e70f1b16c92b152c734e7035ad26735c639ce7a"
+                },
+                "{\"pk_values\": [\"f4d985c0-dd89-47c8-8704-d401e3f0287c\"], \"schema_name\": \"companion\", \"relation_name\": \"plan_step\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\x99ce6349dc7075ad146011ffe54b511021f42ea9cf0be211695b097da278726c",
+                    "title": "\\x6ee17488b964aa7ffa3c2b2610c25982a4c1b5504f9cb2d099a0073bc6958801",
+                    "detail": "\\x7d2b69818a791d2ecc36ba38f2f4d88160b447f41deddf282b4e859728620204",
+                    "result": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "status": "\\x12adac54ac6f7140109391b670b3cbcd51f083d8f5ee62ce26857c794ed67d36",
+                    "plan_id": "\\xaf8bf0dcbdef8da473f382306f21e5fcc1dce12bf9c7bca1c2d054eadb875dff",
+                    "agent_id": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "position": "\\x4e07408562bedb8b60ce05c1decfe3ad16b72230967de01f640b7e4729b49fce",
+                    "claimed_at": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "created_at": "\\x10fa518a7a8fd1cf0ab10f4be8683e11449428a74ecaec1f25505a85c76f5823",
+                    "updated_at": "\\x10fa518a7a8fd1cf0ab10f4be8683e11449428a74ecaec1f25505a85c76f5823",
+                    "experiment_id": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9"
+                },
+                "{\"pk_values\": [\"fedcd130-de9a-4833-abef-9dd00ed57f48\"], \"schema_name\": \"companion\", \"relation_name\": \"plan_step\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\x67969126b785904c77c20c24fe54a982f44c7f4ebd4e795c228c734e0f512b9a",
+                    "title": "\\xbbaf174fb66b46d00bbbc04e307b76a747a01b8835b7332f17f7ced72638b6cc",
+                    "detail": "\\xd34402e2c0690722072f02885714c2d35fb02dc3d75589687470c3346b579928",
+                    "result": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "status": "\\x12adac54ac6f7140109391b670b3cbcd51f083d8f5ee62ce26857c794ed67d36",
+                    "plan_id": "\\xe87c80ef79ee9512f00320e7ef2a9ca9e38851863a8017e4431e17e6d690c887",
+                    "agent_id": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "position": "\\xe7f6c011776e8db7cd330b54174fd76f7d0216b612387a5ffcfb81e6f0919683",
+                    "claimed_at": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "created_at": "\\x9318de12c0cfc8dba209c73d4e70f1b16c92b152c734e7035ad26735c639ce7a",
+                    "updated_at": "\\x9318de12c0cfc8dba209c73d4e70f1b16c92b152c734e7035ad26735c639ce7a"
+                },
+                "{\"pk_values\": [\"08152279-c92d-46e5-ac4e-f871c0a023f6\"], \"schema_name\": \"companion\", \"relation_name\": \"plan_review\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\xfdbdd871d2e8dddbc72f115b13da2170d8445c7a8cba753d56b203046721ecbd",
+                    "run_id": "\\xd830f4533bf106a6c717a38dbd7017462a0aa74f43852a0c500dd8f69c1805cd",
+                    "outcome": "\\xf827e15e665a22c19ea6ab836884399f58d321382af4baaaff4dfeced030e9a5",
+                    "plan_id": "\\xaf8bf0dcbdef8da473f382306f21e5fcc1dce12bf9c7bca1c2d054eadb875dff",
+                    "created_at": "\\x239b5874d83736dba3f1199d3f78425b73b37878ea86fbedd51f80c62ccaa5c5",
+                    "review_text": "\\x0c6eb602d313d142430ab7c6bac71b7b22b29efaca5e434cb1fa10ce1442fc92",
+                    "reviewer_id": "\\xbc3ba523d8784da46d621fdbdcb095af9a819141277cc1a896cf52a35a75993a",
+                    "plan_step_id": "\\x006d1144ef5345572910542a0a5621dfdec1a3975193550f1239b0184fd0a714"
+                },
+                "{\"pk_values\": [\"08d40a95-18d0-4548-8a55-6a46bff9a24b\"], \"schema_name\": \"companion\", \"relation_name\": \"plan_review\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\x068da2c4432231022ce480e87c52aa9a949088e5f5b8c3db9532ceb03f8c5a71",
+                    "run_id": "\\xd830f4533bf106a6c717a38dbd7017462a0aa74f43852a0c500dd8f69c1805cd",
+                    "outcome": "\\xf827e15e665a22c19ea6ab836884399f58d321382af4baaaff4dfeced030e9a5",
+                    "plan_id": "\\xaf8bf0dcbdef8da473f382306f21e5fcc1dce12bf9c7bca1c2d054eadb875dff",
+                    "created_at": "\\xabf8aaae85e873d9dadf7999187017b2e4f8893dae6f6a0a26ba7e543802d237",
+                    "review_text": "\\x5ac881fd323acae6928b60505f8d61878e8e4e5296e2a877338ef90b63972589",
+                    "reviewer_id": "\\xbc3ba523d8784da46d621fdbdcb095af9a819141277cc1a896cf52a35a75993a",
+                    "plan_step_id": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9"
+                },
+                "{\"pk_values\": [\"460cc8d8-4695-480f-8999-61db6c1b17bc\"], \"schema_name\": \"companion\", \"relation_name\": \"plan_review\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\x6b633ac5be6932b18d65f2152e1b0e06ee93ee0b209992dc547f12a8b544c262",
+                    "run_id": "\\xd830f4533bf106a6c717a38dbd7017462a0aa74f43852a0c500dd8f69c1805cd",
+                    "outcome": "\\xf827e15e665a22c19ea6ab836884399f58d321382af4baaaff4dfeced030e9a5",
+                    "plan_id": "\\xe87c80ef79ee9512f00320e7ef2a9ca9e38851863a8017e4431e17e6d690c887",
+                    "created_at": "\\x07d3f013f57eaa7bf8bb9bf298c88ceab1c4132947200e77d19ab4f285825803",
+                    "review_text": "\\xb2026a3362bc2bc9d14644f0571a811e0c5f568c5ada9b1cc306415b050c0b65",
+                    "reviewer_id": "\\xbc3ba523d8784da46d621fdbdcb095af9a819141277cc1a896cf52a35a75993a",
+                    "plan_step_id": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9"
+                },
+                "{\"pk_values\": [\"7082cbee-37e7-4f34-b574-8b9352889583\"], \"schema_name\": \"companion\", \"relation_name\": \"plan_review\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\x575ac1a296372cf032d597b4e99025ec6a5f562ebdc732b48bb8eeca44cde629",
+                    "run_id": "\\x84b3b50c5adc279f37b52d4a558c0e2a53329bcec7c936897e318cdffaf4e80b",
+                    "outcome": "\\xf827e15e665a22c19ea6ab836884399f58d321382af4baaaff4dfeced030e9a5",
+                    "plan_id": "\\x3872ce00613d0f780644726dd412d7667cb051ed9fa7c38e7f86acf412c95287",
+                    "created_at": "\\xef1b6975b408925878433e783088544db70c2f757a826db74b626b84f93f459e",
+                    "review_text": "\\xeaffc78fb85b6f7767bdc364dcaf4113325d8dc0652cc785680b0237ef794335",
+                    "reviewer_id": "\\x55edf5e350ef6a814fd5d146fbe1bba0342686d316a17fa3173709d9d4103bb6",
+                    "plan_step_id": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9"
+                },
+                "{\"pk_values\": [\"857af9fb-52a0-4d56-a2f3-0fa351e609ea\"], \"schema_name\": \"companion\", \"relation_name\": \"plan_review\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\xd198bfb812c9e9809c07fbb9c337c562af6e3173105ad5c9ec32a1976aae03be",
+                    "run_id": "\\xd830f4533bf106a6c717a38dbd7017462a0aa74f43852a0c500dd8f69c1805cd",
+                    "outcome": "\\xf827e15e665a22c19ea6ab836884399f58d321382af4baaaff4dfeced030e9a5",
+                    "plan_id": "\\xe87c80ef79ee9512f00320e7ef2a9ca9e38851863a8017e4431e17e6d690c887",
+                    "created_at": "\\x0ef6fed3fc0d0a39adfe456df1c7e49445199d22143ecb10066632097df158c4",
+                    "review_text": "\\x1850a5f1f127f1242c52a9f1763152af05addb73d40f559ca156c1c662b84380",
+                    "reviewer_id": "\\xbc3ba523d8784da46d621fdbdcb095af9a819141277cc1a896cf52a35a75993a",
+                    "plan_step_id": "\\x67969126b785904c77c20c24fe54a982f44c7f4ebd4e795c228c734e0f512b9a"
+                },
+                "{\"pk_values\": [\"a22547c4-37f2-4252-b4c6-891096dd98fd\"], \"schema_name\": \"companion\", \"relation_name\": \"plan_review\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\xefacd32255dc8b951484bd0d8a544cc1d5c7c8c06047b5bf9183d310af808ff5",
+                    "run_id": "\\xd830f4533bf106a6c717a38dbd7017462a0aa74f43852a0c500dd8f69c1805cd",
+                    "outcome": "\\x7b92de7d08814ff2863dbd0239cdcb3cd107364ebf588b5d95693527f066f106",
+                    "plan_id": "\\xaf8bf0dcbdef8da473f382306f21e5fcc1dce12bf9c7bca1c2d054eadb875dff",
+                    "created_at": "\\xd0ab2ea6acf26dad2d146ce324a119cffd7f43d29ef69fcb2a9aa069554f33d7",
+                    "review_text": "\\x9900c5c3cbf780f100062a1fc517c053b35e6b1468edfd6b38f64285edee3f49",
+                    "reviewer_id": "\\xbc3ba523d8784da46d621fdbdcb095af9a819141277cc1a896cf52a35a75993a",
+                    "plan_step_id": "\\x99ce6349dc7075ad146011ffe54b511021f42ea9cf0be211695b097da278726c"
+                }
+            },
+            "repository_id": "4d7d5909-3249-4c6f-abb2-7490a030b86a",
+            "merge_parent_id": null
+        },
         {
             "id": "5af5d927-8d9f-4407-97bc-e1961aca4803",
             "message": "initial: workspace separation plan (6 steps)",
@@ -860,11 +1916,358 @@
             },
             "repository_id": "4d7d5909-3249-4c6f-abb2-7490a030b86a",
             "merge_parent_id": null
+        },
+        {
+            "id": "87200ae0-da6d-4cc1-9970-20622cb0c7bb",
+            "message": "review: codex plan schema findings",
+            "version": null,
+            "parent_id": "64e61ebc-1407-471d-a9eb-534331de6856",
+            "jsonb_rows": [
+                {
+                    "pk_values": [
+                        "1d53920d-e49f-4f8a-b16d-84a6ce9cf08c"
+                    ],
+                    "schema_name": "companion",
+                    "relation_name": "plan",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "11c46df8-6fde-4471-93bd-4b33c44511eb"
+                    ],
+                    "schema_name": "companion",
+                    "relation_name": "plan",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "1806477e-2e2c-42e2-bbd3-4684f203ff2a"
+                    ],
+                    "schema_name": "companion",
+                    "relation_name": "plan",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "fedcd130-de9a-4833-abef-9dd00ed57f48"
+                    ],
+                    "schema_name": "companion",
+                    "relation_name": "plan_step",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "9ced0b19-1fe7-4577-b208-97393c6fee3f"
+                    ],
+                    "schema_name": "companion",
+                    "relation_name": "plan_step",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "72856c78-1125-4839-bc05-91e25100db14"
+                    ],
+                    "schema_name": "companion",
+                    "relation_name": "plan_step",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "f4d985c0-dd89-47c8-8704-d401e3f0287c"
+                    ],
+                    "schema_name": "companion",
+                    "relation_name": "plan_step",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "44079e6f-f095-458a-8dd1-4ed94280c5a2"
+                    ],
+                    "schema_name": "companion",
+                    "relation_name": "plan_step",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "ac4fd1cb-ffd0-49d1-9925-8ded708dc595"
+                    ],
+                    "schema_name": "companion",
+                    "relation_name": "plan_step",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "569f21b0-6f74-49bd-9df8-438934232649"
+                    ],
+                    "schema_name": "companion",
+                    "relation_name": "plan_step",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "8a9fb1ab-3112-4ec2-8397-40b259e0f703"
+                    ],
+                    "schema_name": "companion",
+                    "relation_name": "plan_step",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "8eb869ff-9234-44f1-8b56-a7b3f99bf11b"
+                    ],
+                    "schema_name": "companion",
+                    "relation_name": "plan_step",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "d13ebba5-6c40-4910-993c-1afc1ab7a63a"
+                    ],
+                    "schema_name": "companion",
+                    "relation_name": "plan_step",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "b820da21-3346-4deb-a0d5-838420b93b75"
+                    ],
+                    "schema_name": "companion",
+                    "relation_name": "plan_step",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "7082cbee-37e7-4f34-b574-8b9352889583"
+                    ],
+                    "schema_name": "companion",
+                    "relation_name": "plan_review",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                }
+            ],
+            "author_name": "codex",
+            "commit_time": "2026-06-08T00:01:50.05565+00:00",
+            "author_email": "codex@aquameta.org",
+            "jsonb_fields": {
+                "{\"pk_values\": [\"11c46df8-6fde-4471-93bd-4b33c44511eb\"], \"schema_name\": \"companion\", \"relation_name\": \"plan\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\xe87c80ef79ee9512f00320e7ef2a9ca9e38851863a8017e4431e17e6d690c887",
+                    "title": "\\xedd770b99184b5832abc629dec83ebea95c16a417439472f095e4d3abb02fe7d",
+                    "status": "\\xdb0fb2bf5ebc424454c3e11b5ee8bfb43af24a52e561aa49e94143831dc6fd93",
+                    "created_at": "\\x2428ac15e030eba999645fab40a1dcb4460e80c4af13e9694b8655177ffed860",
+                    "updated_at": "\\x2428ac15e030eba999645fab40a1dcb4460e80c4af13e9694b8655177ffed860",
+                    "description": "\\x8c36cc2ade4d370bdb43bff2129679b970a9975350ac552d04363b791b3bc115"
+                },
+                "{\"pk_values\": [\"1806477e-2e2c-42e2-bbd3-4684f203ff2a\"], \"schema_name\": \"companion\", \"relation_name\": \"plan\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\x3872ce00613d0f780644726dd412d7667cb051ed9fa7c38e7f86acf412c95287",
+                    "title": "\\xd4257c964ed927db1549210b687a8c4aa3c3cfd456314ed66cd3f907e944d3e8",
+                    "status": "\\xdb0fb2bf5ebc424454c3e11b5ee8bfb43af24a52e561aa49e94143831dc6fd93",
+                    "created_at": "\\xef1b6975b408925878433e783088544db70c2f757a826db74b626b84f93f459e",
+                    "updated_at": "\\xef1b6975b408925878433e783088544db70c2f757a826db74b626b84f93f459e",
+                    "description": "\\x874aa7de964d6bc6787e25ef3f670a7ed65eabb551b28313246da59896c054cf"
+                },
+                "{\"pk_values\": [\"1d53920d-e49f-4f8a-b16d-84a6ce9cf08c\"], \"schema_name\": \"companion\", \"relation_name\": \"plan\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\xaf8bf0dcbdef8da473f382306f21e5fcc1dce12bf9c7bca1c2d054eadb875dff",
+                    "title": "\\xc6e75bad9a85af851647eb89b66454ed7d0f3a9ace2823afffc476a91ff35af0",
+                    "status": "\\xdb0fb2bf5ebc424454c3e11b5ee8bfb43af24a52e561aa49e94143831dc6fd93",
+                    "created_at": "\\x10fa518a7a8fd1cf0ab10f4be8683e11449428a74ecaec1f25505a85c76f5823",
+                    "updated_at": "\\x10fa518a7a8fd1cf0ab10f4be8683e11449428a74ecaec1f25505a85c76f5823",
+                    "description": "\\x0223a3eead2b681d49d6f80e7d661acdc5cae0731b9323faaebb394d956698d1"
+                },
+                "{\"pk_values\": [\"44079e6f-f095-458a-8dd1-4ed94280c5a2\"], \"schema_name\": \"companion\", \"relation_name\": \"plan_step\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\x3cec7b0b17e3d3430435791555828d0236cf7ab9c0272967edfc2c19224ccc76",
+                    "title": "\\xd30e5f878ea0491932a328340d84e65b0d88a51c6e4b80f525dfd99b14eb21de",
+                    "detail": "\\xba94f35ef99c8a0c445ae6b13acabb35948ac27ea1357693de6bd1d70cd3879e",
+                    "result": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "status": "\\x12adac54ac6f7140109391b670b3cbcd51f083d8f5ee62ce26857c794ed67d36",
+                    "plan_id": "\\xaf8bf0dcbdef8da473f382306f21e5fcc1dce12bf9c7bca1c2d054eadb875dff",
+                    "agent_id": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "position": "\\x6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b",
+                    "claimed_at": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "created_at": "\\x10fa518a7a8fd1cf0ab10f4be8683e11449428a74ecaec1f25505a85c76f5823",
+                    "updated_at": "\\x10fa518a7a8fd1cf0ab10f4be8683e11449428a74ecaec1f25505a85c76f5823",
+                    "experiment_id": "\\xedf87dc4a0543f8a53840ad417377cd03d942f9e32e74575cfc4dcd45049223f"
+                },
+                "{\"pk_values\": [\"569f21b0-6f74-49bd-9df8-438934232649\"], \"schema_name\": \"companion\", \"relation_name\": \"plan_step\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\x8a09eb1af669107c5b570bd0bc16c3a1a9fd657cfc07bef8abea62cbc95dc3a0",
+                    "title": "\\x4f5755776287d8093167f6265d0ef032d51b420dc3b09561d2e3906e26199749",
+                    "detail": "\\x3b0631801e300574f3d9c6f3ad49bf9e82d78e6cc5274b641d54aa6069d0fb90",
+                    "result": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "status": "\\x12adac54ac6f7140109391b670b3cbcd51f083d8f5ee62ce26857c794ed67d36",
+                    "plan_id": "\\xaf8bf0dcbdef8da473f382306f21e5fcc1dce12bf9c7bca1c2d054eadb875dff",
+                    "agent_id": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "position": "\\xef2d127de37b942baad06145e54b0c619a1f22327b2ebbcfbec78f5564afe39d",
+                    "claimed_at": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "created_at": "\\x10fa518a7a8fd1cf0ab10f4be8683e11449428a74ecaec1f25505a85c76f5823",
+                    "updated_at": "\\x10fa518a7a8fd1cf0ab10f4be8683e11449428a74ecaec1f25505a85c76f5823",
+                    "experiment_id": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9"
+                },
+                "{\"pk_values\": [\"72856c78-1125-4839-bc05-91e25100db14\"], \"schema_name\": \"companion\", \"relation_name\": \"plan_step\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\x0ecd683a06afcba74d144be0998c44ebe86b2d6c0b14a391b2d90d80f5eed591",
+                    "title": "\\xdf399d9ae52e8fef9cb76603bdd38c55fe76a42d9e171e89dae578fc02660f62",
+                    "detail": "\\x4bd4d65b8b01e7f903a14aa489118d5c047bdb42100d31ee27951c09cc4577aa",
+                    "result": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "status": "\\x12adac54ac6f7140109391b670b3cbcd51f083d8f5ee62ce26857c794ed67d36",
+                    "plan_id": "\\xe87c80ef79ee9512f00320e7ef2a9ca9e38851863a8017e4431e17e6d690c887",
+                    "agent_id": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "position": "\\x6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b",
+                    "claimed_at": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "created_at": "\\x9318de12c0cfc8dba209c73d4e70f1b16c92b152c734e7035ad26735c639ce7a",
+                    "updated_at": "\\x9318de12c0cfc8dba209c73d4e70f1b16c92b152c734e7035ad26735c639ce7a"
+                },
+                "{\"pk_values\": [\"8a9fb1ab-3112-4ec2-8397-40b259e0f703\"], \"schema_name\": \"companion\", \"relation_name\": \"plan_step\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\x66678a988066630fd94618ee56dfac3da34031245b16e7350eab8e924d3e943a",
+                    "title": "\\xfd89bb8b61ae7c62dd61db9822e3b5e90c9693843e651571f87f1cd891e0b5e1",
+                    "detail": "\\x66c6944a9e496b16f93b615952036918b3881608f72e6979342fd44d41552344",
+                    "result": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "status": "\\x12adac54ac6f7140109391b670b3cbcd51f083d8f5ee62ce26857c794ed67d36",
+                    "plan_id": "\\xe87c80ef79ee9512f00320e7ef2a9ca9e38851863a8017e4431e17e6d690c887",
+                    "agent_id": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "position": "\\xd4735e3a265e16eee03f59718b9b5d03019c07d8b6c51f90da3a666eec13ab35",
+                    "claimed_at": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "created_at": "\\x9318de12c0cfc8dba209c73d4e70f1b16c92b152c734e7035ad26735c639ce7a",
+                    "updated_at": "\\x9318de12c0cfc8dba209c73d4e70f1b16c92b152c734e7035ad26735c639ce7a"
+                },
+                "{\"pk_values\": [\"8eb869ff-9234-44f1-8b56-a7b3f99bf11b\"], \"schema_name\": \"companion\", \"relation_name\": \"plan_step\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\x006d1144ef5345572910542a0a5621dfdec1a3975193550f1239b0184fd0a714",
+                    "title": "\\xf902709475a6835171d079551194d6d45c8b479ba2ece896e4b10348f65bd1c5",
+                    "detail": "\\x47c2b9f137194845de04205d92006ba97280518486c2f1934fb9b5524d0ec47f",
+                    "result": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "status": "\\x12adac54ac6f7140109391b670b3cbcd51f083d8f5ee62ce26857c794ed67d36",
+                    "plan_id": "\\xaf8bf0dcbdef8da473f382306f21e5fcc1dce12bf9c7bca1c2d054eadb875dff",
+                    "agent_id": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "position": "\\x4b227777d4dd1fc61c6f884f48641d02b4d121d3fd328cb08b5531fcacdabf8a",
+                    "claimed_at": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "created_at": "\\x10fa518a7a8fd1cf0ab10f4be8683e11449428a74ecaec1f25505a85c76f5823",
+                    "updated_at": "\\x10fa518a7a8fd1cf0ab10f4be8683e11449428a74ecaec1f25505a85c76f5823",
+                    "experiment_id": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9"
+                },
+                "{\"pk_values\": [\"9ced0b19-1fe7-4577-b208-97393c6fee3f\"], \"schema_name\": \"companion\", \"relation_name\": \"plan_step\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\x6555c188249aff317d5b5ddd2c29b5094369831ca69c729f703a8780b10fa7df",
+                    "title": "\\x182f80bb9a29aa8352348795216eaa5076bbd750278dde8fcda92ad00a0ba200",
+                    "detail": "\\x211df33242e7ee0af53a65edc9af6f4ccb92d1e12babe5412ec1b1c8a6593427",
+                    "result": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "status": "\\x12adac54ac6f7140109391b670b3cbcd51f083d8f5ee62ce26857c794ed67d36",
+                    "plan_id": "\\xe87c80ef79ee9512f00320e7ef2a9ca9e38851863a8017e4431e17e6d690c887",
+                    "agent_id": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "position": "\\x4b227777d4dd1fc61c6f884f48641d02b4d121d3fd328cb08b5531fcacdabf8a",
+                    "claimed_at": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "created_at": "\\x9318de12c0cfc8dba209c73d4e70f1b16c92b152c734e7035ad26735c639ce7a",
+                    "updated_at": "\\x9318de12c0cfc8dba209c73d4e70f1b16c92b152c734e7035ad26735c639ce7a"
+                },
+                "{\"pk_values\": [\"ac4fd1cb-ffd0-49d1-9925-8ded708dc595\"], \"schema_name\": \"companion\", \"relation_name\": \"plan_step\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\x5eae904cdd7bc0f15b545dca0a1122e1f803c26c93ffbf0badc083d36985d4e5",
+                    "title": "\\x0e0b34c1dcb5fb5f68b6e49a99ee03c69e3b8c9afa2d9af6deae8b43e3e6dc95",
+                    "detail": "\\x67cc64aa565f2c4620fcbea599dd7368cf9100336ab205eed31159b30d3407c7",
+                    "result": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "status": "\\x12adac54ac6f7140109391b670b3cbcd51f083d8f5ee62ce26857c794ed67d36",
+                    "plan_id": "\\xaf8bf0dcbdef8da473f382306f21e5fcc1dce12bf9c7bca1c2d054eadb875dff",
+                    "agent_id": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "position": "\\xd4735e3a265e16eee03f59718b9b5d03019c07d8b6c51f90da3a666eec13ab35",
+                    "claimed_at": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "created_at": "\\x10fa518a7a8fd1cf0ab10f4be8683e11449428a74ecaec1f25505a85c76f5823",
+                    "updated_at": "\\x10fa518a7a8fd1cf0ab10f4be8683e11449428a74ecaec1f25505a85c76f5823",
+                    "experiment_id": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9"
+                },
+                "{\"pk_values\": [\"b820da21-3346-4deb-a0d5-838420b93b75\"], \"schema_name\": \"companion\", \"relation_name\": \"plan_step\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\xf507aa0a921b6ad73dd0dec2fdc275ce1dd5a7fc3758ab071f3ae855910d4f11",
+                    "title": "\\x1ca008d680aee38080db8464ff7a90a78ed5830e2d1d5aa599ccb16fe60fa475",
+                    "detail": "\\xe3b631748ac12a8c0446d2a951fcca7e1ecfbf836213eec0bd2f14ea90424a7f",
+                    "result": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "status": "\\x12adac54ac6f7140109391b670b3cbcd51f083d8f5ee62ce26857c794ed67d36",
+                    "plan_id": "\\xe87c80ef79ee9512f00320e7ef2a9ca9e38851863a8017e4431e17e6d690c887",
+                    "agent_id": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "position": "\\x4e07408562bedb8b60ce05c1decfe3ad16b72230967de01f640b7e4729b49fce",
+                    "claimed_at": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "created_at": "\\x9318de12c0cfc8dba209c73d4e70f1b16c92b152c734e7035ad26735c639ce7a",
+                    "updated_at": "\\x9318de12c0cfc8dba209c73d4e70f1b16c92b152c734e7035ad26735c639ce7a"
+                },
+                "{\"pk_values\": [\"d13ebba5-6c40-4910-993c-1afc1ab7a63a\"], \"schema_name\": \"companion\", \"relation_name\": \"plan_step\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\xe8700e3ab1181de3c43709c6b869f97a1187eed905b4a1636d10bb0ddd9f5954",
+                    "title": "\\x8e84bb0edc29c75bfe16176a81821b3c8744c80b4ea31e8a4d048622e5496acb",
+                    "detail": "\\xb6d950d5ab962d4a65d1462adb4db7e806b09e72a9bee70a7cd70f9ac740af7e",
+                    "result": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "status": "\\x12adac54ac6f7140109391b670b3cbcd51f083d8f5ee62ce26857c794ed67d36",
+                    "plan_id": "\\xe87c80ef79ee9512f00320e7ef2a9ca9e38851863a8017e4431e17e6d690c887",
+                    "agent_id": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "position": "\\xef2d127de37b942baad06145e54b0c619a1f22327b2ebbcfbec78f5564afe39d",
+                    "claimed_at": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "created_at": "\\x9318de12c0cfc8dba209c73d4e70f1b16c92b152c734e7035ad26735c639ce7a",
+                    "updated_at": "\\x9318de12c0cfc8dba209c73d4e70f1b16c92b152c734e7035ad26735c639ce7a"
+                },
+                "{\"pk_values\": [\"f4d985c0-dd89-47c8-8704-d401e3f0287c\"], \"schema_name\": \"companion\", \"relation_name\": \"plan_step\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\x99ce6349dc7075ad146011ffe54b511021f42ea9cf0be211695b097da278726c",
+                    "title": "\\x6ee17488b964aa7ffa3c2b2610c25982a4c1b5504f9cb2d099a0073bc6958801",
+                    "detail": "\\x7d2b69818a791d2ecc36ba38f2f4d88160b447f41deddf282b4e859728620204",
+                    "result": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "status": "\\x12adac54ac6f7140109391b670b3cbcd51f083d8f5ee62ce26857c794ed67d36",
+                    "plan_id": "\\xaf8bf0dcbdef8da473f382306f21e5fcc1dce12bf9c7bca1c2d054eadb875dff",
+                    "agent_id": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "position": "\\x4e07408562bedb8b60ce05c1decfe3ad16b72230967de01f640b7e4729b49fce",
+                    "claimed_at": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "created_at": "\\x10fa518a7a8fd1cf0ab10f4be8683e11449428a74ecaec1f25505a85c76f5823",
+                    "updated_at": "\\x10fa518a7a8fd1cf0ab10f4be8683e11449428a74ecaec1f25505a85c76f5823",
+                    "experiment_id": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9"
+                },
+                "{\"pk_values\": [\"fedcd130-de9a-4833-abef-9dd00ed57f48\"], \"schema_name\": \"companion\", \"relation_name\": \"plan_step\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\x67969126b785904c77c20c24fe54a982f44c7f4ebd4e795c228c734e0f512b9a",
+                    "title": "\\xbbaf174fb66b46d00bbbc04e307b76a747a01b8835b7332f17f7ced72638b6cc",
+                    "detail": "\\xd34402e2c0690722072f02885714c2d35fb02dc3d75589687470c3346b579928",
+                    "result": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "status": "\\x12adac54ac6f7140109391b670b3cbcd51f083d8f5ee62ce26857c794ed67d36",
+                    "plan_id": "\\xe87c80ef79ee9512f00320e7ef2a9ca9e38851863a8017e4431e17e6d690c887",
+                    "agent_id": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "position": "\\xe7f6c011776e8db7cd330b54174fd76f7d0216b612387a5ffcfb81e6f0919683",
+                    "claimed_at": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "created_at": "\\x9318de12c0cfc8dba209c73d4e70f1b16c92b152c734e7035ad26735c639ce7a",
+                    "updated_at": "\\x9318de12c0cfc8dba209c73d4e70f1b16c92b152c734e7035ad26735c639ce7a"
+                },
+                "{\"pk_values\": [\"7082cbee-37e7-4f34-b574-8b9352889583\"], \"schema_name\": \"companion\", \"relation_name\": \"plan_review\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\x575ac1a296372cf032d597b4e99025ec6a5f562ebdc732b48bb8eeca44cde629",
+                    "run_id": "\\x84b3b50c5adc279f37b52d4a558c0e2a53329bcec7c936897e318cdffaf4e80b",
+                    "outcome": "\\xf827e15e665a22c19ea6ab836884399f58d321382af4baaaff4dfeced030e9a5",
+                    "plan_id": "\\x3872ce00613d0f780644726dd412d7667cb051ed9fa7c38e7f86acf412c95287",
+                    "created_at": "\\xef1b6975b408925878433e783088544db70c2f757a826db74b626b84f93f459e",
+                    "review_text": "\\xeaffc78fb85b6f7767bdc364dcaf4113325d8dc0652cc785680b0237ef794335",
+                    "reviewer_id": "\\x55edf5e350ef6a814fd5d146fbe1bba0342686d316a17fa3173709d9d4103bb6",
+                    "plan_step_id": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9"
+                }
+            },
+            "repository_id": "4d7d5909-3249-4c6f-abb2-7490a030b86a",
+            "merge_parent_id": null
         }
     ],
     "repository": {
         "id": "4d7d5909-3249-4c6f-abb2-7490a030b86a",
         "name": "io.bundle.aquameta.plan",
-        "head_commit_id": "64e61ebc-1407-471d-a9eb-534331de6856"
+        "head_commit_id": "b158e5a1-5258-4d94-9d98-e54ee6177948"
     }
 }

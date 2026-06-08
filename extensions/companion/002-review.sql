@@ -22,7 +22,7 @@ CREATE TABLE companion.plan_review (
     run_id       uuid                 REFERENCES ai.run(id),
     outcome      text        NOT NULL
                              CHECK (outcome IN ('comment','approved','changes_requested','blocked')),
-    review_text  text        NOT NULL,
+    review_text  text        NOT NULL CHECK (review_text <> ''),
     created_at   timestamptz NOT NULL DEFAULT now()
 );
 
@@ -32,7 +32,28 @@ COMMENT ON TABLE companion.plan_review IS
     'Enforcement is by convention: cooperating SQL agents claim via companion.claimable_step.';
 
 COMMENT ON COLUMN companion.plan_review.plan_step_id IS
-    'NULL = plan-level review. Non-null = step-level review. Step must belong to plan_id (by convention).';
+    'NULL = plan-level review. Non-null = step-level review. Step must belong to plan_id (enforced by trigger).';
+
+-- Enforce that plan_step_id belongs to plan_id (cross-table — cannot be a CHECK constraint).
+CREATE OR REPLACE FUNCTION companion.plan_review_step_belongs_to_plan()
+RETURNS trigger LANGUAGE plpgsql AS $$
+BEGIN
+    IF NEW.plan_step_id IS NOT NULL THEN
+        IF NOT EXISTS (
+            SELECT 1 FROM companion.plan_step
+            WHERE id = NEW.plan_step_id AND plan_id = NEW.plan_id
+        ) THEN
+            RAISE EXCEPTION 'plan_review: plan_step_id % does not belong to plan_id %',
+                NEW.plan_step_id, NEW.plan_id;
+        END IF;
+    END IF;
+    RETURN NEW;
+END;
+$$;
+
+CREATE TRIGGER plan_review_step_consistency
+    BEFORE INSERT OR UPDATE ON companion.plan_review
+    FOR EACH ROW EXECUTE FUNCTION companion.plan_review_step_belongs_to_plan();
 
 COMMENT ON COLUMN companion.plan_review.outcome IS
     'comment: informational, no verdict. '

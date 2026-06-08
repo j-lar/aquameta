@@ -17,7 +17,7 @@
 
 CREATE TABLE companion.plan (
     id          uuid        NOT NULL DEFAULT public.uuid_generate_v4() PRIMARY KEY,
-    title       text        NOT NULL,
+    title       text        NOT NULL CHECK (title <> ''),
     description text,
     status      text        NOT NULL DEFAULT 'draft'
                             CHECK (status IN ('draft','active','completed','abandoned')),
@@ -37,8 +37,8 @@ CREATE TRIGGER plan_updated_at
 CREATE TABLE companion.plan_step (
     id          uuid        NOT NULL DEFAULT public.uuid_generate_v4() PRIMARY KEY,
     plan_id     uuid        NOT NULL REFERENCES companion.plan(id) ON DELETE CASCADE,
-    position    integer     NOT NULL,
-    title       text        NOT NULL,
+    position    integer     NOT NULL CHECK (position > 0),
+    title       text        NOT NULL CHECK (title <> ''),
     detail      text,
     status      text        NOT NULL DEFAULT 'pending'
                             CHECK (status IN ('pending','claimed','running','completed','failed','skipped')),
@@ -48,7 +48,9 @@ CREATE TABLE companion.plan_step (
     experiment_id uuid       REFERENCES ai.experiment(id),
     created_at  timestamptz NOT NULL DEFAULT now(),
     updated_at  timestamptz NOT NULL DEFAULT now(),
-    UNIQUE (plan_id, position)
+    UNIQUE (plan_id, position),
+    -- claimed/running steps must have agent_id and claimed_at
+    CHECK (status NOT IN ('claimed','running') OR (agent_id IS NOT NULL AND claimed_at IS NOT NULL))
 );
 
 CREATE TRIGGER plan_step_updated_at
