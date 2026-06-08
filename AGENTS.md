@@ -165,7 +165,38 @@ Common pitfalls:
 
 ---
 
-## Reading the Codebase
+## Agent Scope Constraints
+
+Agents operate in one of two modes. **Know which mode you are in before acting.**
+
+### Bundle / App Work (default mode)
+
+You are working on rows: widgets, resources, companion notes, plans, ai experiments — anything that lives in the DB and travels in a bundle. This is the default for all agent sessions unless you have been explicitly told otherwise.
+
+**Hard constraint: do not write to `extensions/*.sql` or any `*.go` file.**
+
+These files are source-level infrastructure. Editing them requires human authorization that must be stated explicitly in your task instructions. The bundle-first philosophy means the DB rows are the canonical artifact — extension SQL is the install-time DDL that creates the substrate, not the working surface.
+
+If you discover a bug or missing feature in an extension or the Go daemon while doing bundle/app work:
+
+1. Log a `companion.note` with `topic = 'finding'` describing the issue precisely
+2. Open a GitHub issue (or ask a human to) if the finding is actionable
+3. **Stop** — do not attempt to fix it yourself
+
+Do not rationalize an extension edit as "just a small fix." If the fix is needed to unblock your task, surface it and wait. The cost of scope overreach (reverting unauthorized infrastructure changes) is much higher than the cost of a blocked task.
+
+### Source / Infrastructure Work (requires explicit authorization)
+
+You have been told in your task instructions that your scope includes editing `extensions/<name>/*.sql` or Go source files. In this mode:
+
+- Limit changes to the file(s) and function(s) named in the task
+- Do not sweep adjacent files for style or "while I'm here" improvements
+- Do not hot-load changes into the running production DB without noting it
+- Record what you changed and why in a `companion.note` before closing your session
+
+---
+
+
 
 **Start here for orientation:**
 1. `CLAUDE.md` — Claude Code-specific config; also has full architecture map, key files, extension layout
