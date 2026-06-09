@@ -1,18 +1,21 @@
 #!/bin/bash
 
+# Export all bundle repositories to JSON files
+# Uses bundle._get_repository_export() SQL function
+
 database_name=$1
 if [ -z "$database_name" ]; then
   echo "usage: $0 <database_name>"
   exit 1
 fi
 
-../extensions/pg_bundle/export.sh org.aquameta.core.bootloader $database_name > org.aquameta.core.bootloader.json
-../extensions/pg_bundle/export.sh org.aquameta.core.endpoint   $database_name > org.aquameta.core.endpoint.json
-../extensions/pg_bundle/export.sh org.aquameta.core.ide        $database_name > org.aquameta.core.ide.json
-../extensions/pg_bundle/export.sh org.aquameta.core.mimetypes  $database_name > org.aquameta.core.mimetypes.json
-../extensions/pg_bundle/export.sh org.aquameta.core.semantics  $database_name > org.aquameta.core.semantics.json
-../extensions/pg_bundle/export.sh org.aquameta.core.widget     $database_name > org.aquameta.core.widget.json
-../extensions/pg_bundle/export.sh org.aquameta.games.snake     $database_name > org.aquameta.games.snake.json
-../extensions/pg_bundle/export.sh org.aquameta.ui.fsm          $database_name > org.aquameta.ui.fsm.json
-../extensions/pg_bundle/export.sh org.aquameta.ui.layout       $database_name > org.aquameta.ui.layout.json
-../extensions/pg_bundle/export.sh org.aquameta.ui.tags         $database_name > org.aquameta.ui.tags.json
+# Export all repositories using SQL function
+PGPASSWORD=aquameta psql -h localhost -U aquameta -d $database_name -At -c "SET ROLE ai_agent_mistral_vibe; SELECT name FROM bundle.repository ORDER BY name;" | while read repo; do
+    echo "Exporting $repo..."
+    PGPASSWORD=aquameta psql -h localhost -U aquameta -d $database_name -At -c "SET ROLE ai_agent_mistral_vibe; SELECT bundle._get_repository_export(id) FROM bundle.repository WHERE name = '$repo';" > "$repo.json"
+    # Remove any leading non-JSON lines (like "SET" from psql output)
+    sed -i '1{/^SET$/d}' "$repo.json"
+    echo "Exported $repo to $repo.json"
+done
+
+echo "All bundles exported."

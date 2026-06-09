@@ -1,0 +1,894 @@
+{
+    "blobs": [
+        {
+            "hash": "\\xf5ca38f748a1d6eaf726b8a42fb575c3c71f1864a8143301782de13da2d9202b",
+            "value": "20"
+        },
+        {
+            "hash": "\\xc99733b430a1d542f368b0c05c7dd4c40da5a061153f66bbe8b8e801d634a8a3",
+            "value": "\"Companion and Advisor Schemas\""
+        },
+        {
+            "hash": "\\xfe1c1af4a6b4978020c3c5e82164d1dd0122155d576ec23f4cf3df12b7b4f3d8",
+            "value": "\"\\nAquameta's root thesis: the web stack's complexity comes from \\\"files plus syntax\\\" — structure is latent and heterogeneous. The answer is to make everything a database row.\\n\\nThe four equivalent interfaces into the same rows:\\n- psql / SQL direct access\\n- PGFS: a FUSE filesystem at pgfs/ where pgfs/<schema>/<table>/<uuid>/<column> maps to a cell\\n- REST API: GET/POST/PATCH/DELETE on /<schema>/<table>/<id>\\n- Browser-based web IDE: click/type interface rendering widget rows\\n\\nNone is more \\\"real\\\" than the others. The database is canonical; interfaces are views.\\n\\nThe meta extension makes this fully recursive: schema is data. DDL becomes DML.\\n- CREATE TABLE → INSERT INTO meta.table\\n- CREATE COLUMN → INSERT INTO meta.column\\n- CREATE SCHEMA → INSERT INTO meta.schema\\nSystem is self-describing and self-modifying through any interface.\\n\\nPostgreSQL extensions in use:\\n- meta          — writable system catalog; DDL as DML\\n- bundle        — row-level version control (git for DB rows)\\n- endpoint      — HTTP routing, REST API, static resources, templates\\n- widget        — web component rows (HTML + CSS + JS columns)\\n- event         — trigger-based change events via NOTIFY\\n- semantics     — schema decorators, column-to-widget bindings (web-centric; does not yet serve agents well)\\n- filesystem    — SQL access to host filesystem (inverse of PGFS)\\n- documentation — schema-level docs\\n- email         — SMTP + templates\\n- ide           — browser-based IDE rows\\n\""
+        },
+        {
+            "hash": "\\xad57366865126e55649ecb23ae1d48887544976efea46a48eb5d85a6eeb4d306",
+            "value": "100"
+        },
+        {
+            "hash": "\\xc57582aec3e3e99f0f2168b26d83fa2f8e504a47c9b57249a7c97b126f78e35f",
+            "value": "\"54a896ab-7698-46ef-a492-f992ee2eea85\""
+        },
+        {
+            "hash": "\\x52db3b29a335a9d54ce50265a8bc2e06e00a36cf4a364e1c04ded369314cb0c9",
+            "value": "\"9abff1a5-3fd3-4b52-860a-2d152d1e8e7c\""
+        },
+        {
+            "hash": "\\x860ebeba44639cdff391cb94a1c7c1fa5e224a40c1dc04996c43b33d7f6777c2",
+            "value": "\"Conventions\""
+        },
+        {
+            "hash": "\\x5e2d55070b78ad5755b8f9aa4dded0918e2470a4c7ec3443a8e1b2408ef6f2a0",
+            "value": "\"Go Daemon\""
+        },
+        {
+            "hash": "\\xaa1df42145b7415fae15cc81109a61b6513d3a64beb77caf1a248d4f99f5a7c6",
+            "value": "\"2026-06-03T09:35:16.168664+00:00\""
+        },
+        {
+            "hash": "\\x365beca5c14838f88fa8c31991daca2a93e0211074de59f0401df16de52ea9f4",
+            "value": "\"\\nYou are an expert Aquameta advisor. Aquameta is a PostgreSQL-centric web stack where the database, PGFS FUSE mount, browser-based web IDE, and REST API are equivalent interfaces into the same rows. Everything — schema, widgets, HTTP routes, version control, agent state — is a database row. The meta extension makes schema itself data: CREATE TABLE is INSERT INTO meta.table.\\n\\nYou have been given context documents covering the architecture, conventions, extension designs, and active design decisions. Use them to give specific, grounded advice.\\n\\nBe direct. Do not hedge. Flag when a proposed approach violates an established convention or a live design decision. Surface hidden assumptions and compounding risks without waiting to be asked. Lead with mechanism before solution — explain how a system works or fails before proposing a fix. Distinguish correlation from causation explicitly.\\n\\nYou are advising an expert developer building Aquameta itself. Assume high competency. Do not simplify unless asked.\\n\""
+        },
+        {
+            "hash": "\\xd9f19cc834527bc2fd9405219cdc3d2a507efa45329569df65e4c4f4b3dccf82",
+            "value": "\"Bundle System (Row-Level Version Control)\""
+        },
+        {
+            "hash": "\\x30955fd23070377f2801c042cb6df0ca838cd385af88abfabb95e0e64de32348",
+            "value": "\"Widget System\""
+        },
+        {
+            "hash": "\\xd3fea9e6ecbe29b5ed9a276af8cef97b72b43c906eafeb4b9183814940b1a926",
+            "value": "\"414741c2-262d-4a81-b58f-93ac6475ab61\""
+        },
+        {
+            "hash": "\\xc7c019a07b7648644b75ef620023e66ade09a7f4c2c3ea49c5766e183a5e09a4",
+            "value": "\"\\nThis document covers the full end-to-end recipe for building a new widget-based mini-app in Aquameta: from widget row to browser-served page to committed bundle.\\n\\n## The three-part structure\\n\\nEvery new widget app has three DB rows:\\n1. One or more `widget.widget` rows — the component logic\\n2. One `endpoint.resource` row — the HTML shell that boots the widget in a browser\\n3. One `bundle.repository` — version-controls both rows\\n\\n## Step 1: Create the widget row\\n\\nUse dollar-quoting with unique delimiters, write to a .sql file, run with psql -f (never inline in a shell heredoc):\\n\\n```sql\\nINSERT INTO widget.widget (name, html, css, post_js) VALUES (\\n  'my_widget',\\n  $HTML$<div id=\\\"{{= id }}\\\" class=\\\"{{= name }}\\\"></div>$HTML$,\\n  $CSS$.{{= name }} { color: red; }$CSS$,\\n  $JS$var w = $('#' + id); w.text('hello world');$JS$\\n);\\n```\\n\\nOnly `{{= id }}` and `{{= name }}` are available in HTML. All other dynamic content goes in post_js.\\n\\n## Step 2: Create the resource row\\n\\nThe resource is an HTML page that imports widget.js, connects to the DB, imports the bundle namespace, and mounts the root widget:\\n\\n```sql\\nINSERT INTO endpoint.resource (path, mimetype_id, content) VALUES (\\n  '/my_app',\\n  (SELECT id FROM endpoint.mimetype WHERE mimetype = 'text/html'),\\n  $RESOURCE$<!DOCTYPE html>\\n<html lang=\\\"en\\\">\\n  <head>\\n    <script src='/system.js'></script>\\n    <title>My App</title>\\n    <meta http-equiv=\\\"Content-type\\\" content=\\\"text/html; charset=utf-8\\\">\\n    <meta name=\\\"viewport\\\" content=\\\"width=device-width, initial-scale=1\\\">\\n  </head>\\n  <body></body>\\n  <script>\\n    System.import('/widget.js').then(function(widget) {\\n      var db = new AQ.Database('/endpoint/0.3', { evented: 'no' });\\n      window.endpoint = db;\\n      AQ.Widget.import('org.aquameta.apps.my_app', 'a', db);\\n      $('body').append(widget('a:my_widget'));\\n    });\\n  </script>\\n</html>$RESOURCE$\\n);\\n```\\n\\nKey points:\\n- `AQ.Widget.import(bundle_name, alias, db)` — alias is the short prefix used in widget() calls\\n- `widget('alias:widget_name')` — mounts the widget into the DOM\\n- `evented: 'no'` disables WebSocket for simple apps that don't need live updates\\n- `system.js` and `widget.js` are always served from `/` by the Go daemon\\n\\n## Step 3: Create the bundle and track rows\\n\\n```sql\\nSELECT bundle.create_repository('org.aquameta.apps.my_app');\\n\\nSELECT bundle.track_untracked_row(\\n  'org.aquameta.apps.my_app',\\n  meta.row_id('widget', 'widget', ARRAY['id'], ARRAY[id::text])\\n) FROM widget.widget WHERE name = 'my_widget';\\n\\nSELECT bundle.track_untracked_row(\\n  'org.aquameta.apps.my_app',\\n  meta.row_id('endpoint', 'resource', ARRAY['id'], ARRAY[id::text])\\n) FROM endpoint.resource WHERE path = '/my_app';\\n\\nSELECT bundle.stage_tracked_rows('org.aquameta.apps.my_app');\\nSELECT bundle.commit('org.aquameta.apps.my_app', 'initial commit', 'author', 'author@example.com');\\n```\\n\\n## Bundle naming conventions\\n\\n- `org.aquameta.core.*`   — core Aquameta infrastructure (widget, endpoint, ide, etc.)\\n- `org.aquameta.games.*`  — games (snake, magic8ball, etc.)\\n- `org.aquameta.apps.*`   — general applications\\n- `io.bundle.ai.core`     — AI/agent substrate (exception to pattern — legacy name)\\n- `io.bundle.aquameta.advisor` — advisor system\\n\\nNamespace is the bundle name used in AQ.Widget.import. It must match the repository name exactly.\\n\\n## Multi-widget apps\\n\\nFor apps with sub-widgets, track each widget row separately:\\n\\n```sql\\nSELECT bundle.track_untracked_row(\\n  'org.aquameta.apps.my_app',\\n  meta.row_id('widget', 'widget', ARRAY['id'], ARRAY[id::text])\\n) FROM widget.widget WHERE name IN ('my_widget', 'my_sub_widget', 'my_other_widget');\\n```\\n\\nAll widgets in the same bundle share the same namespace alias in AQ.Widget.import.\\n\\n## Verifying a resource is live\\n\\n```bash\\ncurl -s -o /dev/null -w \\\"%{http_code}\\\" http://localhost:4444/my_app\\n# expect 200\\n```\\n\\nThe Go daemon serves resources directly from endpoint.resource rows — no restart needed after INSERT.\\n\""
+        },
+        {
+            "hash": "\\xb4e384861412e4bcbe24a33cf803ee7a3314775527c215afa81b3085af11795f",
+            "value": "\"Endpoint Extension (HTTP Routing)\""
+        },
+        {
+            "hash": "\\x1a6562590ef19d1045d06c4055742d38288e9e6dcd71ccde5cee80f1d5a774eb",
+            "value": "50"
+        },
+        {
+            "hash": "\\x1bb072da62f1ade9a65ddb55f1059196546faa5763c5fc331cdb08c95d374e32",
+            "value": "\"PGFS Patterns and Constraints\""
+        },
+        {
+            "hash": "\\xc82bc116038fba9595c15e19c0ea99fc413c604c521f09c3985916f1b9573d8a",
+            "value": "\"63e0f8da-2509-4de1-bb73-ecf347de3509\""
+        },
+        {
+            "hash": "\\xff5a1ae012afa5d4c889c50ad427aaf545d31a4fac04ffc1c4d03d403ba4250a",
+            "value": "70"
+        },
+        {
+            "hash": "\\xccd09005f7fbbf5322128b20f4716e45127cbe6f3b4a60b2eb825ca9bb629b87",
+            "value": "\"aquameta\""
+        },
+        {
+            "hash": "\\x48449a14a4ff7d79bb7a1b6f3d488eba397c36ef25634c111b49baf362511afc",
+            "value": "80"
+        },
+        {
+            "hash": "\\x21a8ca5cac54f0203ce2a300c9eb0a67814b8e629ea4ef2271fc4ae2279a8f06",
+            "value": "\"\\nKey development conventions:\\n\\nBundle-first: new capabilities go in bundles (SQL/data rows), not in main.go or Go code. The Go daemon is infrastructure. A promotion path exists (Go code if performance/syscall requires it) but bundle is the default.\\n\\nSQL extension layout: extensions/<name>/<NNN>-description.sql loaded in numeric order. .offline suffix disables a file without deleting it.\\n\\nbundle.create_repository() — not bundle.init() (does not exist).\\n\\nDollar-quoting for widget SQL inserts (see Widget System context doc). Write to a .sql file, use psql -f.\\n\\nCOMMENT ON TABLE / COMMENT ON COLUMN for conventions that do not warrant a trigger. Agents and psql users see these.\\n\\nSession continuity: companion bundle (DB rows) is the primary substrate. MEMO.md is a fallback. Do not write new session state to MEMO.md.\\n\\nTrackable nontable relations (views with composite PKs): INSERT INTO bundle.trackable_nontable_relation first, then track that registration row too.\\n\\nDocumentation: documentation.row_doc should point to meta.table or meta.view row, not a fake data row.\\n\\nWhen modifying existing code, preserve the established pattern unless there is a specific reason to diverge — name the reason if diverging.\\n\""
+        },
+        {
+            "hash": "\\x1dd2d2c2c192890034b69f515dde98792d98b514c0656bcc806a6e58a61c8797",
+            "value": "\"claude-opus-4-8\""
+        },
+        {
+            "hash": "\\x8e1a95dc22da1cddc1e29d45c1642b3c3e825ee50f5936c42e29a03d570c0d4f",
+            "value": "\"a7dd5f67-e67e-4fb0-b994-60e5e6335862\""
+        },
+        {
+            "hash": "\\x917d333df99a03b2e12c559cc4d78c28a8affde3154e83af84b8a137efb9340e",
+            "value": "\"AI and Agent Substrate\""
+        },
+        {
+            "hash": "\\x69f59c273b6e669ac32a6dd5e1b2cb63333d8b004f9696447aee2d422ce63763",
+            "value": "90"
+        },
+        {
+            "hash": "\\xe89c7246d8142e7d3d0a4415f8e94c6a0f0a8149a9af0e296e720694f15c8134",
+            "value": "\"2026-06-03T09:07:58.249012+00:00\""
+        },
+        {
+            "hash": "\\x4a769c1bdaa57229e2481ee6886960b399a64d4183bf7006f2fea368c6ebbe98",
+            "value": "\"\\nWidgets are web components stored as rows in widget.widget.\\n\\nColumns: id, name, html, css, pre_js, post_js, common_js, server_js\\n\\nTemplate variables: only {{= id }} and {{= name }} are available in HTML templates. All other dynamic content must be set via JS in post_js after the template renders.\\n\\npost_js parameter scoping: parameters passed to widget() become raw JS variables in post_js scope:\\n  widget('ai:ai_run_summary', { runId: '...', label: 'foo' })\\n  In post_js: runId and label are directly in scope — no destructuring needed.\\n\\npre_js runs before the template and must return an object (default: return {};).\\ncommon_js is shared across instances. server_js runs server-side.\\n\\nDollar-quoting convention for SQL inserts (avoids shell/SQL escaping):\\n  INSERT INTO widget.widget (name, html, css, post_js) VALUES (\\n    'my_widget',\\n    $HTML$<div id=\\\"{{= id }}\\\" class=\\\"{{= name }}\\\"></div>$HTML$,\\n    $CSS$.{{= name }} { color: red; }$CSS$,\\n    $JS$var w = $('#'+id); w.text('hello');$JS$\\n  );\\nWrite to a .sql file and use psql -f — never inline in a shell heredoc.\\n\\nRe-render pattern (stateful widgets):\\n  function render() {\\n      w.empty();\\n      w.append(widget('child:name', { param: val }));\\n  }\\nEvent handlers bound on w itself survive w.empty(). Bind once at init time.\\nChildren communicate up via: w.closest('.parent_widget_name').trigger('event_name', [data])\\n\\nwidget.js / datum.js API:\\n  endpoint.schema('x').view('name')  → AQ.View  (use for views)\\n  endpoint.schema('x').table('name') → AQ.Table\\n  .rows({ order_by: { column: 'col', direction: 'desc' } }) → Promise<AQ.Rowset>\\n  AQ.Rowset: .length, .forEach(fn), .map(fn) — fn receives AQ.Row\\n  row.get('column_name') → value\\n  widget.sync(rowset_or_promise, $container, fn) — fn(row) must return HTML string\\n\""
+        },
+        {
+            "hash": "\\xdcb3379521cba87954e0e1b405359f7ba33fa628bab21294058aa0b050fa407c",
+            "value": "\"\\ncompanion schema — session continuity substrate:\\n  companion.context   — mutable key/value state (one row per key, updated in place)\\n  companion.note      — durable notes by topic (topics: architecture, finding, reference, convention, open_question, skill)\\n  companion.decision  — design decisions with rationale (status: open, decided, revisited)\\n  companion.session_brief — view combining all three for single-query session orientation\\n\\nadvisor schema — pre-loaded expert advisor:\\n  advisor.advisor           — named persona with model + system_prompt\\n  advisor.context_document  — knowledge corpus rows (assembled in sort_order)\\n  advisor.invocation        — every call recorded as a ledger row (with context_snapshot)\\n\\nBoth schemas are bundle-tracked. companion.claude_code.aquameta tracks companion rows. io.bundle.aquameta.advisor tracks advisor rows.\\n\\nTo update advisor knowledge: UPDATE advisor.context_document SET body = '...' WHERE title = '...'; then stage + commit the advisor bundle.\\nTo switch models: UPDATE advisor.advisor SET model = 'claude-opus-4-8' WHERE name = 'aquameta';\\n\""
+        },
+        {
+            "hash": "\\x624b60c58c9d8bfb6ff1886c2fd605d2adeb6ea4da576068201b6c6958ce93f4",
+            "value": "30"
+        },
+        {
+            "hash": "\\x3e13ef1c1aa4ed986e4763cf8d0f5fe94daa411b6845ea4e5e0c03dcd2c6d1e5",
+            "value": "\"944faee9-f1a4-4d58-a5d4-ae01c55af0e3\""
+        },
+        {
+            "hash": "\\x02d20bbd7e394ad5999a4cebabac9619732c343a4cac99470c03e23ba2bdc2bc",
+            "value": "55"
+        },
+        {
+            "hash": "\\x51e53f362892a07f2683cf10c84d3a36e7e23de8b5666f8b96e0692a5bc811e2",
+            "value": "\"ecb8d2c2-2fa6-4103-9f72-1fbae8a6eda9\""
+        },
+        {
+            "hash": "\\x00ecbf38bf618dd2e26b875f8bce4ff782e94123b1a7c04a614975e5441c2c29",
+            "value": "\"Core Architecture and Thesis\""
+        },
+        {
+            "hash": "\\x00da5917aa8fd16059e391479bff53e5d2f2390960f84e1eef5640ffdff3d231",
+            "value": "\"Expert advisor on Aquameta architecture, conventions, and design decisions\""
+        },
+        {
+            "hash": "\\x2ab265a8889bbb6fb8221034f9c443eb5250652464217ece40e9ca75b7df3626",
+            "value": "\"f9339a19-0f78-4917-8ba5-3fad00acacfe\""
+        },
+        {
+            "hash": "\\x517d366433109006d4fa8bb65749f3095c4b7718db46a034988ecacccd523688",
+            "value": "\"606c6721-71ee-463a-ac4b-4a686bb9110c\""
+        },
+        {
+            "hash": "\\x26eaf46137c5de36b0275bedf6f40a38c1f5a428b428d919c718e4ccf4f123fd",
+            "value": "\"\\nThe Go daemon is a thin HTTP server that bridges the browser and PostgreSQL. Version 0.5.0.\\nKey files:\\n- main.go       — entry point; starts embedded postgres or connects to existing; mounts HTTP routes\\n- endpoint.go   — REST API handler; proxies HTTP → SQL endpoint.* functions\\n- resource.go   — static resource/template handler; resolves URL → DB row\\n- websocket.go  — Socket.IO server; bridges browser events ↔ PostgreSQL NOTIFY\\n- config.go     — TOML config struct (conf/bootloader.toml)\\n- pgfs.go       — FUSE filesystem mount (Linux/FreeBSD only)\\n\\nGo dependencies:\\n- github.com/jackc/pgx/v4         — PostgreSQL driver (pgxpool)\\n- github.com/lib/pq               — LISTEN/NOTIFY\\n- github.com/googollee/go-socket.io — WebSocket/Socket.IO\\n- github.com/aquametalabs/embedded-postgres — bundled PostgreSQL process\\n- bazil.org/fuse                  — FUSE filesystem\\n- github.com/BurntSushi/toml      — config parsing\\n\\nNew capabilities go in bundles (SQL/data), not main.go. The Go daemon is infrastructure, not the place for features.\\n\""
+        },
+        {
+            "hash": "\\x7b5ffe4cbdbfe6875c89211518d0e59e053fd1af1061527128a75fb8d4766d98",
+            "value": "\"e855717b-6335-4de5-bb9e-92b439ca825c\""
+        },
+        {
+            "hash": "\\x7f51226955c885cc0e8153e51553038ee34e1ad8742a48c35a6c59e26eef90ec",
+            "value": "\"\\nThe bundle system is row-level version control — git for DB rows.\\n\\nKey tables:\\n- bundle.bundle          — a named bundle (like a git repo)\\n- bundle.commit          — a snapshot, points to a rowset\\n- bundle.blob            — content-addressed store (SHA-256 hash → text value)\\n- bundle.rowset / rowset_row / rowset_row_field — actual row data per commit\\n- bundle.stage_row_added/deleted, stage_field_changed — staged changes\\n\\nKey views: head_commit_row_with_exists, tracked_row, untracked_row, offstage_*\\n\\nWorkflow for new rows:\\n  SELECT bundle.create_repository('org.example.bundle');\\n  SELECT bundle.track_untracked_row('org.example.bundle', meta.row_id(...)) FROM ...;\\n  SELECT bundle.stage_tracked_rows('org.example.bundle');\\n  SELECT bundle.commit('org.example.bundle', 'message', 'author', 'email');\\n\\nbundle.checkout() installs a bundle. bundles/*.json are exported packages (v0.5 format).\\n\\nImportant: rows can be tracked in multiple bundles simultaneously. No unique constraint on row_id across repositories — model is closer to tags than git repos. Proliferate bundles freely.\\n\\nCore bundles: bootloader, endpoint, ide, mimetypes, semantics, widget.\\nApp bundles: games.snake, ui.fsm, ui.layout, ui.tags.\\nAI bundles: io.bundle.ai.core (ai schema + agent substrate).\\n\""
+        },
+        {
+            "hash": "\\x39fa9ec190eee7b6f4dff1100d6343e10918d044c75eac8f9e9a2596173f80c9",
+            "value": "60"
+        },
+        {
+            "hash": "\\x8657f73591a450fb00099d9443a75731c6e1d7a7d89d7db0e3249911c81661f9",
+            "value": "\"\\nThe endpoint extension handles HTTP routing and the REST API.\\n\\nKey tables:\\n- endpoint.resource / resource_binary   — static text/binary content at a URL path\\n- endpoint.template_route               — URL pattern → template rendering\\n- endpoint.mimetype / mimetype_extension — content type registry\\n- endpoint.column_mimetype              — column → mimetype binding for field serving\\n\\nREST API convention: GET/POST/PATCH/DELETE on /<schema>/<table>/<id>\\nExample: PATCH /endpoint/0.3/widget/widget/<uuid> updates a widget row.\\n\\nThe REST API is implemented as SQL functions in endpoint.*. The Go daemon proxies HTTP requests to those functions and returns results.\\n\""
+        },
+        {
+            "hash": "\\x5f59287b65430b3be11e852f4d89a40208a15aae7d06a7fe1f47228893448764",
+            "value": "\"e796ffe9-9e6d-4baf-abd9-199c766f7d73\""
+        },
+        {
+            "hash": "\\x049e0a948e07b9ab5992b60446ef26ba90f89278bcb0c7ebcc498ae088355005",
+            "value": "\"2026-06-03T09:07:58.255442+00:00\""
+        },
+        {
+            "hash": "\\x8f7bda329ac023858e0719a9c73af75ef48dd0e8b5396c20df116b55764a5720",
+            "value": "\"\\nThe ai schema provides the agent substrate. Everything is a row; nothing executes autonomously — the harness does the work, the tables record it.\\n\\nKey tables:\\n- ai.agent           — identity with a corresponding PostgreSQL role (ai_agent_<name>)\\n- ai.capability      — named schema-level permission (schema_name + privilege)\\n- ai.agent_capability — many-to-many: which agents have which capabilities\\n- ai.session         — conversational container (multiple runs per session)\\n- ai.run             — discrete work unit (has intent/goal, status, findings)\\n- ai.message         — individual messages within a run\\n- ai.tool_call       — tool calls made within a run\\n- ai.run_commit      — links runs to bundle commits they produced\\n\\nStatus transitions on ai.run: running → completed|failed|cancelled (one-way by convention; no trigger enforces this — COMMENT ON documents the convention). Retries open a new run, not re-open the old one.\\n\\nTwo-tier agent model:\\n- SQL agent: full read/write/INSERT, LISTEN/NOTIFY, transactions — requires DB driver\\n- PGFS agent: file I/O only, can read columns and update existing rows — cannot INSERT (EPERM on mkdir), cannot atomic-claim, cannot LISTEN\\n\\nPGFS agents suit lightweight participants: monitors, validators, shell scripts, minimal containers. Any process that can open() a file can participate.\\n\\nGrant-coverage gap: agent_capability_insert() runs GRANT ALL ON ALL TABLES IN SCHEMA at grant time. Tables created after the grant was issued are not covered. Fix: ALTER DEFAULT PRIVILEGES IN SCHEMA <s> GRANT ALL ON TABLES TO <role>.\\n\\nProvisioning is always superuser — chicken/egg means CLI harness must have a superuser provisioning step before SET ROLE.\\n\""
+        },
+        {
+            "hash": "\\x0ca00a13553966e20cba916743ea97e39a451e16fc4c802ea1bb4118f9d549c7",
+            "value": "\"\\nPGFS is a FUSE filesystem mounted at pgfs/ in the project root.\\n\\nStructure: pgfs/<schema>/<table>/<uuid>/<column> maps to a single database cell.\\nExample: pgfs/ai/run/<uuid>/status reads/writes the status column of one ai.run row.\\n\\nWrite pattern (shell redirection does not fsync — always use explicit fd):\\n  fd = os.open(path, os.O_WRONLY | os.O_TRUNC)\\n  os.write(fd, value.encode())\\n  os.fsync(fd)\\n  os.close(fd)\\n\\nAtomic claim problem: PGFS column writes are unconditional UPDATE — no compare-and-swap. Two agents reading status=pending then both writing status=running both win. SQL solves this with UPDATE ... WHERE status='pending' predicate. PGFS solution (pending experiment): rename semantics (maildir pattern) — rename(pending/$id → running/$id) is atomic; FUSE rename handler implements as UPDATE WHERE status='pending', returns ENOENT on lost race.\\n\\nPGFS row creation: currently returns EPERM on mkdir inside a table directory. Adding row creation (mkdir → INSERT) is a pending experiment — do not assume it works.\\n\\nPGFS by-name virtual directory (pending experiment): a by-name/ subdirectory exposing rows by their label column (probed: name, title, label, description, then PK). Not yet implemented — do not implement symlink bridges that depend on it.\\n\\ninotify behavior on FUSE mounts is unverified: does inotify fire when a backing row changes via SQL (not via PGFS)? Unknown. Do not assume inotify works for PGFS-only agents.\\n\""
+        },
+        {
+            "hash": "\\x39fb415b433fe919939f27c61d00edd93824fbbdf5cc757ef5aa1ecebea92a91",
+            "value": "\"4f87e9d1-733e-4b3f-9aa4-bafa1aeb8431\""
+        },
+        {
+            "hash": "\\xd59eced1ded07f84c145592f65bdf854358e009c5cd705f5215bf18697fed103",
+            "value": "40"
+        },
+        {
+            "hash": "\\x5a5120d3f575bf9e1cc9a2674797e1dfe92229cf441c17821ce0332616126d8b",
+            "value": "\"Active Design Decisions\""
+        },
+        {
+            "hash": "\\xa0ec35ede46a7160ef384902c2de7cae1eebceb81bec6e5638e3437bc330737f",
+            "value": "\"\\nLive decided choices — do not re-open without surfacing the rationale:\\n\\n1. No trigger on ai.run status transitions.\\n   Decision: Document via COMMENT ON TABLE/COLUMN only.\\n   Rationale: Trigger adds complexity for an edge case only relevant if agent code is buggy. Admin correction of stuck runs should not require workarounds.\\n\\n2. Bundle rows can be dual-tracked.\\n   Decision: A single row can be tracked in multiple bundles simultaneously. Proliferate bundles freely.\\n   Rationale: Empirically verified — no unique constraint on row_id across repositories. Model is closer to tags than git repos.\\n\\n3. Session continuity mechanism.\\n   Decision: companion bundle (DB rows) replaces MEMO.md.\\n   Rationale: MEMO.md approximates DB rows with a file. Aquameta's thesis is everything-as-rows. companion.context/note/decision are structured, queryable, version-controlled, PGFS-accessible.\\n\\n4. PGFS label column discovery.\\n   Decision: Naming convention (probe: name, title, label, description, then PK) as near-term solution.\\n   Rationale: semantics.column requires widget_id (NOT NULL) — cannot register label columns without assigning a display widget. Convention covers 90% of cases with zero schema changes.\\n\\n5. Semantics extension — do not modify without deeper understanding of original intent.\\n   semantics.column requires widget_id (NOT NULL), designed for IDE rendering pipeline, not metadata-only annotation. unique_identifier is JS-only. Agents are a new class of reader the original design did not account for. Extending unique_identifier with column_name is the principled long-term answer but deferred.\\n\\n6. Skills bundle — do not implement symlink bridge to harness filesystem until PGFS by-name virtual dirs land.\\n   Skills as rows (skill.command) is the goal; Claude Code reads .claude/commands/ files. Bridge requires stable, human-readable PGFS paths. UUID symlinks are fragile.\\n\\n7. Experiment scripts: leave as reference/examples. Use conversation for live experiments. ai.experiment is the backlog and log.\\n\""
+        },
+        {
+            "hash": "\\x4a44dc15364204a80fe80e9039455cc1608281820fe2b24f1e5233ade6af1dd5",
+            "value": "10"
+        },
+        {
+            "hash": "\\x3984f54f07d3116a100505d4768ce1b591e6f6c538f4cbf7fddb0ac4d2e13d98",
+            "value": "\"Widget Application Authoring Patterns\""
+        }
+    ],
+    "commits": [
+        {
+            "id": "c8faf163-77cd-4417-85c7-1c8d7905a6d2",
+            "message": "initial advisor: aquameta conventions expert with 10 context documents",
+            "version": null,
+            "parent_id": null,
+            "jsonb_rows": [
+                {
+                    "pk_values": [
+                        "a7dd5f67-e67e-4fb0-b994-60e5e6335862"
+                    ],
+                    "schema_name": "advisor",
+                    "relation_name": "advisor",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "9abff1a5-3fd3-4b52-860a-2d152d1e8e7c"
+                    ],
+                    "schema_name": "advisor",
+                    "relation_name": "context_document",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "e855717b-6335-4de5-bb9e-92b439ca825c"
+                    ],
+                    "schema_name": "advisor",
+                    "relation_name": "context_document",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "606c6721-71ee-463a-ac4b-4a686bb9110c"
+                    ],
+                    "schema_name": "advisor",
+                    "relation_name": "context_document",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "414741c2-262d-4a81-b58f-93ac6475ab61"
+                    ],
+                    "schema_name": "advisor",
+                    "relation_name": "context_document",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "e796ffe9-9e6d-4baf-abd9-199c766f7d73"
+                    ],
+                    "schema_name": "advisor",
+                    "relation_name": "context_document",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "63e0f8da-2509-4de1-bb73-ecf347de3509"
+                    ],
+                    "schema_name": "advisor",
+                    "relation_name": "context_document",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "4f87e9d1-733e-4b3f-9aa4-bafa1aeb8431"
+                    ],
+                    "schema_name": "advisor",
+                    "relation_name": "context_document",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "f9339a19-0f78-4917-8ba5-3fad00acacfe"
+                    ],
+                    "schema_name": "advisor",
+                    "relation_name": "context_document",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "944faee9-f1a4-4d58-a5d4-ae01c55af0e3"
+                    ],
+                    "schema_name": "advisor",
+                    "relation_name": "context_document",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "54a896ab-7698-46ef-a492-f992ee2eea85"
+                    ],
+                    "schema_name": "advisor",
+                    "relation_name": "context_document",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                }
+            ],
+            "author_name": "claude_code",
+            "commit_time": "2026-06-03T09:08:13.680333+00:00",
+            "author_email": "claude@aquameta.org",
+            "jsonb_fields": {
+                "{\"pk_values\": [\"a7dd5f67-e67e-4fb0-b994-60e5e6335862\"], \"schema_name\": \"advisor\", \"relation_name\": \"advisor\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\x8e1a95dc22da1cddc1e29d45c1642b3c3e825ee50f5936c42e29a03d570c0d4f",
+                    "name": "\\xccd09005f7fbbf5322128b20f4716e45127cbe6f3b4a60b2eb825ca9bb629b87",
+                    "model": "\\x1dd2d2c2c192890034b69f515dde98792d98b514c0656bcc806a6e58a61c8797",
+                    "created_at": "\\xe89c7246d8142e7d3d0a4415f8e94c6a0f0a8149a9af0e296e720694f15c8134",
+                    "description": "\\x00da5917aa8fd16059e391479bff53e5d2f2390960f84e1eef5640ffdff3d231",
+                    "system_prompt": "\\x365beca5c14838f88fa8c31991daca2a93e0211074de59f0401df16de52ea9f4"
+                },
+                "{\"pk_values\": [\"414741c2-262d-4a81-b58f-93ac6475ab61\"], \"schema_name\": \"advisor\", \"relation_name\": \"context_document\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\xd3fea9e6ecbe29b5ed9a276af8cef97b72b43c906eafeb4b9183814940b1a926",
+                    "body": "\\x8657f73591a450fb00099d9443a75731c6e1d7a7d89d7db0e3249911c81661f9",
+                    "title": "\\xb4e384861412e4bcbe24a33cf803ee7a3314775527c215afa81b3085af11795f",
+                    "advisor_id": "\\x8e1a95dc22da1cddc1e29d45c1642b3c3e825ee50f5936c42e29a03d570c0d4f",
+                    "sort_order": "\\xd59eced1ded07f84c145592f65bdf854358e009c5cd705f5215bf18697fed103",
+                    "updated_at": "\\x049e0a948e07b9ab5992b60446ef26ba90f89278bcb0c7ebcc498ae088355005"
+                },
+                "{\"pk_values\": [\"4f87e9d1-733e-4b3f-9aa4-bafa1aeb8431\"], \"schema_name\": \"advisor\", \"relation_name\": \"context_document\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\x39fb415b433fe919939f27c61d00edd93824fbbdf5cc757ef5aa1ecebea92a91",
+                    "body": "\\x0ca00a13553966e20cba916743ea97e39a451e16fc4c802ea1bb4118f9d549c7",
+                    "title": "\\x1bb072da62f1ade9a65ddb55f1059196546faa5763c5fc331cdb08c95d374e32",
+                    "advisor_id": "\\x8e1a95dc22da1cddc1e29d45c1642b3c3e825ee50f5936c42e29a03d570c0d4f",
+                    "sort_order": "\\xff5a1ae012afa5d4c889c50ad427aaf545d31a4fac04ffc1c4d03d403ba4250a",
+                    "updated_at": "\\x049e0a948e07b9ab5992b60446ef26ba90f89278bcb0c7ebcc498ae088355005"
+                },
+                "{\"pk_values\": [\"54a896ab-7698-46ef-a492-f992ee2eea85\"], \"schema_name\": \"advisor\", \"relation_name\": \"context_document\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\xc57582aec3e3e99f0f2168b26d83fa2f8e504a47c9b57249a7c97b126f78e35f",
+                    "body": "\\xdcb3379521cba87954e0e1b405359f7ba33fa628bab21294058aa0b050fa407c",
+                    "title": "\\xc99733b430a1d542f368b0c05c7dd4c40da5a061153f66bbe8b8e801d634a8a3",
+                    "advisor_id": "\\x8e1a95dc22da1cddc1e29d45c1642b3c3e825ee50f5936c42e29a03d570c0d4f",
+                    "sort_order": "\\xad57366865126e55649ecb23ae1d48887544976efea46a48eb5d85a6eeb4d306",
+                    "updated_at": "\\x049e0a948e07b9ab5992b60446ef26ba90f89278bcb0c7ebcc498ae088355005"
+                },
+                "{\"pk_values\": [\"606c6721-71ee-463a-ac4b-4a686bb9110c\"], \"schema_name\": \"advisor\", \"relation_name\": \"context_document\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\x517d366433109006d4fa8bb65749f3095c4b7718db46a034988ecacccd523688",
+                    "body": "\\x7f51226955c885cc0e8153e51553038ee34e1ad8742a48c35a6c59e26eef90ec",
+                    "title": "\\xd9f19cc834527bc2fd9405219cdc3d2a507efa45329569df65e4c4f4b3dccf82",
+                    "advisor_id": "\\x8e1a95dc22da1cddc1e29d45c1642b3c3e825ee50f5936c42e29a03d570c0d4f",
+                    "sort_order": "\\x624b60c58c9d8bfb6ff1886c2fd605d2adeb6ea4da576068201b6c6958ce93f4",
+                    "updated_at": "\\x049e0a948e07b9ab5992b60446ef26ba90f89278bcb0c7ebcc498ae088355005"
+                },
+                "{\"pk_values\": [\"63e0f8da-2509-4de1-bb73-ecf347de3509\"], \"schema_name\": \"advisor\", \"relation_name\": \"context_document\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\xc82bc116038fba9595c15e19c0ea99fc413c604c521f09c3985916f1b9573d8a",
+                    "body": "\\x8f7bda329ac023858e0719a9c73af75ef48dd0e8b5396c20df116b55764a5720",
+                    "title": "\\x917d333df99a03b2e12c559cc4d78c28a8affde3154e83af84b8a137efb9340e",
+                    "advisor_id": "\\x8e1a95dc22da1cddc1e29d45c1642b3c3e825ee50f5936c42e29a03d570c0d4f",
+                    "sort_order": "\\x39fa9ec190eee7b6f4dff1100d6343e10918d044c75eac8f9e9a2596173f80c9",
+                    "updated_at": "\\x049e0a948e07b9ab5992b60446ef26ba90f89278bcb0c7ebcc498ae088355005"
+                },
+                "{\"pk_values\": [\"944faee9-f1a4-4d58-a5d4-ae01c55af0e3\"], \"schema_name\": \"advisor\", \"relation_name\": \"context_document\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\x3e13ef1c1aa4ed986e4763cf8d0f5fe94daa411b6845ea4e5e0c03dcd2c6d1e5",
+                    "body": "\\xa0ec35ede46a7160ef384902c2de7cae1eebceb81bec6e5638e3437bc330737f",
+                    "title": "\\x5a5120d3f575bf9e1cc9a2674797e1dfe92229cf441c17821ce0332616126d8b",
+                    "advisor_id": "\\x8e1a95dc22da1cddc1e29d45c1642b3c3e825ee50f5936c42e29a03d570c0d4f",
+                    "sort_order": "\\x69f59c273b6e669ac32a6dd5e1b2cb63333d8b004f9696447aee2d422ce63763",
+                    "updated_at": "\\x049e0a948e07b9ab5992b60446ef26ba90f89278bcb0c7ebcc498ae088355005"
+                },
+                "{\"pk_values\": [\"9abff1a5-3fd3-4b52-860a-2d152d1e8e7c\"], \"schema_name\": \"advisor\", \"relation_name\": \"context_document\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\x52db3b29a335a9d54ce50265a8bc2e06e00a36cf4a364e1c04ded369314cb0c9",
+                    "body": "\\xfe1c1af4a6b4978020c3c5e82164d1dd0122155d576ec23f4cf3df12b7b4f3d8",
+                    "title": "\\x00ecbf38bf618dd2e26b875f8bce4ff782e94123b1a7c04a614975e5441c2c29",
+                    "advisor_id": "\\x8e1a95dc22da1cddc1e29d45c1642b3c3e825ee50f5936c42e29a03d570c0d4f",
+                    "sort_order": "\\x4a44dc15364204a80fe80e9039455cc1608281820fe2b24f1e5233ade6af1dd5",
+                    "updated_at": "\\x049e0a948e07b9ab5992b60446ef26ba90f89278bcb0c7ebcc498ae088355005"
+                },
+                "{\"pk_values\": [\"e796ffe9-9e6d-4baf-abd9-199c766f7d73\"], \"schema_name\": \"advisor\", \"relation_name\": \"context_document\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\x5f59287b65430b3be11e852f4d89a40208a15aae7d06a7fe1f47228893448764",
+                    "body": "\\x4a769c1bdaa57229e2481ee6886960b399a64d4183bf7006f2fea368c6ebbe98",
+                    "title": "\\x30955fd23070377f2801c042cb6df0ca838cd385af88abfabb95e0e64de32348",
+                    "advisor_id": "\\x8e1a95dc22da1cddc1e29d45c1642b3c3e825ee50f5936c42e29a03d570c0d4f",
+                    "sort_order": "\\x1a6562590ef19d1045d06c4055742d38288e9e6dcd71ccde5cee80f1d5a774eb",
+                    "updated_at": "\\x049e0a948e07b9ab5992b60446ef26ba90f89278bcb0c7ebcc498ae088355005"
+                },
+                "{\"pk_values\": [\"e855717b-6335-4de5-bb9e-92b439ca825c\"], \"schema_name\": \"advisor\", \"relation_name\": \"context_document\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\x7b5ffe4cbdbfe6875c89211518d0e59e053fd1af1061527128a75fb8d4766d98",
+                    "body": "\\x26eaf46137c5de36b0275bedf6f40a38c1f5a428b428d919c718e4ccf4f123fd",
+                    "title": "\\x5e2d55070b78ad5755b8f9aa4dded0918e2470a4c7ec3443a8e1b2408ef6f2a0",
+                    "advisor_id": "\\x8e1a95dc22da1cddc1e29d45c1642b3c3e825ee50f5936c42e29a03d570c0d4f",
+                    "sort_order": "\\xf5ca38f748a1d6eaf726b8a42fb575c3c71f1864a8143301782de13da2d9202b",
+                    "updated_at": "\\x049e0a948e07b9ab5992b60446ef26ba90f89278bcb0c7ebcc498ae088355005"
+                },
+                "{\"pk_values\": [\"f9339a19-0f78-4917-8ba5-3fad00acacfe\"], \"schema_name\": \"advisor\", \"relation_name\": \"context_document\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\x2ab265a8889bbb6fb8221034f9c443eb5250652464217ece40e9ca75b7df3626",
+                    "body": "\\x21a8ca5cac54f0203ce2a300c9eb0a67814b8e629ea4ef2271fc4ae2279a8f06",
+                    "title": "\\x860ebeba44639cdff391cb94a1c7c1fa5e224a40c1dc04996c43b33d7f6777c2",
+                    "advisor_id": "\\x8e1a95dc22da1cddc1e29d45c1642b3c3e825ee50f5936c42e29a03d570c0d4f",
+                    "sort_order": "\\x48449a14a4ff7d79bb7a1b6f3d488eba397c36ef25634c111b49baf362511afc",
+                    "updated_at": "\\x049e0a948e07b9ab5992b60446ef26ba90f89278bcb0c7ebcc498ae088355005"
+                }
+            },
+            "repository_id": "bf331198-6e98-4ae5-8958-21e6ce686e41",
+            "merge_parent_id": null
+        },
+        {
+            "id": "3626a334-7f77-486c-8bf5-ac621acb43b8",
+            "message": "document: navigation.label_column, by-name shipped, infra-vs-app axis, tracking-as-membership pattern",
+            "version": null,
+            "parent_id": "5606fa24-69e2-4863-8c0e-0c751d4604a9",
+            "jsonb_rows": [
+                {
+                    "pk_values": [
+                        "a7dd5f67-e67e-4fb0-b994-60e5e6335862"
+                    ],
+                    "schema_name": "advisor",
+                    "relation_name": "advisor",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "9abff1a5-3fd3-4b52-860a-2d152d1e8e7c"
+                    ],
+                    "schema_name": "advisor",
+                    "relation_name": "context_document",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "e855717b-6335-4de5-bb9e-92b439ca825c"
+                    ],
+                    "schema_name": "advisor",
+                    "relation_name": "context_document",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "606c6721-71ee-463a-ac4b-4a686bb9110c"
+                    ],
+                    "schema_name": "advisor",
+                    "relation_name": "context_document",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "414741c2-262d-4a81-b58f-93ac6475ab61"
+                    ],
+                    "schema_name": "advisor",
+                    "relation_name": "context_document",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "e796ffe9-9e6d-4baf-abd9-199c766f7d73"
+                    ],
+                    "schema_name": "advisor",
+                    "relation_name": "context_document",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "63e0f8da-2509-4de1-bb73-ecf347de3509"
+                    ],
+                    "schema_name": "advisor",
+                    "relation_name": "context_document",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "4f87e9d1-733e-4b3f-9aa4-bafa1aeb8431"
+                    ],
+                    "schema_name": "advisor",
+                    "relation_name": "context_document",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "f9339a19-0f78-4917-8ba5-3fad00acacfe"
+                    ],
+                    "schema_name": "advisor",
+                    "relation_name": "context_document",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "944faee9-f1a4-4d58-a5d4-ae01c55af0e3"
+                    ],
+                    "schema_name": "advisor",
+                    "relation_name": "context_document",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "54a896ab-7698-46ef-a492-f992ee2eea85"
+                    ],
+                    "schema_name": "advisor",
+                    "relation_name": "context_document",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "ecb8d2c2-2fa6-4103-9f72-1fbae8a6eda9"
+                    ],
+                    "schema_name": "advisor",
+                    "relation_name": "context_document",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                }
+            ],
+            "author_name": "claude_code",
+            "commit_time": "2026-06-04T00:05:17.772863+00:00",
+            "author_email": "claude@aquameta.org",
+            "jsonb_fields": {
+                "{\"pk_values\": [\"a7dd5f67-e67e-4fb0-b994-60e5e6335862\"], \"schema_name\": \"advisor\", \"relation_name\": \"advisor\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\x8e1a95dc22da1cddc1e29d45c1642b3c3e825ee50f5936c42e29a03d570c0d4f",
+                    "name": "\\xccd09005f7fbbf5322128b20f4716e45127cbe6f3b4a60b2eb825ca9bb629b87",
+                    "model": "\\x1dd2d2c2c192890034b69f515dde98792d98b514c0656bcc806a6e58a61c8797",
+                    "created_at": "\\xe89c7246d8142e7d3d0a4415f8e94c6a0f0a8149a9af0e296e720694f15c8134",
+                    "description": "\\x00da5917aa8fd16059e391479bff53e5d2f2390960f84e1eef5640ffdff3d231",
+                    "system_prompt": "\\x365beca5c14838f88fa8c31991daca2a93e0211074de59f0401df16de52ea9f4"
+                },
+                "{\"pk_values\": [\"414741c2-262d-4a81-b58f-93ac6475ab61\"], \"schema_name\": \"advisor\", \"relation_name\": \"context_document\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\xd3fea9e6ecbe29b5ed9a276af8cef97b72b43c906eafeb4b9183814940b1a926",
+                    "body": "\\x8657f73591a450fb00099d9443a75731c6e1d7a7d89d7db0e3249911c81661f9",
+                    "title": "\\xb4e384861412e4bcbe24a33cf803ee7a3314775527c215afa81b3085af11795f",
+                    "advisor_id": "\\x8e1a95dc22da1cddc1e29d45c1642b3c3e825ee50f5936c42e29a03d570c0d4f",
+                    "sort_order": "\\xd59eced1ded07f84c145592f65bdf854358e009c5cd705f5215bf18697fed103",
+                    "updated_at": "\\x049e0a948e07b9ab5992b60446ef26ba90f89278bcb0c7ebcc498ae088355005"
+                },
+                "{\"pk_values\": [\"4f87e9d1-733e-4b3f-9aa4-bafa1aeb8431\"], \"schema_name\": \"advisor\", \"relation_name\": \"context_document\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\x39fb415b433fe919939f27c61d00edd93824fbbdf5cc757ef5aa1ecebea92a91",
+                    "body": "\\x0ca00a13553966e20cba916743ea97e39a451e16fc4c802ea1bb4118f9d549c7",
+                    "title": "\\x1bb072da62f1ade9a65ddb55f1059196546faa5763c5fc331cdb08c95d374e32",
+                    "advisor_id": "\\x8e1a95dc22da1cddc1e29d45c1642b3c3e825ee50f5936c42e29a03d570c0d4f",
+                    "sort_order": "\\xff5a1ae012afa5d4c889c50ad427aaf545d31a4fac04ffc1c4d03d403ba4250a",
+                    "updated_at": "\\x049e0a948e07b9ab5992b60446ef26ba90f89278bcb0c7ebcc498ae088355005"
+                },
+                "{\"pk_values\": [\"54a896ab-7698-46ef-a492-f992ee2eea85\"], \"schema_name\": \"advisor\", \"relation_name\": \"context_document\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\xc57582aec3e3e99f0f2168b26d83fa2f8e504a47c9b57249a7c97b126f78e35f",
+                    "body": "\\xdcb3379521cba87954e0e1b405359f7ba33fa628bab21294058aa0b050fa407c",
+                    "title": "\\xc99733b430a1d542f368b0c05c7dd4c40da5a061153f66bbe8b8e801d634a8a3",
+                    "advisor_id": "\\x8e1a95dc22da1cddc1e29d45c1642b3c3e825ee50f5936c42e29a03d570c0d4f",
+                    "sort_order": "\\xad57366865126e55649ecb23ae1d48887544976efea46a48eb5d85a6eeb4d306",
+                    "updated_at": "\\x049e0a948e07b9ab5992b60446ef26ba90f89278bcb0c7ebcc498ae088355005"
+                },
+                "{\"pk_values\": [\"606c6721-71ee-463a-ac4b-4a686bb9110c\"], \"schema_name\": \"advisor\", \"relation_name\": \"context_document\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\x517d366433109006d4fa8bb65749f3095c4b7718db46a034988ecacccd523688",
+                    "body": "\\x7f51226955c885cc0e8153e51553038ee34e1ad8742a48c35a6c59e26eef90ec",
+                    "title": "\\xd9f19cc834527bc2fd9405219cdc3d2a507efa45329569df65e4c4f4b3dccf82",
+                    "advisor_id": "\\x8e1a95dc22da1cddc1e29d45c1642b3c3e825ee50f5936c42e29a03d570c0d4f",
+                    "sort_order": "\\x624b60c58c9d8bfb6ff1886c2fd605d2adeb6ea4da576068201b6c6958ce93f4",
+                    "updated_at": "\\x049e0a948e07b9ab5992b60446ef26ba90f89278bcb0c7ebcc498ae088355005"
+                },
+                "{\"pk_values\": [\"63e0f8da-2509-4de1-bb73-ecf347de3509\"], \"schema_name\": \"advisor\", \"relation_name\": \"context_document\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\xc82bc116038fba9595c15e19c0ea99fc413c604c521f09c3985916f1b9573d8a",
+                    "body": "\\x8f7bda329ac023858e0719a9c73af75ef48dd0e8b5396c20df116b55764a5720",
+                    "title": "\\x917d333df99a03b2e12c559cc4d78c28a8affde3154e83af84b8a137efb9340e",
+                    "advisor_id": "\\x8e1a95dc22da1cddc1e29d45c1642b3c3e825ee50f5936c42e29a03d570c0d4f",
+                    "sort_order": "\\x39fa9ec190eee7b6f4dff1100d6343e10918d044c75eac8f9e9a2596173f80c9",
+                    "updated_at": "\\x049e0a948e07b9ab5992b60446ef26ba90f89278bcb0c7ebcc498ae088355005"
+                },
+                "{\"pk_values\": [\"944faee9-f1a4-4d58-a5d4-ae01c55af0e3\"], \"schema_name\": \"advisor\", \"relation_name\": \"context_document\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\x3e13ef1c1aa4ed986e4763cf8d0f5fe94daa411b6845ea4e5e0c03dcd2c6d1e5",
+                    "body": "\\xa0ec35ede46a7160ef384902c2de7cae1eebceb81bec6e5638e3437bc330737f",
+                    "title": "\\x5a5120d3f575bf9e1cc9a2674797e1dfe92229cf441c17821ce0332616126d8b",
+                    "advisor_id": "\\x8e1a95dc22da1cddc1e29d45c1642b3c3e825ee50f5936c42e29a03d570c0d4f",
+                    "sort_order": "\\x69f59c273b6e669ac32a6dd5e1b2cb63333d8b004f9696447aee2d422ce63763",
+                    "updated_at": "\\x049e0a948e07b9ab5992b60446ef26ba90f89278bcb0c7ebcc498ae088355005"
+                },
+                "{\"pk_values\": [\"9abff1a5-3fd3-4b52-860a-2d152d1e8e7c\"], \"schema_name\": \"advisor\", \"relation_name\": \"context_document\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\x52db3b29a335a9d54ce50265a8bc2e06e00a36cf4a364e1c04ded369314cb0c9",
+                    "body": "\\xfe1c1af4a6b4978020c3c5e82164d1dd0122155d576ec23f4cf3df12b7b4f3d8",
+                    "title": "\\x00ecbf38bf618dd2e26b875f8bce4ff782e94123b1a7c04a614975e5441c2c29",
+                    "advisor_id": "\\x8e1a95dc22da1cddc1e29d45c1642b3c3e825ee50f5936c42e29a03d570c0d4f",
+                    "sort_order": "\\x4a44dc15364204a80fe80e9039455cc1608281820fe2b24f1e5233ade6af1dd5",
+                    "updated_at": "\\x049e0a948e07b9ab5992b60446ef26ba90f89278bcb0c7ebcc498ae088355005"
+                },
+                "{\"pk_values\": [\"e796ffe9-9e6d-4baf-abd9-199c766f7d73\"], \"schema_name\": \"advisor\", \"relation_name\": \"context_document\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\x5f59287b65430b3be11e852f4d89a40208a15aae7d06a7fe1f47228893448764",
+                    "body": "\\x4a769c1bdaa57229e2481ee6886960b399a64d4183bf7006f2fea368c6ebbe98",
+                    "title": "\\x30955fd23070377f2801c042cb6df0ca838cd385af88abfabb95e0e64de32348",
+                    "advisor_id": "\\x8e1a95dc22da1cddc1e29d45c1642b3c3e825ee50f5936c42e29a03d570c0d4f",
+                    "sort_order": "\\x1a6562590ef19d1045d06c4055742d38288e9e6dcd71ccde5cee80f1d5a774eb",
+                    "updated_at": "\\x049e0a948e07b9ab5992b60446ef26ba90f89278bcb0c7ebcc498ae088355005"
+                },
+                "{\"pk_values\": [\"e855717b-6335-4de5-bb9e-92b439ca825c\"], \"schema_name\": \"advisor\", \"relation_name\": \"context_document\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\x7b5ffe4cbdbfe6875c89211518d0e59e053fd1af1061527128a75fb8d4766d98",
+                    "body": "\\x26eaf46137c5de36b0275bedf6f40a38c1f5a428b428d919c718e4ccf4f123fd",
+                    "title": "\\x5e2d55070b78ad5755b8f9aa4dded0918e2470a4c7ec3443a8e1b2408ef6f2a0",
+                    "advisor_id": "\\x8e1a95dc22da1cddc1e29d45c1642b3c3e825ee50f5936c42e29a03d570c0d4f",
+                    "sort_order": "\\xf5ca38f748a1d6eaf726b8a42fb575c3c71f1864a8143301782de13da2d9202b",
+                    "updated_at": "\\x049e0a948e07b9ab5992b60446ef26ba90f89278bcb0c7ebcc498ae088355005"
+                },
+                "{\"pk_values\": [\"ecb8d2c2-2fa6-4103-9f72-1fbae8a6eda9\"], \"schema_name\": \"advisor\", \"relation_name\": \"context_document\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\x51e53f362892a07f2683cf10c84d3a36e7e23de8b5666f8b96e0692a5bc811e2",
+                    "body": "\\xc7c019a07b7648644b75ef620023e66ade09a7f4c2c3ea49c5766e183a5e09a4",
+                    "title": "\\x3984f54f07d3116a100505d4768ce1b591e6f6c538f4cbf7fddb0ac4d2e13d98",
+                    "advisor_id": "\\x8e1a95dc22da1cddc1e29d45c1642b3c3e825ee50f5936c42e29a03d570c0d4f",
+                    "sort_order": "\\x02d20bbd7e394ad5999a4cebabac9619732c343a4cac99470c03e23ba2bdc2bc",
+                    "updated_at": "\\xaa1df42145b7415fae15cc81109a61b6513d3a64beb77caf1a248d4f99f5a7c6"
+                },
+                "{\"pk_values\": [\"f9339a19-0f78-4917-8ba5-3fad00acacfe\"], \"schema_name\": \"advisor\", \"relation_name\": \"context_document\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\x2ab265a8889bbb6fb8221034f9c443eb5250652464217ece40e9ca75b7df3626",
+                    "body": "\\x21a8ca5cac54f0203ce2a300c9eb0a67814b8e629ea4ef2271fc4ae2279a8f06",
+                    "title": "\\x860ebeba44639cdff391cb94a1c7c1fa5e224a40c1dc04996c43b33d7f6777c2",
+                    "advisor_id": "\\x8e1a95dc22da1cddc1e29d45c1642b3c3e825ee50f5936c42e29a03d570c0d4f",
+                    "sort_order": "\\x48449a14a4ff7d79bb7a1b6f3d488eba397c36ef25634c111b49baf362511afc",
+                    "updated_at": "\\x049e0a948e07b9ab5992b60446ef26ba90f89278bcb0c7ebcc498ae088355005"
+                }
+            },
+            "repository_id": "bf331198-6e98-4ae5-8958-21e6ce686e41",
+            "merge_parent_id": null
+        },
+        {
+            "id": "5606fa24-69e2-4863-8c0e-0c751d4604a9",
+            "message": "add: Widget Application Authoring Patterns context document",
+            "version": null,
+            "parent_id": "c8faf163-77cd-4417-85c7-1c8d7905a6d2",
+            "jsonb_rows": [
+                {
+                    "pk_values": [
+                        "a7dd5f67-e67e-4fb0-b994-60e5e6335862"
+                    ],
+                    "schema_name": "advisor",
+                    "relation_name": "advisor",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "9abff1a5-3fd3-4b52-860a-2d152d1e8e7c"
+                    ],
+                    "schema_name": "advisor",
+                    "relation_name": "context_document",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "e855717b-6335-4de5-bb9e-92b439ca825c"
+                    ],
+                    "schema_name": "advisor",
+                    "relation_name": "context_document",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "606c6721-71ee-463a-ac4b-4a686bb9110c"
+                    ],
+                    "schema_name": "advisor",
+                    "relation_name": "context_document",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "414741c2-262d-4a81-b58f-93ac6475ab61"
+                    ],
+                    "schema_name": "advisor",
+                    "relation_name": "context_document",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "e796ffe9-9e6d-4baf-abd9-199c766f7d73"
+                    ],
+                    "schema_name": "advisor",
+                    "relation_name": "context_document",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "63e0f8da-2509-4de1-bb73-ecf347de3509"
+                    ],
+                    "schema_name": "advisor",
+                    "relation_name": "context_document",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "4f87e9d1-733e-4b3f-9aa4-bafa1aeb8431"
+                    ],
+                    "schema_name": "advisor",
+                    "relation_name": "context_document",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "f9339a19-0f78-4917-8ba5-3fad00acacfe"
+                    ],
+                    "schema_name": "advisor",
+                    "relation_name": "context_document",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "944faee9-f1a4-4d58-a5d4-ae01c55af0e3"
+                    ],
+                    "schema_name": "advisor",
+                    "relation_name": "context_document",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "54a896ab-7698-46ef-a492-f992ee2eea85"
+                    ],
+                    "schema_name": "advisor",
+                    "relation_name": "context_document",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "ecb8d2c2-2fa6-4103-9f72-1fbae8a6eda9"
+                    ],
+                    "schema_name": "advisor",
+                    "relation_name": "context_document",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                }
+            ],
+            "author_name": "claude_code",
+            "commit_time": "2026-06-03T09:35:20.339393+00:00",
+            "author_email": "claude@aquameta.org",
+            "jsonb_fields": {
+                "{\"pk_values\": [\"a7dd5f67-e67e-4fb0-b994-60e5e6335862\"], \"schema_name\": \"advisor\", \"relation_name\": \"advisor\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\x8e1a95dc22da1cddc1e29d45c1642b3c3e825ee50f5936c42e29a03d570c0d4f",
+                    "name": "\\xccd09005f7fbbf5322128b20f4716e45127cbe6f3b4a60b2eb825ca9bb629b87",
+                    "model": "\\x1dd2d2c2c192890034b69f515dde98792d98b514c0656bcc806a6e58a61c8797",
+                    "created_at": "\\xe89c7246d8142e7d3d0a4415f8e94c6a0f0a8149a9af0e296e720694f15c8134",
+                    "description": "\\x00da5917aa8fd16059e391479bff53e5d2f2390960f84e1eef5640ffdff3d231",
+                    "system_prompt": "\\x365beca5c14838f88fa8c31991daca2a93e0211074de59f0401df16de52ea9f4"
+                },
+                "{\"pk_values\": [\"414741c2-262d-4a81-b58f-93ac6475ab61\"], \"schema_name\": \"advisor\", \"relation_name\": \"context_document\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\xd3fea9e6ecbe29b5ed9a276af8cef97b72b43c906eafeb4b9183814940b1a926",
+                    "body": "\\x8657f73591a450fb00099d9443a75731c6e1d7a7d89d7db0e3249911c81661f9",
+                    "title": "\\xb4e384861412e4bcbe24a33cf803ee7a3314775527c215afa81b3085af11795f",
+                    "advisor_id": "\\x8e1a95dc22da1cddc1e29d45c1642b3c3e825ee50f5936c42e29a03d570c0d4f",
+                    "sort_order": "\\xd59eced1ded07f84c145592f65bdf854358e009c5cd705f5215bf18697fed103",
+                    "updated_at": "\\x049e0a948e07b9ab5992b60446ef26ba90f89278bcb0c7ebcc498ae088355005"
+                },
+                "{\"pk_values\": [\"4f87e9d1-733e-4b3f-9aa4-bafa1aeb8431\"], \"schema_name\": \"advisor\", \"relation_name\": \"context_document\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\x39fb415b433fe919939f27c61d00edd93824fbbdf5cc757ef5aa1ecebea92a91",
+                    "body": "\\x0ca00a13553966e20cba916743ea97e39a451e16fc4c802ea1bb4118f9d549c7",
+                    "title": "\\x1bb072da62f1ade9a65ddb55f1059196546faa5763c5fc331cdb08c95d374e32",
+                    "advisor_id": "\\x8e1a95dc22da1cddc1e29d45c1642b3c3e825ee50f5936c42e29a03d570c0d4f",
+                    "sort_order": "\\xff5a1ae012afa5d4c889c50ad427aaf545d31a4fac04ffc1c4d03d403ba4250a",
+                    "updated_at": "\\x049e0a948e07b9ab5992b60446ef26ba90f89278bcb0c7ebcc498ae088355005"
+                },
+                "{\"pk_values\": [\"54a896ab-7698-46ef-a492-f992ee2eea85\"], \"schema_name\": \"advisor\", \"relation_name\": \"context_document\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\xc57582aec3e3e99f0f2168b26d83fa2f8e504a47c9b57249a7c97b126f78e35f",
+                    "body": "\\xdcb3379521cba87954e0e1b405359f7ba33fa628bab21294058aa0b050fa407c",
+                    "title": "\\xc99733b430a1d542f368b0c05c7dd4c40da5a061153f66bbe8b8e801d634a8a3",
+                    "advisor_id": "\\x8e1a95dc22da1cddc1e29d45c1642b3c3e825ee50f5936c42e29a03d570c0d4f",
+                    "sort_order": "\\xad57366865126e55649ecb23ae1d48887544976efea46a48eb5d85a6eeb4d306",
+                    "updated_at": "\\x049e0a948e07b9ab5992b60446ef26ba90f89278bcb0c7ebcc498ae088355005"
+                },
+                "{\"pk_values\": [\"606c6721-71ee-463a-ac4b-4a686bb9110c\"], \"schema_name\": \"advisor\", \"relation_name\": \"context_document\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\x517d366433109006d4fa8bb65749f3095c4b7718db46a034988ecacccd523688",
+                    "body": "\\x7f51226955c885cc0e8153e51553038ee34e1ad8742a48c35a6c59e26eef90ec",
+                    "title": "\\xd9f19cc834527bc2fd9405219cdc3d2a507efa45329569df65e4c4f4b3dccf82",
+                    "advisor_id": "\\x8e1a95dc22da1cddc1e29d45c1642b3c3e825ee50f5936c42e29a03d570c0d4f",
+                    "sort_order": "\\x624b60c58c9d8bfb6ff1886c2fd605d2adeb6ea4da576068201b6c6958ce93f4",
+                    "updated_at": "\\x049e0a948e07b9ab5992b60446ef26ba90f89278bcb0c7ebcc498ae088355005"
+                },
+                "{\"pk_values\": [\"63e0f8da-2509-4de1-bb73-ecf347de3509\"], \"schema_name\": \"advisor\", \"relation_name\": \"context_document\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\xc82bc116038fba9595c15e19c0ea99fc413c604c521f09c3985916f1b9573d8a",
+                    "body": "\\x8f7bda329ac023858e0719a9c73af75ef48dd0e8b5396c20df116b55764a5720",
+                    "title": "\\x917d333df99a03b2e12c559cc4d78c28a8affde3154e83af84b8a137efb9340e",
+                    "advisor_id": "\\x8e1a95dc22da1cddc1e29d45c1642b3c3e825ee50f5936c42e29a03d570c0d4f",
+                    "sort_order": "\\x39fa9ec190eee7b6f4dff1100d6343e10918d044c75eac8f9e9a2596173f80c9",
+                    "updated_at": "\\x049e0a948e07b9ab5992b60446ef26ba90f89278bcb0c7ebcc498ae088355005"
+                },
+                "{\"pk_values\": [\"944faee9-f1a4-4d58-a5d4-ae01c55af0e3\"], \"schema_name\": \"advisor\", \"relation_name\": \"context_document\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\x3e13ef1c1aa4ed986e4763cf8d0f5fe94daa411b6845ea4e5e0c03dcd2c6d1e5",
+                    "body": "\\xa0ec35ede46a7160ef384902c2de7cae1eebceb81bec6e5638e3437bc330737f",
+                    "title": "\\x5a5120d3f575bf9e1cc9a2674797e1dfe92229cf441c17821ce0332616126d8b",
+                    "advisor_id": "\\x8e1a95dc22da1cddc1e29d45c1642b3c3e825ee50f5936c42e29a03d570c0d4f",
+                    "sort_order": "\\x69f59c273b6e669ac32a6dd5e1b2cb63333d8b004f9696447aee2d422ce63763",
+                    "updated_at": "\\x049e0a948e07b9ab5992b60446ef26ba90f89278bcb0c7ebcc498ae088355005"
+                },
+                "{\"pk_values\": [\"9abff1a5-3fd3-4b52-860a-2d152d1e8e7c\"], \"schema_name\": \"advisor\", \"relation_name\": \"context_document\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\x52db3b29a335a9d54ce50265a8bc2e06e00a36cf4a364e1c04ded369314cb0c9",
+                    "body": "\\xfe1c1af4a6b4978020c3c5e82164d1dd0122155d576ec23f4cf3df12b7b4f3d8",
+                    "title": "\\x00ecbf38bf618dd2e26b875f8bce4ff782e94123b1a7c04a614975e5441c2c29",
+                    "advisor_id": "\\x8e1a95dc22da1cddc1e29d45c1642b3c3e825ee50f5936c42e29a03d570c0d4f",
+                    "sort_order": "\\x4a44dc15364204a80fe80e9039455cc1608281820fe2b24f1e5233ade6af1dd5",
+                    "updated_at": "\\x049e0a948e07b9ab5992b60446ef26ba90f89278bcb0c7ebcc498ae088355005"
+                },
+                "{\"pk_values\": [\"e796ffe9-9e6d-4baf-abd9-199c766f7d73\"], \"schema_name\": \"advisor\", \"relation_name\": \"context_document\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\x5f59287b65430b3be11e852f4d89a40208a15aae7d06a7fe1f47228893448764",
+                    "body": "\\x4a769c1bdaa57229e2481ee6886960b399a64d4183bf7006f2fea368c6ebbe98",
+                    "title": "\\x30955fd23070377f2801c042cb6df0ca838cd385af88abfabb95e0e64de32348",
+                    "advisor_id": "\\x8e1a95dc22da1cddc1e29d45c1642b3c3e825ee50f5936c42e29a03d570c0d4f",
+                    "sort_order": "\\x1a6562590ef19d1045d06c4055742d38288e9e6dcd71ccde5cee80f1d5a774eb",
+                    "updated_at": "\\x049e0a948e07b9ab5992b60446ef26ba90f89278bcb0c7ebcc498ae088355005"
+                },
+                "{\"pk_values\": [\"e855717b-6335-4de5-bb9e-92b439ca825c\"], \"schema_name\": \"advisor\", \"relation_name\": \"context_document\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\x7b5ffe4cbdbfe6875c89211518d0e59e053fd1af1061527128a75fb8d4766d98",
+                    "body": "\\x26eaf46137c5de36b0275bedf6f40a38c1f5a428b428d919c718e4ccf4f123fd",
+                    "title": "\\x5e2d55070b78ad5755b8f9aa4dded0918e2470a4c7ec3443a8e1b2408ef6f2a0",
+                    "advisor_id": "\\x8e1a95dc22da1cddc1e29d45c1642b3c3e825ee50f5936c42e29a03d570c0d4f",
+                    "sort_order": "\\xf5ca38f748a1d6eaf726b8a42fb575c3c71f1864a8143301782de13da2d9202b",
+                    "updated_at": "\\x049e0a948e07b9ab5992b60446ef26ba90f89278bcb0c7ebcc498ae088355005"
+                },
+                "{\"pk_values\": [\"ecb8d2c2-2fa6-4103-9f72-1fbae8a6eda9\"], \"schema_name\": \"advisor\", \"relation_name\": \"context_document\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\x51e53f362892a07f2683cf10c84d3a36e7e23de8b5666f8b96e0692a5bc811e2",
+                    "body": "\\xc7c019a07b7648644b75ef620023e66ade09a7f4c2c3ea49c5766e183a5e09a4",
+                    "title": "\\x3984f54f07d3116a100505d4768ce1b591e6f6c538f4cbf7fddb0ac4d2e13d98",
+                    "advisor_id": "\\x8e1a95dc22da1cddc1e29d45c1642b3c3e825ee50f5936c42e29a03d570c0d4f",
+                    "sort_order": "\\x02d20bbd7e394ad5999a4cebabac9619732c343a4cac99470c03e23ba2bdc2bc",
+                    "updated_at": "\\xaa1df42145b7415fae15cc81109a61b6513d3a64beb77caf1a248d4f99f5a7c6"
+                },
+                "{\"pk_values\": [\"f9339a19-0f78-4917-8ba5-3fad00acacfe\"], \"schema_name\": \"advisor\", \"relation_name\": \"context_document\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\x2ab265a8889bbb6fb8221034f9c443eb5250652464217ece40e9ca75b7df3626",
+                    "body": "\\x21a8ca5cac54f0203ce2a300c9eb0a67814b8e629ea4ef2271fc4ae2279a8f06",
+                    "title": "\\x860ebeba44639cdff391cb94a1c7c1fa5e224a40c1dc04996c43b33d7f6777c2",
+                    "advisor_id": "\\x8e1a95dc22da1cddc1e29d45c1642b3c3e825ee50f5936c42e29a03d570c0d4f",
+                    "sort_order": "\\x48449a14a4ff7d79bb7a1b6f3d488eba397c36ef25634c111b49baf362511afc",
+                    "updated_at": "\\x049e0a948e07b9ab5992b60446ef26ba90f89278bcb0c7ebcc498ae088355005"
+                }
+            },
+            "repository_id": "bf331198-6e98-4ae5-8958-21e6ce686e41",
+            "merge_parent_id": null
+        }
+    ],
+    "repository": {
+        "id": "bf331198-6e98-4ae5-8958-21e6ce686e41",
+        "name": "io.bundle.aquameta.advisor",
+        "head_commit_id": "3626a334-7f77-486c-8bf5-ac621acb43b8"
+    }
+}

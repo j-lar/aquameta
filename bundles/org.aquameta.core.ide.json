@@ -3333,6 +3333,7 @@
         {
             "id": "d67d9f56-f50d-4677-a43d-acbcdc73ef89",
             "message": "Initial import from v0.4",
+            "version": null,
             "parent_id": null,
             "jsonb_rows": [
                 "(widget,widget,{id},{62aa1422-2958-4adc-bb04-c9eaba28820d})",
@@ -3543,7 +3544,7 @@
                 "(endpoint,resource,{id},{35d5615a-b42e-4566-b84e-49eacf9c4d87})"
             ],
             "author_name": "Eric Hanson",
-            "commit_time": "2025-07-10T01:44:30.232095-06:00",
+            "commit_time": "2025-07-10T07:44:30.232095+00:00",
             "author_email": "eric@aquameta.com",
             "jsonb_fields": {
                 "(widget,widget,{id},{00558a34-2a00-4867-9f5e-d8efe0b98c42})": {
@@ -5653,6 +5654,7 @@
         {
             "id": "c0207c36-3fc2-428a-bfee-9528d1835749",
             "message": "unbrick the IDE so widget editor works against v0.5",
+            "version": null,
             "parent_id": "d67d9f56-f50d-4677-a43d-acbcdc73ef89",
             "jsonb_rows": [
                 "(widget,widget,{id},{62aa1422-2958-4adc-bb04-c9eaba28820d})",
@@ -5863,7 +5865,7 @@
                 "(endpoint,resource,{id},{35d5615a-b42e-4566-b84e-49eacf9c4d87})"
             ],
             "author_name": "Eric Hanson",
-            "commit_time": "2025-07-10T02:59:54.85353-06:00",
+            "commit_time": "2025-07-10T08:59:54.85353+00:00",
             "author_email": "eric@aquameta.com",
             "jsonb_fields": {
                 "(widget,widget,{id},{00558a34-2a00-4867-9f5e-d8efe0b98c42})": {
@@ -7974,15 +7976,6 @@
     "repository": {
         "id": "4354f67a-48e8-4f6f-9135-b47a3dbb6f49",
         "name": "org.aquameta.core.ide",
-        "head_commit_id": "c0207c36-3fc2-428a-bfee-9528d1835749",
-        "stage_rows_to_add": [
-        ],
-        "checkout_commit_id": "c0207c36-3fc2-428a-bfee-9528d1835749",
-        "tracked_rows_added": [
-        ],
-        "stage_rows_to_remove": [
-        ],
-        "stage_fields_to_change": [
-        ]
+        "head_commit_id": "c0207c36-3fc2-428a-bfee-9528d1835749"
     }
 }

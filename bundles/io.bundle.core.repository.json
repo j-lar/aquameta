@@ -1,0 +1,290 @@
+{
+    "blobs": [
+        {
+            "hash": "\\x66fed62a52ee256048ed3a4f1e5c40d77f65478293548026f8c3a66558bd8899",
+            "value": "{\"name\": \"checkout_apply_hook\", \"schema_name\": \"bundle\"}"
+        },
+        {
+            "hash": "\\x5631ee83159b45e955fec1b4d8e4579a134842ebf2e31a0811082145b8b87709",
+            "value": "{\"name\": \"pg_catalog\"}"
+        },
+        {
+            "hash": "\\xe7f300487063505b0761698028f2456078a0b01c6024c2c0bc699bd87ac78aa5",
+            "value": "\"ae2a5190-0905-4946-ba21-3254f8b4a2f0\""
+        },
+        {
+            "hash": "\\xc588e38f402553ef56905a65ae9d171a9e9c86d22e325109c78e5fedc44b6d22",
+            "value": "\"3cd3c667-d8d0-4bf8-8b33-903a315e7bd2\""
+        },
+        {
+            "hash": "\\xac30889fa51b82787163f733244641274b8efb63e1212ae6df5216976a49c6dc",
+            "value": "\"df4cfc38-8aa0-446a-90fe-da0cd59e29f4\""
+        },
+        {
+            "hash": "\\xf784b3794dac13577fd7162f03539bca2497b949d92e70494749ce0f843f0717",
+            "value": "\"ac34d5bf-d85c-4875-8e45-ac7a791670d4\""
+        },
+        {
+            "hash": "\\x820deb6983b7d958b4f376b39719468d74a71ebdd951a07daa8d90e36aff754f",
+            "value": "\"bfd1d499-36d0-4bc6-80e0-445e329d4a59\""
+        },
+        {
+            "hash": "\\x710558a9903a0d3b04059364103691710860004b5241a94d0c6a2a7582d2590d",
+            "value": "{\"name\": \"pg_toast\"}"
+        },
+        {
+            "hash": "\\x018301f7e37ab9bb8fc4822d68306bfcf3ec2bd49536d4e5fa5d720b1890d57a",
+            "value": "\"0beb8e39-e938-47c8-a7bc-e4576122277c\""
+        },
+        {
+            "hash": "\\xf66ff3c1d29506171e66089d0a71aa4d353673691559e8c19d1e16f2d744e5cb",
+            "value": "\"5bd379db-fe56-456c-9771-5df4e342b161\""
+        },
+        {
+            "hash": "\\x4c5d2e403beb2c79551fa250129695b8d010102d9da59e77d00d20f09b001098",
+            "value": "{\"name\": \"trackable_nontable_relation\", \"schema_name\": \"bundle\"}"
+        },
+        {
+            "hash": "\\xf1646a5d67807adc909c2842e11b73c13edae14dd4336c96473f5bf66f937a87",
+            "value": "{\"name\": \"repository_dependency\", \"schema_name\": \"bundle\"}"
+        },
+        {
+            "hash": "\\xa2f343c1b51a8176e3a9c7d55ab270ce24dcd4ced2549ef88611554e6f1ef0aa",
+            "value": "{\"name\": \"repository\", \"schema_name\": \"bundle\"}"
+        },
+        {
+            "hash": "\\xf1657eef6cdf5a14b525f86183d986020fbc065947ea12f4762d145199d2aec8",
+            "value": "{\"name\": \"tracked_query\", \"schema_name\": \"bundle\"}"
+        },
+        {
+            "hash": "\\xe82b3399412ab0908b228b3b4fcf128bc9a918f75d22544fd06707db9a56c2ac",
+            "value": "\"9c75ea57-b074-4041-800d-fb609f7076d3\""
+        },
+        {
+            "hash": "\\x112ff1fcf37c5fe5c555ab811ef45d89e85a8e1565f2a493c4e8d9eb5caad802",
+            "value": "\"b310258d-76e6-4611-ab3b-26ccb4439300\""
+        },
+        {
+            "hash": "\\xfb26524d1019bf0d2456ffa979fd9439ea5586218b1e9d8f850729946134112a",
+            "value": "{\"name\": \"information_schema\"}"
+        },
+        {
+            "hash": "\\x334b4303dfc4a050c281841700d0f594a1257e78e806726073a6055bef0241f7",
+            "value": "\"5959f978-b66b-4d5a-bd51-ef61d8306407\""
+        },
+        {
+            "hash": "\\xaec97c01d0d3eb090b5d786582355417fbbfe646e2dc4dcc95f4405ab0a1bd8a",
+            "value": "{\"name\": \"blob\", \"schema_name\": \"bundle\"}"
+        },
+        {
+            "hash": "\\xa1bd80b43e10647216aa6cb1453f521eef828d34bc760a9ade7c884fb9c64e21",
+            "value": "\"80cfaf8d-207c-43ab-be91-f720c5791e8a\""
+        },
+        {
+            "hash": "\\xa3c8c80913487c2e94a70770c6d69173fec1d83141856160422a760fab9e2d0f",
+            "value": "{\"name\": \"stash\", \"schema_name\": \"bundle\"}"
+        },
+        {
+            "hash": "\\x8016cf361a83052338a71fd31a074803eb2d8e73e79e9dcf2823a0b4eb3f53f0",
+            "value": "\"6dd804f0-a615-4158-95c6-9629f06f263d\""
+        },
+        {
+            "hash": "\\x4d81fb9cbc3de3e428798609d5f1308f25cb692344899439f45f0248c09563bd",
+            "value": "{\"name\": \"commit\", \"schema_name\": \"bundle\"}"
+        },
+        {
+            "hash": "\\xb674dafc2c54f569991f15ad635a9e951fb9bf490ee0c340302e254ba7c87653",
+            "value": "{\"name\": \"commit_dependency\", \"schema_name\": \"bundle\"}"
+        }
+    ],
+    "commits": [
+        {
+            "id": "71e55bde-38b5-4cfc-9840-03d3dd063fc8",
+            "message": "Ignore rules.",
+            "version": null,
+            "parent_id": null,
+            "jsonb_rows": [
+                {
+                    "pk_values": [
+                        "80cfaf8d-207c-43ab-be91-f720c5791e8a"
+                    ],
+                    "schema_name": "bundle",
+                    "relation_name": "ignored_table",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "9c75ea57-b074-4041-800d-fb609f7076d3"
+                    ],
+                    "schema_name": "bundle",
+                    "relation_name": "ignored_table",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "0beb8e39-e938-47c8-a7bc-e4576122277c"
+                    ],
+                    "schema_name": "bundle",
+                    "relation_name": "ignored_table",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "ae2a5190-0905-4946-ba21-3254f8b4a2f0"
+                    ],
+                    "schema_name": "bundle",
+                    "relation_name": "ignored_table",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "5bd379db-fe56-456c-9771-5df4e342b161"
+                    ],
+                    "schema_name": "bundle",
+                    "relation_name": "ignored_table",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "df4cfc38-8aa0-446a-90fe-da0cd59e29f4"
+                    ],
+                    "schema_name": "bundle",
+                    "relation_name": "ignored_table",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "6dd804f0-a615-4158-95c6-9629f06f263d"
+                    ],
+                    "schema_name": "bundle",
+                    "relation_name": "ignored_table",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "5959f978-b66b-4d5a-bd51-ef61d8306407"
+                    ],
+                    "schema_name": "bundle",
+                    "relation_name": "ignored_table",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "b310258d-76e6-4611-ab3b-26ccb4439300"
+                    ],
+                    "schema_name": "bundle",
+                    "relation_name": "ignored_table",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "ac34d5bf-d85c-4875-8e45-ac7a791670d4"
+                    ],
+                    "schema_name": "bundle",
+                    "relation_name": "ignored_schema",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "bfd1d499-36d0-4bc6-80e0-445e329d4a59"
+                    ],
+                    "schema_name": "bundle",
+                    "relation_name": "ignored_schema",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "3cd3c667-d8d0-4bf8-8b33-903a315e7bd2"
+                    ],
+                    "schema_name": "bundle",
+                    "relation_name": "ignored_schema",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                }
+            ],
+            "author_name": "Eric Hanson",
+            "commit_time": "2026-06-02T03:58:01.380329+00:00",
+            "author_email": "eric@aquameta.com",
+            "jsonb_fields": {
+                "{\"pk_values\": [\"0beb8e39-e938-47c8-a7bc-e4576122277c\"], \"schema_name\": \"bundle\", \"relation_name\": \"ignored_table\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\x018301f7e37ab9bb8fc4822d68306bfcf3ec2bd49536d4e5fa5d720b1890d57a",
+                    "relation_id": "\\xaec97c01d0d3eb090b5d786582355417fbbfe646e2dc4dcc95f4405ab0a1bd8a"
+                },
+                "{\"pk_values\": [\"5959f978-b66b-4d5a-bd51-ef61d8306407\"], \"schema_name\": \"bundle\", \"relation_name\": \"ignored_table\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\x334b4303dfc4a050c281841700d0f594a1257e78e806726073a6055bef0241f7",
+                    "relation_id": "\\x66fed62a52ee256048ed3a4f1e5c40d77f65478293548026f8c3a66558bd8899"
+                },
+                "{\"pk_values\": [\"5bd379db-fe56-456c-9771-5df4e342b161\"], \"schema_name\": \"bundle\", \"relation_name\": \"ignored_table\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\xf66ff3c1d29506171e66089d0a71aa4d353673691559e8c19d1e16f2d744e5cb",
+                    "relation_id": "\\xa2f343c1b51a8176e3a9c7d55ab270ce24dcd4ced2549ef88611554e6f1ef0aa"
+                },
+                "{\"pk_values\": [\"6dd804f0-a615-4158-95c6-9629f06f263d\"], \"schema_name\": \"bundle\", \"relation_name\": \"ignored_table\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\x8016cf361a83052338a71fd31a074803eb2d8e73e79e9dcf2823a0b4eb3f53f0",
+                    "relation_id": "\\xf1657eef6cdf5a14b525f86183d986020fbc065947ea12f4762d145199d2aec8"
+                },
+                "{\"pk_values\": [\"80cfaf8d-207c-43ab-be91-f720c5791e8a\"], \"schema_name\": \"bundle\", \"relation_name\": \"ignored_table\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\xa1bd80b43e10647216aa6cb1453f521eef828d34bc760a9ade7c884fb9c64e21",
+                    "relation_id": "\\xb674dafc2c54f569991f15ad635a9e951fb9bf490ee0c340302e254ba7c87653"
+                },
+                "{\"pk_values\": [\"9c75ea57-b074-4041-800d-fb609f7076d3\"], \"schema_name\": \"bundle\", \"relation_name\": \"ignored_table\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\xe82b3399412ab0908b228b3b4fcf128bc9a918f75d22544fd06707db9a56c2ac",
+                    "relation_id": "\\x4c5d2e403beb2c79551fa250129695b8d010102d9da59e77d00d20f09b001098"
+                },
+                "{\"pk_values\": [\"ae2a5190-0905-4946-ba21-3254f8b4a2f0\"], \"schema_name\": \"bundle\", \"relation_name\": \"ignored_table\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\xe7f300487063505b0761698028f2456078a0b01c6024c2c0bc699bd87ac78aa5",
+                    "relation_id": "\\x4d81fb9cbc3de3e428798609d5f1308f25cb692344899439f45f0248c09563bd"
+                },
+                "{\"pk_values\": [\"b310258d-76e6-4611-ab3b-26ccb4439300\"], \"schema_name\": \"bundle\", \"relation_name\": \"ignored_table\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\x112ff1fcf37c5fe5c555ab811ef45d89e85a8e1565f2a493c4e8d9eb5caad802",
+                    "relation_id": "\\xa3c8c80913487c2e94a70770c6d69173fec1d83141856160422a760fab9e2d0f"
+                },
+                "{\"pk_values\": [\"df4cfc38-8aa0-446a-90fe-da0cd59e29f4\"], \"schema_name\": \"bundle\", \"relation_name\": \"ignored_table\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\xac30889fa51b82787163f733244641274b8efb63e1212ae6df5216976a49c6dc",
+                    "relation_id": "\\xf1646a5d67807adc909c2842e11b73c13edae14dd4336c96473f5bf66f937a87"
+                },
+                "{\"pk_values\": [\"3cd3c667-d8d0-4bf8-8b33-903a315e7bd2\"], \"schema_name\": \"bundle\", \"relation_name\": \"ignored_schema\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\xc588e38f402553ef56905a65ae9d171a9e9c86d22e325109c78e5fedc44b6d22",
+                    "schema_id": "\\x710558a9903a0d3b04059364103691710860004b5241a94d0c6a2a7582d2590d"
+                },
+                "{\"pk_values\": [\"ac34d5bf-d85c-4875-8e45-ac7a791670d4\"], \"schema_name\": \"bundle\", \"relation_name\": \"ignored_schema\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\xf784b3794dac13577fd7162f03539bca2497b949d92e70494749ce0f843f0717",
+                    "schema_id": "\\xfb26524d1019bf0d2456ffa979fd9439ea5586218b1e9d8f850729946134112a"
+                },
+                "{\"pk_values\": [\"bfd1d499-36d0-4bc6-80e0-445e329d4a59\"], \"schema_name\": \"bundle\", \"relation_name\": \"ignored_schema\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\x820deb6983b7d958b4f376b39719468d74a71ebdd951a07daa8d90e36aff754f",
+                    "schema_id": "\\x5631ee83159b45e955fec1b4d8e4579a134842ebf2e31a0811082145b8b87709"
+                }
+            },
+            "repository_id": "ca99324c-de7c-458c-83d2-a78b143e592e",
+            "merge_parent_id": null
+        }
+    ],
+    "repository": {
+        "id": "ca99324c-de7c-458c-83d2-a78b143e592e",
+        "name": "io.bundle.core.repository",
+        "head_commit_id": "71e55bde-38b5-4cfc-9840-03d3dd063fc8"
+    }
+}

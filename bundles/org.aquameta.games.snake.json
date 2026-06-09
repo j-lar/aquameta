@@ -181,6 +181,7 @@
         {
             "id": "8fb85650-4de6-4ced-b00e-03a3348e7790",
             "message": "Initial import from v0.4",
+            "version": null,
             "parent_id": null,
             "jsonb_rows": [
                 "(widget,widget,{id},{1335cdfd-24db-44dc-ac91-3b4e4c5267ca})",
@@ -195,7 +196,7 @@
                 "(endpoint,resource,{id},{66511858-1f9f-4214-9868-68af32699d1b})"
             ],
             "author_name": "Eric Hanson",
-            "commit_time": "2025-07-10T01:44:30.232095-06:00",
+            "commit_time": "2025-07-10T07:44:30.232095+00:00",
             "author_email": "eric@aquameta.com",
             "jsonb_fields": {
                 "(widget,widget,{id},{1335cdfd-24db-44dc-ac91-3b4e4c5267ca})": {
@@ -306,15 +307,6 @@
     "repository": {
         "id": "50573ccd-ff6e-4c10-bf87-e9eed2a293f0",
         "name": "org.aquameta.games.snake",
-        "head_commit_id": "8fb85650-4de6-4ced-b00e-03a3348e7790",
-        "stage_rows_to_add": [
-        ],
-        "checkout_commit_id": "8fb85650-4de6-4ced-b00e-03a3348e7790",
-        "tracked_rows_added": [
-        ],
-        "stage_rows_to_remove": [
-        ],
-        "stage_fields_to_change": [
-        ]
+        "head_commit_id": "8fb85650-4de6-4ced-b00e-03a3348e7790"
     }
 }

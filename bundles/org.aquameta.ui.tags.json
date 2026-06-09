@@ -53,13 +53,14 @@
         {
             "id": "20fba3f8-feda-423a-bdfd-b83677d53ee0",
             "message": "Initial import from v0.4",
+            "version": null,
             "parent_id": null,
             "jsonb_rows": [
                 "(widget,widget,{id},{e83c6a04-bc73-43ed-ab3e-2642bf43e9e1})",
                 "(widget,widget,{id},{18251e25-cfca-4f4d-bde5-c9c5be89eaba})"
             ],
             "author_name": "Eric Hanson",
-            "commit_time": "2025-07-10T01:44:30.232095-06:00",
+            "commit_time": "2025-07-10T07:44:30.232095+00:00",
             "author_email": "eric@aquameta.com",
             "jsonb_fields": {
                 "(widget,widget,{id},{18251e25-cfca-4f4d-bde5-c9c5be89eaba})": {
@@ -92,15 +93,6 @@
     "repository": {
         "id": "5b101247-c299-4805-a63c-a9c897a4971b",
         "name": "org.aquameta.ui.tags",
-        "head_commit_id": "20fba3f8-feda-423a-bdfd-b83677d53ee0",
-        "stage_rows_to_add": [
-        ],
-        "checkout_commit_id": "20fba3f8-feda-423a-bdfd-b83677d53ee0",
-        "tracked_rows_added": [
-        ],
-        "stage_rows_to_remove": [
-        ],
-        "stage_fields_to_change": [
-        ]
+        "head_commit_id": "20fba3f8-feda-423a-bdfd-b83677d53ee0"
     }
 }

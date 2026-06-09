@@ -81,6 +81,7 @@
         {
             "id": "e5888929-3e7e-48da-9756-2c968b9a2db1",
             "message": "Initial import from v0.4",
+            "version": null,
             "parent_id": null,
             "jsonb_rows": [
                 "(endpoint,resource_binary,{id},{69200d8d-a441-4b84-b726-d94079211751})",
@@ -90,7 +91,7 @@
                 "(endpoint,resource,{id},{ce9d7eac-b62f-4c6c-ac48-b09f4c5d263c})"
             ],
             "author_name": "Eric Hanson",
-            "commit_time": "2025-07-10T01:44:30.232095-06:00",
+            "commit_time": "2025-07-10T07:44:30.232095+00:00",
             "author_email": "eric@aquameta.com",
             "jsonb_fields": {
                 "(endpoint,resource,{id},{37a31f29-c10e-4aad-b74c-0d46ea635379})": {
@@ -136,15 +137,6 @@
     "repository": {
         "id": "509aab9b-d40d-46a5-b039-52669d901776",
         "name": "org.aquameta.core.endpoint",
-        "head_commit_id": "e5888929-3e7e-48da-9756-2c968b9a2db1",
-        "stage_rows_to_add": [
-        ],
-        "checkout_commit_id": "e5888929-3e7e-48da-9756-2c968b9a2db1",
-        "tracked_rows_added": [
-        ],
-        "stage_rows_to_remove": [
-        ],
-        "stage_fields_to_change": [
-        ]
+        "head_commit_id": "e5888929-3e7e-48da-9756-2c968b9a2db1"
     }
 }

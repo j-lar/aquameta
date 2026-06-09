@@ -1,0 +1,116 @@
+{
+    "blobs": [
+        {
+            "hash": "\\xcc432f459e1c54bb5b05a117630619d5f2590eb8fa87ff1136074e16d30b1a96",
+            "value": "\"28ac7f7b-a73b-4bcf-8f17-cd0ef849b777\""
+        },
+        {
+            "hash": "\\x5386b995e3e8ee36184a7adfee89b51019139c37851dffb91c4fe4174a6f7595",
+            "value": "\"/magic8ball\""
+        },
+        {
+            "hash": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+            "value": null
+        },
+        {
+            "hash": "\\xd8e66670e5ab7643867a1b3a500ac65307d6a9cb5011bd1c82d6647708130c03",
+            "value": "\"<!DOCTYPE html>\\n<html lang=\\\"en\\\">\\n  <head>\\n    <script src='/system.js'></script>\\n    <title>Magic Eight Ball</title>\\n    <meta http-equiv=\\\"Content-type\\\" content=\\\"text/html; charset=utf-8\\\">\\n    <meta name=\\\"viewport\\\" content=\\\"width=device-width, initial-scale=1\\\">\\n    <style>\\n      *, *:before, *:after { box-sizing: border-box; margin: 0; padding: 0; }\\n      html, body { height: 100%; background: #1a1a2e; }\\n    </style>\\n  </head>\\n  <body></body>\\n  <script>\\n    System.import('/widget.js').then(function(widget) {\\n      var db = new AQ.Database('/endpoint/0.3', { evented: 'no' });\\n      window.endpoint = db;\\n      AQ.Widget.import('org.aquameta.games.magic8ball', 'm', db);\\n      $('body').append(widget('m:magic8ball'));\\n    });\\n  </script>\\n</html>\\n\""
+        },
+        {
+            "hash": "\\x3a26fd017f2c6af2b2094c00642f35223707175f5ca24345157952679aceb5dc",
+            "value": "\"return {};\""
+        },
+        {
+            "hash": "\\x72b965a457bce3bceae0e58af6f8254b5ec60651efdf568d40fe727ae8b7e5cb",
+            "value": "\"\\nvar w = $('#' + id);\\n\\nvar responses = [\\n  // Positive\\n  'It is certain',\\n  'It is decidedly so',\\n  'Without a doubt',\\n  'Yes, definitely',\\n  'You may rely on it',\\n  'As I see it, yes',\\n  'Most likely',\\n  'Outlook good',\\n  'Yes',\\n  'Signs point to yes',\\n  // Neutral\\n  'Reply hazy, try again',\\n  'Ask again later',\\n  'Better not tell you now',\\n  'Cannot predict now',\\n  'Concentrate and ask again',\\n  // Negative\\n  \\\"Don't count on it\\\",\\n  'My reply is no',\\n  'My sources say no',\\n  'Outlook not so good',\\n  'Very doubtful'\\n];\\n\\nvar front  = w.find('.front');\\nvar window_ = w.find('.window');\\nvar answer = w.find('.answer');\\nvar prompt = w.find('.prompt');\\nvar ball   = w.find('.ball');\\nvar shaking = false;\\n\\nball.on('click', function() {\\n  if (shaking) return;\\n  shaking = true;\\n\\n  var response = responses[Math.floor(Math.random() * responses.length)];\\n\\n  // Reset to 8 side before shaking\\n  front.css('opacity', 1);\\n  window_.css('opacity', 0);\\n  answer.text('');\\n  prompt.css('opacity', 0.4);\\n\\n  ball.addClass('shaking');\\n\\n  setTimeout(function() {\\n    // Flip to answer side\\n    front.css('opacity', 0);\\n    answer.text(response);\\n    window_.css('opacity', 1);\\n    prompt.text('Click again to ask another.').css('opacity', 1);\\n  }, 400);\\n\\n  setTimeout(function() {\\n    ball.removeClass('shaking');\\n    shaking = false;\\n  }, 500);\\n});\\n\""
+        },
+        {
+            "hash": "\\xb5bea41b6c623f7c09f1bf24dcae58ebab3c0cdd90ad966bc43a45b44867e12b",
+            "value": "true"
+        },
+        {
+            "hash": "\\x11ff18c200482cfada33621d5d2db65d899c0c951b403dbb2fa55dae6f97f505",
+            "value": "\"\\n.magic8ball {\\n  display: flex;\\n  flex-direction: column;\\n  align-items: center;\\n  justify-content: center;\\n  min-height: 100vh;\\n  background: #1a1a2e;\\n  font-family: 'Georgia', serif;\\n  user-select: none;\\n}\\n\\n.ball {\\n  position: relative;\\n  width: 280px;\\n  height: 280px;\\n  border-radius: 50%;\\n  background: radial-gradient(circle at 35% 35%, #555, #000 70%);\\n  box-shadow:\\n    0 0 40px rgba(0,0,0,0.8),\\n    inset 0 0 60px rgba(0,0,0,0.5),\\n    4px 8px 24px rgba(0,0,0,0.9);\\n  cursor: pointer;\\n  transition: transform 0.1s ease;\\n}\\n\\n.ball:hover {\\n  transform: scale(1.02);\\n}\\n\\n.ball.shaking {\\n  animation: shake 0.5s ease-in-out;\\n}\\n\\n@keyframes shake {\\n  0%   { transform: translate(0, 0) rotate(0deg); }\\n  15%  { transform: translate(-8px, 4px) rotate(-3deg); }\\n  30%  { transform: translate(8px, -4px) rotate(3deg); }\\n  45%  { transform: translate(-6px, 6px) rotate(-2deg); }\\n  60%  { transform: translate(6px, -6px) rotate(2deg); }\\n  75%  { transform: translate(-4px, 2px) rotate(-1deg); }\\n  90%  { transform: translate(4px, -2px) rotate(1deg); }\\n  100% { transform: translate(0, 0) rotate(0deg); }\\n}\\n\\n.face {\\n  position: absolute;\\n  top: 50%;\\n  left: 50%;\\n  transform: translate(-50%, -50%);\\n  display: flex;\\n  align-items: center;\\n  justify-content: center;\\n  transition: opacity 0.4s ease;\\n}\\n\\n.front {\\n  width: 100%;\\n  height: 100%;\\n}\\n\\n.eight {\\n  font-size: 96px;\\n  font-weight: bold;\\n  color: white;\\n  text-shadow: 2px 2px 8px rgba(0,0,0,0.8);\\n  line-height: 1;\\n}\\n\\n.window {\\n  opacity: 0;\\n  width: 100%;\\n  height: 100%;\\n}\\n\\n.inner-circle {\\n  width: 140px;\\n  height: 140px;\\n  border-radius: 50%;\\n  background: radial-gradient(circle at 40% 40%, #1a3a6b, #0a1a3a);\\n  box-shadow: inset 0 0 20px rgba(0,0,0,0.8);\\n  display: flex;\\n  align-items: center;\\n  justify-content: center;\\n}\\n\\n.triangle {\\n  width: 0;\\n  height: 0;\\n  border-left: 46px solid transparent;\\n  border-right: 46px solid transparent;\\n  border-bottom: 80px solid #1e4db7;\\n  position: relative;\\n  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));\\n}\\n\\n.answer {\\n  position: absolute;\\n  bottom: -72px;\\n  left: -38px;\\n  width: 76px;\\n  text-align: center;\\n  color: white;\\n  font-size: 11px;\\n  font-weight: bold;\\n  line-height: 1.2;\\n  text-transform: uppercase;\\n  letter-spacing: 0.03em;\\n}\\n\\n.prompt {\\n  margin-top: 32px;\\n  color: #8888aa;\\n  font-size: 14px;\\n  letter-spacing: 0.05em;\\n  text-align: center;\\n  transition: opacity 0.3s ease;\\n}\\n\""
+        },
+        {
+            "hash": "\\x7977de837546f2549d36ad50f88dedbb64a27a054a96792f0a29b42a6d76f8fc",
+            "value": "\"2fe5fbf4-2070-462d-ab08-23532649b67b\""
+        },
+        {
+            "hash": "\\x12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
+            "value": "\"\""
+        },
+        {
+            "hash": "\\xc0609c5d3589f2e95d4f3efdc117c66a3a852bd6f5d6e968996e3c8d74ca2a98",
+            "value": "\"magic8ball\""
+        },
+        {
+            "hash": "\\xea9c49684e23fa4ba26275311c3225982d158f8b468f4524b9dfd5eafe6f7105",
+            "value": "\"944b5a05-be70-45a1-a549-1301d38799e4\""
+        },
+        {
+            "hash": "\\xe9acb652d2856a0f0b2f86107e9b13c5c8991840b206b2ab4949b089711f83f7",
+            "value": "\"\\n<div id=\\\"{{= id }}\\\" class=\\\"{{= name }}\\\">\\n  <div class=\\\"ball\\\">\\n    <div class=\\\"face front\\\">\\n      <span class=\\\"eight\\\">8</span>\\n    </div>\\n    <div class=\\\"face window\\\">\\n      <div class=\\\"inner-circle\\\">\\n        <div class=\\\"triangle\\\">\\n          <span class=\\\"answer\\\"></span>\\n        </div>\\n      </div>\\n    </div>\\n  </div>\\n  <p class=\\\"prompt\\\">Ask a question, then click the ball.</p>\\n</div>\\n\""
+        }
+    ],
+    "commits": [
+        {
+            "id": "9166505d-3c2f-4833-9546-4ba97f6b8f0d",
+            "message": "initial: magic eight ball widget",
+            "version": null,
+            "parent_id": null,
+            "jsonb_rows": [
+                {
+                    "pk_values": [
+                        "28ac7f7b-a73b-4bcf-8f17-cd0ef849b777"
+                    ],
+                    "schema_name": "widget",
+                    "relation_name": "widget",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "2fe5fbf4-2070-462d-ab08-23532649b67b"
+                    ],
+                    "schema_name": "endpoint",
+                    "relation_name": "resource",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                }
+            ],
+            "author_name": "claude_code",
+            "commit_time": "2026-06-03T09:30:08.497677+00:00",
+            "author_email": "claude@aquameta.org",
+            "jsonb_fields": {
+                "{\"pk_values\": [\"28ac7f7b-a73b-4bcf-8f17-cd0ef849b777\"], \"schema_name\": \"widget\", \"relation_name\": \"widget\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\xcc432f459e1c54bb5b05a117630619d5f2590eb8fa87ff1136074e16d30b1a96",
+                    "css": "\\x11ff18c200482cfada33621d5d2db65d899c0c951b403dbb2fa55dae6f97f505",
+                    "help": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "html": "\\xe9acb652d2856a0f0b2f86107e9b13c5c8991840b206b2ab4949b089711f83f7",
+                    "name": "\\xc0609c5d3589f2e95d4f3efdc117c66a3a852bd6f5d6e968996e3c8d74ca2a98",
+                    "pre_js": "\\x3a26fd017f2c6af2b2094c00642f35223707175f5ca24345157952679aceb5dc",
+                    "post_js": "\\x72b965a457bce3bceae0e58af6f8254b5ec60651efdf568d40fe727ae8b7e5cb",
+                    "common_js": "\\x12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
+                    "server_js": "\\x12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126"
+                },
+                "{\"pk_values\": [\"2fe5fbf4-2070-462d-ab08-23532649b67b\"], \"schema_name\": \"endpoint\", \"relation_name\": \"resource\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\x7977de837546f2549d36ad50f88dedbb64a27a054a96792f0a29b42a6d76f8fc",
+                    "path": "\\x5386b995e3e8ee36184a7adfee89b51019139c37851dffb91c4fe4174a6f7595",
+                    "active": "\\xb5bea41b6c623f7c09f1bf24dcae58ebab3c0cdd90ad966bc43a45b44867e12b",
+                    "content": "\\xd8e66670e5ab7643867a1b3a500ac65307d6a9cb5011bd1c82d6647708130c03",
+                    "mimetype_id": "\\xea9c49684e23fa4ba26275311c3225982d158f8b468f4524b9dfd5eafe6f7105"
+                }
+            },
+            "repository_id": "c094ee05-4db9-42b1-a6a6-1b07cbe19f12",
+            "merge_parent_id": null
+        }
+    ],
+    "repository": {
+        "id": "c094ee05-4db9-42b1-a6a6-1b07cbe19f12",
+        "name": "org.aquameta.games.magic8ball",
+        "head_commit_id": "9166505d-3c2f-4833-9546-4ba97f6b8f0d"
+    }
+}

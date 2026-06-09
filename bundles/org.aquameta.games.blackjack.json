@@ -1,0 +1,276 @@
+{
+    "blobs": [
+        {
+            "hash": "\\x73d3fb1766f84a813332aa41c5fdb8ce3f67fc01c3ea44ffa3fe93ca0f4ef28a",
+            "value": "\"/blackjack\""
+        },
+        {
+            "hash": "\\xa4419605615b63ae222d656277417383a1c53e597891117b60273c267a80e680",
+            "value": "\".{{= name }} {\\n    width: 100%;\\n}\\n.bj-hand-label {\\n    font-size: 11px;\\n    text-transform: uppercase;\\n    letter-spacing: 1px;\\n    opacity: 0.6;\\n    margin-bottom: 8px;\\n}\\n.bj-hand-cards {\\n    display: flex;\\n    flex-wrap: wrap;\\n    gap: 6px;\\n    min-height: 80px;\\n}\\n.bj-hand-value {\\n    font-size: 18px;\\n    font-weight: bold;\\n    margin-top: 8px;\\n    min-height: 24px;\\n}\""
+        },
+        {
+            "hash": "\\xdbcae405467a2ab325d2a443d42dcd7af0cecb1d933f29aaef84f639ef6ce530",
+            "value": "\".{{= name }} {\\n    width: 58px;\\n    height: 84px;\\n    background: white;\\n    border-radius: 7px;\\n    color: #111;\\n    display: flex;\\n    flex-direction: column;\\n    align-items: center;\\n    justify-content: center;\\n    font-weight: bold;\\n    box-shadow: 1px 2px 5px rgba(0,0,0,0.4);\\n    flex-shrink: 0;\\n    user-select: none;\\n    -webkit-user-select: none;\\n}\\n.{{= name }}.red {\\n    color: #cc0000;\\n}\\n.{{= name }}.face-down {\\n    background: #1a3a6b;\\n    background-image:\\n        repeating-linear-gradient(\\n            45deg,\\n            rgba(255,255,255,0.07) 0px, rgba(255,255,255,0.07) 2px,\\n            transparent 2px, transparent 10px\\n        );\\n}\\n.{{= name }}.face-down .card-rank,\\n.{{= name }}.face-down .card-suit { display: none; }\\n.card-rank { font-size: 20px; line-height: 1; }\\n.card-suit { font-size: 26px; line-height: 1; margin-top: 2px; }\""
+        },
+        {
+            "hash": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+            "value": null
+        },
+        {
+            "hash": "\\x3a26fd017f2c6af2b2094c00642f35223707175f5ca24345157952679aceb5dc",
+            "value": "\"return {};\""
+        },
+        {
+            "hash": "\\x5aef5d7995e38e2d84499ae4dfecf1d1ac34bac7b7f7ef7480d6d181cf3e9033",
+            "value": "\"<div id=\\\"{{= id }}\\\" class=\\\"{{= name }}\\\">\\n    <div class=\\\"card-rank\\\"></div>\\n    <div class=\\\"card-suit\\\"></div>\\n</div>\""
+        },
+        {
+            "hash": "\\xb047962525c5b83b0bfcf009ff7b43376860f46875263c49cd97e75f863c5a6c",
+            "value": "\".{{= name }} {\\n    width: 100%;\\n    display: flex;\\n    flex-direction: column;\\n    gap: 10px;\\n}\\n.bj-btn {\\n    width: 100%;\\n    padding: 18px;\\n    font-size: 20px;\\n    font-weight: bold;\\n    border: none;\\n    border-radius: 10px;\\n    cursor: pointer;\\n    touch-action: manipulation;\\n    -webkit-tap-highlight-color: transparent;\\n    letter-spacing: 0.5px;\\n}\\n.bj-deal   { background: #f59e0b; color: #111; }\\n.bj-hit    { background: #16a34a; color: white; flex: 1; }\\n.bj-stand  { background: #dc2626; color: white; flex: 1; }\\n.bj-double { background: #7c3aed; color: white; flex: 1; }\\n.bj-action-row {\\n    display: flex;\\n    gap: 8px;\\n}\\n.bj-action-row .bj-btn { width: auto; }\\n.bj-bet-row {\\n    display: flex;\\n    flex-wrap: wrap;\\n    gap: 8px;\\n    justify-content: center;\\n}\\n.bj-chip {\\n    padding: 12px 16px;\\n    font-size: 16px;\\n    font-weight: bold;\\n    border: 2px solid rgba(255,255,255,0.25);\\n    border-radius: 50px;\\n    background: rgba(255,255,255,0.1);\\n    color: white;\\n    cursor: pointer;\\n    touch-action: manipulation;\\n    -webkit-tap-highlight-color: transparent;\\n    transition: background 0.1s;\\n}\\n.bj-chip.active {\\n    background: #f59e0b;\\n    color: #111;\\n    border-color: #f59e0b;\\n}\""
+        },
+        {
+            "hash": "\\x20c6c89562c9b5616ff4004aab6c257184d08b302d0033f35ac82e17de9ce817",
+            "value": "\"cce06846-e16a-44d1-93e8-fb1f26ab78c0\""
+        },
+        {
+            "hash": "\\xb5bea41b6c623f7c09f1bf24dcae58ebab3c0cdd90ad966bc43a45b44867e12b",
+            "value": "true"
+        },
+        {
+            "hash": "\\xd30d33c757414403e381587e424ccbfe1f6df911b7426ba87a1cdff08b4b964d",
+            "value": "\"<!DOCTYPE html>\\n<html lang=\\\"en\\\">\\n<head>\\n    <script src='/system.js'></script>\\n    <title>Blackjack</title>\\n    <meta http-equiv=\\\"Content-type\\\" content=\\\"text/html; charset=utf-8\\\">\\n    <meta name=\\\"viewport\\\" content=\\\"width=device-width, initial-scale=1, maximum-scale=1\\\">\\n    <style>\\n        html {\\n            box-sizing: border-box;\\n            background-color: #076324;\\n            color: white;\\n        }\\n        *, *:before, *:after { box-sizing: inherit; }\\n        html, body { height: 100%; margin: 0; }\\n        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }\\n    </style>\\n</head>\\n<body></body>\\n<script>\\n    System.import('/widget.js').then(function(widget) {\\n        var db = new AQ.Database('/endpoint/0.3', { evented: 'no' });\\n        window.endpoint = db;\\n        AQ.Widget.import('org.aquameta.games.blackjack', 'bj', db);\\n        $('body').append(widget('bj:bj_game'));\\n    });\\n</script>\\n</html>\""
+        },
+        {
+            "hash": "\\x452d7b3c0226213fa8dbeb4235420a3aa0043da825496e416895776b1baa670f",
+            "value": "\"bj_game\""
+        },
+        {
+            "hash": "\\xac20334dfafdbc334185281a950c567c11db61f47484c982bcaec4dc42310dcc",
+            "value": "\"var w = $('#' + id);\\nif (faceDown) {\\n    w.addClass('face-down');\\n} else {\\n    w.find('.card-rank').text(rank);\\n    w.find('.card-suit').text(suit);\\n    if (suit === '♥' || suit === '♦') w.addClass('red');\\n}\\n\""
+        },
+        {
+            "hash": "\\xdac00ef2dc36fbb0de8adbc83835d00968cd973185df3602853850c92efc746e",
+            "value": "\"bj_score\""
+        },
+        {
+            "hash": "\\xe90d3f21e687d81e701426964ec9afeb91f81a4ab5cccee0b9e89eca2954b47b",
+            "value": "\"<div id=\\\"{{= id }}\\\" class=\\\"{{= name }}\\\"></div>\""
+        },
+        {
+            "hash": "\\x4f09f5df4e702e4dafc2151826df99b036850278b71ea580cdd9f8fec8626bc7",
+            "value": "\"bj_hand\""
+        },
+        {
+            "hash": "\\xd8522ddcf3ddba20bb196ee252e408910e3114f28cfb75034216187adea7cbb8",
+            "value": "\"var w = $('#' + id);\\nw.find('.bj-bankroll').text('$' + bankroll);\\nw.find('.bj-bet-label').text('Bet: $' + bet);\\nw.find('.bj-msg').text(message || '');\\n\""
+        },
+        {
+            "hash": "\\x94360209120cc94a9ac8141c8ea6e41b000ae257dc82008aafe07036d3f3dd4f",
+            "value": "\"b3c6778f-ca15-4755-8ae2-cc731cf035b0\""
+        },
+        {
+            "hash": "\\x07f96b3b4f4ea2bb8020c87471b6cc35f06a5993e7e3a2bd87d5a4f20313d522",
+            "value": "\".{{= name }} {\\n    width: 100%;\\n    display: flex;\\n    align-items: center;\\n    justify-content: space-between;\\n    padding: 4px 0 8px 0;\\n    border-bottom: 1px solid rgba(255,255,255,0.15);\\n}\\n.bj-bankroll {\\n    font-size: 22px;\\n    font-weight: bold;\\n}\\n.bj-bet-label {\\n    font-size: 14px;\\n    opacity: 0.75;\\n}\\n.bj-msg {\\n    font-size: 16px;\\n    font-weight: bold;\\n    color: #fbbf24;\\n    text-align: right;\\n    max-width: 140px;\\n}\""
+        },
+        {
+            "hash": "\\xc4a2c55322647d984b144efe07f2bc881e9b6bea2292ca7b1240d6d20601f0c3",
+            "value": "\"<div id=\\\"{{= id }}\\\" class=\\\"{{= name }}\\\">\\n    <div class=\\\"bj-bankroll\\\"></div>\\n    <div class=\\\"bj-bet-label\\\"></div>\\n    <div class=\\\"bj-msg\\\"></div>\\n</div>\""
+        },
+        {
+            "hash": "\\x754d76a170a49029a37feaad47bf28c6ac22e32ebc3d54c965826fbb36f00b37",
+            "value": "\"<div id=\\\"{{= id }}\\\" class=\\\"{{= name }}\\\">\\n    <div class=\\\"bj-hand-label\\\"></div>\\n    <div class=\\\"bj-hand-cards\\\"></div>\\n    <div class=\\\"bj-hand-value\\\"></div>\\n</div>\""
+        },
+        {
+            "hash": "\\x09e6f3b08c2ce08475d1aca129ba066a66e39a6785466a92b1f19159e392afc9",
+            "value": "\"bj_controls\""
+        },
+        {
+            "hash": "\\x12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
+            "value": "\"\""
+        },
+        {
+            "hash": "\\x65c2f5bfcb34f64cde906f025a67c8816bd2c496a24c2c55b9876b8a64f1a4f2",
+            "value": "\"0660dbac-d652-4155-b5eb-66bba885405a\""
+        },
+        {
+            "hash": "\\x4f810f8937c4e82f23e246fbf72c83f27940e88143b53f28e06cccad93753b72",
+            "value": "\"bj_card\""
+        },
+        {
+            "hash": "\\x4ae22664c805909edfadae1bbb6daa1f93068d57d7388e26b1302c8bb9f8be19",
+            "value": "\"c760c322-32d4-454f-8780-917c5a2aa1a5\""
+        },
+        {
+            "hash": "\\xd7ea3573cf3d15d30dde1e1f3bab336b176dbe7cc97db3c1c394ba0854a71a11",
+            "value": "\".{{= name }} {\\n    display: flex;\\n    flex-direction: column;\\n    align-items: center;\\n    padding: 16px;\\n    gap: 14px;\\n    max-width: 480px;\\n    margin: 0 auto;\\n    min-height: 100vh;\\n}\""
+        },
+        {
+            "hash": "\\x36c290817c4ef013037d26de348b85a453de435988b1d8baa7f1dcefa8c18663",
+            "value": "\"var w = $('#' + id);\\nvar game = w.closest('.bj_game');\\nvar BETS = [5, 25, 50, 100, 200];\\n\\nif (phase === 'betting' || phase === 'result') {\\n    var betRow = $('<div class=\\\"bj-bet-row\\\"></div>');\\n    BETS.forEach(function(amount) {\\n        if (amount <= bankroll) {\\n            var cls = 'bj-chip' + (amount === bet ? ' active' : '');\\n            var chip = $('<button class=\\\"' + cls + '\\\">$' + amount + '</button>');\\n            chip.on('click', function() { game.trigger('bj_bet', [amount]); });\\n            betRow.append(chip);\\n        }\\n    });\\n    w.append(betRow);\\n\\n    var dealLabel = (phase === 'result' ? 'Deal Again' : 'Deal') + ' — $' + bet;\\n    var dealBtn = $('<button class=\\\"bj-btn bj-deal\\\">' + dealLabel + '</button>');\\n    dealBtn.on('click', function() { game.trigger('bj_deal'); });\\n    w.append(dealBtn);\\n}\\n\\nif (phase === 'player_turn') {\\n    var row = $('<div class=\\\"bj-action-row\\\"></div>');\\n\\n    var hitBtn = $('<button class=\\\"bj-btn bj-hit\\\">Hit</button>');\\n    hitBtn.on('click', function() { game.trigger('bj_hit'); });\\n    row.append(hitBtn);\\n\\n    var standBtn = $('<button class=\\\"bj-btn bj-stand\\\">Stand</button>');\\n    standBtn.on('click', function() { game.trigger('bj_stand'); });\\n    row.append(standBtn);\\n\\n    if (canDouble) {\\n        var dblBtn = $('<button class=\\\"bj-btn bj-double\\\">Double — $' + (bet * 2) + '</button>');\\n        dblBtn.on('click', function() { game.trigger('bj_double'); });\\n        row.append(dblBtn);\\n    }\\n\\n    w.append(row);\\n}\\n\""
+        },
+        {
+            "hash": "\\xab7402de55e0a61ddcc825d7c7d4439319e00535cac7d00ef87450f51809e8d1",
+            "value": "\"var w = $('#' + id);\\n\\nvar config = { START_BANKROLL: 500, MIN_BET: 5 };\\n\\nfunction makeDeck() {\\n    var ranks = ['A','2','3','4','5','6','7','8','9','10','J','Q','K'];\\n    var suits = ['♠','♥','♦','♣'];\\n    var deck = [];\\n    suits.forEach(function(suit) {\\n        ranks.forEach(function(rank) {\\n            var val = parseInt(rank);\\n            if (isNaN(val)) val = (rank === 'A') ? 11 : 10;\\n            deck.push({ rank: rank, suit: suit, value: val });\\n        });\\n    });\\n    return shuffle(deck);\\n}\\n\\nfunction shuffle(arr) {\\n    var a = arr.slice();\\n    for (var i = a.length - 1; i > 0; i--) {\\n        var j = Math.floor(Math.random() * (i + 1));\\n        var t = a[i]; a[i] = a[j]; a[j] = t;\\n    }\\n    return a;\\n}\\n\\nfunction handValue(hand) {\\n    var total = hand.reduce(function(s, c) { return s + c.value; }, 0);\\n    var aces = hand.filter(function(c) { return c.rank === 'A'; }).length;\\n    while (total > 21 && aces > 0) { total -= 10; aces--; }\\n    return total;\\n}\\n\\nvar state = {\\n    deck: makeDeck(),\\n    playerHand: [],\\n    dealerHand: [],\\n    bankroll: config.START_BANKROLL,\\n    bet: 25,\\n    phase: 'betting',\\n    message: ''\\n};\\n\\nfunction dealCard() {\\n    if (state.deck.length < 10) state.deck = makeDeck();\\n    return state.deck.pop();\\n}\\n\\nfunction startHand() {\\n    if (state.bankroll <= 0) {\\n        state.bankroll = config.START_BANKROLL;\\n        state.bet = Math.min(state.bet, state.bankroll);\\n    }\\n    state.bet = Math.min(state.bet, state.bankroll);\\n    state.playerHand = [dealCard(), dealCard()];\\n    state.dealerHand = [dealCard(), dealCard()];\\n    state.message = '';\\n\\n    var pv = handValue(state.playerHand);\\n    var dv = handValue(state.dealerHand);\\n\\n    if (pv === 21 && dv === 21) {\\n        state.phase = 'result';\\n        state.message = 'Push — both blackjack';\\n    } else if (pv === 21) {\\n        var payout = Math.floor(state.bet * 1.5);\\n        state.bankroll += payout;\\n        state.phase = 'result';\\n        state.message = '★ Blackjack! +$' + payout;\\n    } else {\\n        state.phase = 'player_turn';\\n    }\\n    render();\\n}\\n\\nfunction playerHit() {\\n    state.playerHand.push(dealCard());\\n    var val = handValue(state.playerHand);\\n    if (val > 21) {\\n        state.bankroll -= state.bet;\\n        state.phase = 'result';\\n        state.message = 'Bust! -$' + state.bet;\\n    } else if (val === 21) {\\n        dealerPlay();\\n        return;\\n    }\\n    render();\\n}\\n\\nfunction playerStand() {\\n    dealerPlay();\\n}\\n\\nfunction playerDouble() {\\n    state.bet *= 2;\\n    state.playerHand.push(dealCard());\\n    var val = handValue(state.playerHand);\\n    if (val > 21) {\\n        state.bankroll -= state.bet;\\n        state.phase = 'result';\\n        state.message = 'Bust! -$' + state.bet;\\n        render();\\n    } else {\\n        dealerPlay();\\n    }\\n}\\n\\nfunction dealerPlay() {\\n    state.phase = 'dealer_turn';\\n    render();\\n\\n    function dealStep() {\\n        if (handValue(state.dealerHand) < 17) {\\n            setTimeout(function() {\\n                state.dealerHand.push(dealCard());\\n                render();\\n                dealStep();\\n            }, 600);\\n        } else {\\n            setTimeout(function() {\\n                var pv = handValue(state.playerHand);\\n                var dv = handValue(state.dealerHand);\\n                state.phase = 'result';\\n                if (dv > 21) {\\n                    state.bankroll += state.bet;\\n                    state.message = 'Dealer busts! +$' + state.bet;\\n                } else if (pv > dv) {\\n                    state.bankroll += state.bet;\\n                    state.message = 'You win! +$' + state.bet;\\n                } else if (dv > pv) {\\n                    state.bankroll -= state.bet;\\n                    state.message = 'Dealer wins. -$' + state.bet;\\n                } else {\\n                    state.message = 'Push.';\\n                }\\n                render();\\n            }, 400);\\n        }\\n    }\\n    dealStep();\\n}\\n\\nfunction render() {\\n    var canDouble = state.phase === 'player_turn' &&\\n                    state.playerHand.length === 2 &&\\n                    state.bankroll >= state.bet * 2;\\n    w.empty();\\n    w.append(widget('bj:bj_score', { bankroll: state.bankroll, bet: state.bet, message: state.message }));\\n    w.append(widget('bj:bj_hand', { cards: state.dealerHand, hideFirst: state.phase === 'player_turn', label: 'Dealer' }));\\n    w.append(widget('bj:bj_hand', { cards: state.playerHand, hideFirst: false, label: 'You' }));\\n    w.append(widget('bj:bj_controls', { phase: state.phase, bet: state.bet, bankroll: state.bankroll, canDouble: canDouble }));\\n}\\n\\nw.on('bj_deal',   function()          { startHand(); });\\nw.on('bj_hit',    function()          { playerHit(); });\\nw.on('bj_stand',  function()          { playerStand(); });\\nw.on('bj_double', function()          { playerDouble(); });\\nw.on('bj_bet',    function(e, amount) {\\n    state.bet = Math.min(amount, state.bankroll);\\n    if (state.phase === 'betting' || state.phase === 'result') render();\\n});\\n\\nrender();\\n\""
+        },
+        {
+            "hash": "\\xa4e53ea73b4d48806da8c463f15fac5f113d4135611882c68b76d02bcf6d5180",
+            "value": "\"var w = $('#' + id);\\nif (!cards) cards = [];\\n\\nw.find('.bj-hand-label').text(label || '');\\n\\nvar cardsEl = w.find('.bj-hand-cards');\\ncards.forEach(function(card, i) {\\n    var fd = (hideFirst && i === 0);\\n    cardsEl.append(widget('bj:bj_card', { rank: card.rank, suit: card.suit, faceDown: fd }));\\n});\\n\\nif (!hideFirst && cards.length > 0) {\\n    var total = cards.reduce(function(s, c) { return s + c.value; }, 0);\\n    var aces = cards.filter(function(c) { return c.rank === 'A'; }).length;\\n    while (total > 21 && aces > 0) { total -= 10; aces--; }\\n    w.find('.bj-hand-value').text(total > 21 ? total + ' (bust)' : total);\\n} else {\\n    w.find('.bj-hand-value').text('');\\n}\\n\""
+        },
+        {
+            "hash": "\\xea9c49684e23fa4ba26275311c3225982d158f8b468f4524b9dfd5eafe6f7105",
+            "value": "\"944b5a05-be70-45a1-a549-1301d38799e4\""
+        },
+        {
+            "hash": "\\x1230c0352578d5e157df24bc50775ec4ea0073a4239f92876e3e887f4ae02017",
+            "value": "\"8299e63a-7fc7-457e-a1f0-d2213097a32e\""
+        },
+        {
+            "hash": "\\x5579640a19635d0ac18012d4c62571ed7ec58cb03e9141daca4c652e5dc8ec73",
+            "value": "\"0ee28468-111e-4b67-b4a1-fe7150021b16\""
+        }
+    ],
+    "commits": [
+        {
+            "id": "3fcf296c-509c-46c6-a48d-1f4a124b49cd",
+            "message": "initial blackjack game",
+            "version": null,
+            "parent_id": null,
+            "jsonb_rows": [
+                {
+                    "pk_values": [
+                        "b3c6778f-ca15-4755-8ae2-cc731cf035b0"
+                    ],
+                    "schema_name": "widget",
+                    "relation_name": "widget",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "0660dbac-d652-4155-b5eb-66bba885405a"
+                    ],
+                    "schema_name": "widget",
+                    "relation_name": "widget",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "cce06846-e16a-44d1-93e8-fb1f26ab78c0"
+                    ],
+                    "schema_name": "widget",
+                    "relation_name": "widget",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "8299e63a-7fc7-457e-a1f0-d2213097a32e"
+                    ],
+                    "schema_name": "widget",
+                    "relation_name": "widget",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "c760c322-32d4-454f-8780-917c5a2aa1a5"
+                    ],
+                    "schema_name": "widget",
+                    "relation_name": "widget",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "0ee28468-111e-4b67-b4a1-fe7150021b16"
+                    ],
+                    "schema_name": "endpoint",
+                    "relation_name": "resource",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                }
+            ],
+            "author_name": "claude_code",
+            "commit_time": "2026-06-03T08:24:59.272576+00:00",
+            "author_email": "claude@aquameta.org",
+            "jsonb_fields": {
+                "{\"pk_values\": [\"0660dbac-d652-4155-b5eb-66bba885405a\"], \"schema_name\": \"widget\", \"relation_name\": \"widget\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\x65c2f5bfcb34f64cde906f025a67c8816bd2c496a24c2c55b9876b8a64f1a4f2",
+                    "css": "\\xa4419605615b63ae222d656277417383a1c53e597891117b60273c267a80e680",
+                    "help": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "html": "\\x754d76a170a49029a37feaad47bf28c6ac22e32ebc3d54c965826fbb36f00b37",
+                    "name": "\\x4f09f5df4e702e4dafc2151826df99b036850278b71ea580cdd9f8fec8626bc7",
+                    "pre_js": "\\x3a26fd017f2c6af2b2094c00642f35223707175f5ca24345157952679aceb5dc",
+                    "post_js": "\\xa4e53ea73b4d48806da8c463f15fac5f113d4135611882c68b76d02bcf6d5180",
+                    "common_js": "\\x12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
+                    "server_js": "\\x12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126"
+                },
+                "{\"pk_values\": [\"8299e63a-7fc7-457e-a1f0-d2213097a32e\"], \"schema_name\": \"widget\", \"relation_name\": \"widget\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\x1230c0352578d5e157df24bc50775ec4ea0073a4239f92876e3e887f4ae02017",
+                    "css": "\\x07f96b3b4f4ea2bb8020c87471b6cc35f06a5993e7e3a2bd87d5a4f20313d522",
+                    "help": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "html": "\\xc4a2c55322647d984b144efe07f2bc881e9b6bea2292ca7b1240d6d20601f0c3",
+                    "name": "\\xdac00ef2dc36fbb0de8adbc83835d00968cd973185df3602853850c92efc746e",
+                    "pre_js": "\\x3a26fd017f2c6af2b2094c00642f35223707175f5ca24345157952679aceb5dc",
+                    "post_js": "\\xd8522ddcf3ddba20bb196ee252e408910e3114f28cfb75034216187adea7cbb8",
+                    "common_js": "\\x12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
+                    "server_js": "\\x12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126"
+                },
+                "{\"pk_values\": [\"b3c6778f-ca15-4755-8ae2-cc731cf035b0\"], \"schema_name\": \"widget\", \"relation_name\": \"widget\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\x94360209120cc94a9ac8141c8ea6e41b000ae257dc82008aafe07036d3f3dd4f",
+                    "css": "\\xd7ea3573cf3d15d30dde1e1f3bab336b176dbe7cc97db3c1c394ba0854a71a11",
+                    "help": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "html": "\\xe90d3f21e687d81e701426964ec9afeb91f81a4ab5cccee0b9e89eca2954b47b",
+                    "name": "\\x452d7b3c0226213fa8dbeb4235420a3aa0043da825496e416895776b1baa670f",
+                    "pre_js": "\\x3a26fd017f2c6af2b2094c00642f35223707175f5ca24345157952679aceb5dc",
+                    "post_js": "\\xab7402de55e0a61ddcc825d7c7d4439319e00535cac7d00ef87450f51809e8d1",
+                    "common_js": "\\x12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
+                    "server_js": "\\x12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126"
+                },
+                "{\"pk_values\": [\"c760c322-32d4-454f-8780-917c5a2aa1a5\"], \"schema_name\": \"widget\", \"relation_name\": \"widget\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\x4ae22664c805909edfadae1bbb6daa1f93068d57d7388e26b1302c8bb9f8be19",
+                    "css": "\\xb047962525c5b83b0bfcf009ff7b43376860f46875263c49cd97e75f863c5a6c",
+                    "help": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "html": "\\xe90d3f21e687d81e701426964ec9afeb91f81a4ab5cccee0b9e89eca2954b47b",
+                    "name": "\\x09e6f3b08c2ce08475d1aca129ba066a66e39a6785466a92b1f19159e392afc9",
+                    "pre_js": "\\x3a26fd017f2c6af2b2094c00642f35223707175f5ca24345157952679aceb5dc",
+                    "post_js": "\\x36c290817c4ef013037d26de348b85a453de435988b1d8baa7f1dcefa8c18663",
+                    "common_js": "\\x12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
+                    "server_js": "\\x12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126"
+                },
+                "{\"pk_values\": [\"cce06846-e16a-44d1-93e8-fb1f26ab78c0\"], \"schema_name\": \"widget\", \"relation_name\": \"widget\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\x20c6c89562c9b5616ff4004aab6c257184d08b302d0033f35ac82e17de9ce817",
+                    "css": "\\xdbcae405467a2ab325d2a443d42dcd7af0cecb1d933f29aaef84f639ef6ce530",
+                    "help": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "html": "\\x5aef5d7995e38e2d84499ae4dfecf1d1ac34bac7b7f7ef7480d6d181cf3e9033",
+                    "name": "\\x4f810f8937c4e82f23e246fbf72c83f27940e88143b53f28e06cccad93753b72",
+                    "pre_js": "\\x3a26fd017f2c6af2b2094c00642f35223707175f5ca24345157952679aceb5dc",
+                    "post_js": "\\xac20334dfafdbc334185281a950c567c11db61f47484c982bcaec4dc42310dcc",
+                    "common_js": "\\x12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
+                    "server_js": "\\x12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126"
+                },
+                "{\"pk_values\": [\"0ee28468-111e-4b67-b4a1-fe7150021b16\"], \"schema_name\": \"endpoint\", \"relation_name\": \"resource\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\x5579640a19635d0ac18012d4c62571ed7ec58cb03e9141daca4c652e5dc8ec73",
+                    "path": "\\x73d3fb1766f84a813332aa41c5fdb8ce3f67fc01c3ea44ffa3fe93ca0f4ef28a",
+                    "active": "\\xb5bea41b6c623f7c09f1bf24dcae58ebab3c0cdd90ad966bc43a45b44867e12b",
+                    "content": "\\xd30d33c757414403e381587e424ccbfe1f6df911b7426ba87a1cdff08b4b964d",
+                    "mimetype_id": "\\xea9c49684e23fa4ba26275311c3225982d158f8b468f4524b9dfd5eafe6f7105"
+                }
+            },
+            "repository_id": "ebd3b5e5-6414-4a5f-b3e0-b51242fa3408",
+            "merge_parent_id": null
+        }
+    ],
+    "repository": {
+        "id": "ebd3b5e5-6414-4a5f-b3e0-b51242fa3408",
+        "name": "org.aquameta.games.blackjack",
+        "head_commit_id": "3fcf296c-509c-46c6-a48d-1f4a124b49cd"
+    }
+}

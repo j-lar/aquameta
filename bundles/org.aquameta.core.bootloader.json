@@ -173,6 +173,10 @@
             "value": "var w = $(\"#\"+id);\n\nw.find('.tabular.menu .item').tab();\n\nw.find('button.next_embedded').click(function(){\n    $('#setup_bootdb').hide();\n    $('#setup_http').show();\n});\n\nw.find('button.configure').click(function() {\n    $('#setup_bootdb').hide();\n    $('#setup_bootdb_connection').show();    \n});"
         },
         {
+            "hash": "\\x2a90bf2ec5c7f7cd34d05dd583b327cf2dee1818be77fe12fc0f676bdb596aaf",
+            "value": "\"<div id=\\\"{{= id }}\\\" class=\\\"{{= name }}\\\">\\n    Hello from bootloader. <!-- edited via PGFS by ai.run 0a26cc7f -->\\n</div>\""
+        },
+        {
             "hash": "\\xe2aa7a9196192aadd73de3ead90a67e90eab72c9d0aa9def68b1f6d6b9902e3f",
             "value": ".{{= name }} header {\n    text-align: center;\n}"
         },
@@ -197,6 +201,7 @@
         {
             "id": "b65d6d75-4a45-45fb-b1de-f8d1afe980c4",
             "message": "Initial import from v0.4",
+            "version": null,
             "parent_id": null,
             "jsonb_rows": [
                 "(widget,widget,{id},{ba62b0bf-fd7f-4b75-b129-4ae7ae97523a})",
@@ -211,7 +216,7 @@
                 "(endpoint,resource,{id},{385fb542-b0ed-4802-8eda-938ae7068ed4})"
             ],
             "author_name": "Eric Hanson",
-            "commit_time": "2025-07-10T01:44:30.232095-06:00",
+            "commit_time": "2025-07-10T07:44:30.232095+00:00",
             "author_email": "eric@aquameta.com",
             "jsonb_fields": {
                 "(widget,widget,{id},{0990a23b-e5ca-480b-87d7-8234a15d6ad6})": {
@@ -323,20 +328,142 @@
             },
             "repository_id": "5ddb6055-5ece-4e9d-8af6-c15118726f1d",
             "merge_parent_id": null
+        },
+        {
+            "id": "b31682b4-c4d2-4ba0-b839-dd27386c3133",
+            "message": "Agent edit: bootscreen html Goodbye→Hello via PGFS (ai.run 0a26cc7f)",
+            "version": null,
+            "parent_id": "b65d6d75-4a45-45fb-b1de-f8d1afe980c4",
+            "jsonb_rows": [
+                "(widget,widget,{id},{ba62b0bf-fd7f-4b75-b129-4ae7ae97523a})",
+                "(widget,widget,{id},{67f905b7-9d6f-40b0-bd4c-a644d4faa4ec})",
+                "(widget,widget,{id},{8fdc7862-2dba-4e9a-b973-47fe4d293c6b})",
+                "(widget,widget,{id},{f5f69879-360a-4915-983e-27440629f431})",
+                "(widget,widget,{id},{5adb74b2-8c13-4877-8f3f-0e24d0ff1865})",
+                "(widget,widget,{id},{bce2ca97-053f-48e4-8551-d6f03cd03ea4})",
+                "(widget,widget,{id},{0990a23b-e5ca-480b-87d7-8234a15d6ad6})",
+                "(widget,widget,{id},{0e14ed65-0792-4c7e-803c-2e870fb65d04})",
+                "(widget,widget,{id},{ebb21bca-47bc-4d54-a3a8-81d3d362f73a})",
+                "(endpoint,resource,{id},{385fb542-b0ed-4802-8eda-938ae7068ed4})"
+            ],
+            "author_name": "dev agent",
+            "commit_time": "2026-06-02T07:23:36.175783+00:00",
+            "author_email": "n8r5xcgxxn@privaterelay.appleid.com",
+            "jsonb_fields": {
+                "(widget,widget,{id},{0990a23b-e5ca-480b-87d7-8234a15d6ad6})": {
+                    "id": "\\xec7d44905b80bbabab509acefb21e0fee66ec1c4bd0cc5a44ba66ed94d0d91a2",
+                    "css": "\\x0ba9b693da6b2dbb83cee744e953ac5cb5f3d2cb93a4a0550b607a7fdcca02c2",
+                    "help": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "html": "\\x6db6ac45fd8aaac4f6be740fdffa1fbfb3e50471e32bb4be6e37d1c12a913d42",
+                    "name": "\\x0d6e4079e36703ebd37c00722f5891d28b0e2811dc114b129215123adcce3605",
+                    "pre_js": "\\xe4b08665b2511bc86ca7cf1116f4a4df34ec5c7f0a19329e166cd8a00e862382",
+                    "post_js": "\\x4938388f0c68650a2120ab03dfbf8e39b08edca0d086b3c3fd02e84e501a5fab",
+                    "common_js": "\\xe3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+                    "server_js": "\\xe3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+                },
+                "(widget,widget,{id},{0e14ed65-0792-4c7e-803c-2e870fb65d04})": {
+                    "id": "\\xcee59d26dd90dd705c2a480a05bfb8949d8c0e3239e0147852798d73ef3a46f1",
+                    "css": "\\x5bfedd8674718ff919b8dd9556d17f4a5d668bb6102f93102bb21da451730135",
+                    "help": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "html": "\\xf65e40d4da8e44cb167f1e0443285390ba04e20794020e4eaaf3ccaa4a8abbf0",
+                    "name": "\\xe2a2881b4f2c35c5b2bcbf386107385feec0b71610043ac7ddfe51d38100e3dd",
+                    "pre_js": "\\xe4b08665b2511bc86ca7cf1116f4a4df34ec5c7f0a19329e166cd8a00e862382",
+                    "post_js": "\\x20af0663ffaf114b890285d986d5f5d1d138a73fac8404f7b7eea6e42db50c87",
+                    "common_js": "\\xe3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+                    "server_js": "\\xe3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+                },
+                "(widget,widget,{id},{5adb74b2-8c13-4877-8f3f-0e24d0ff1865})": {
+                    "id": "\\x569e2034b6b4420225e93ac611ff908336b22eb9df83a289753e56cf3d46a9e6",
+                    "css": "\\xe2aa7a9196192aadd73de3ead90a67e90eab72c9d0aa9def68b1f6d6b9902e3f",
+                    "help": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "html": "\\x8a7bf0e95cb72949eb188401d12f8810fa89f0b750080f6f073fd358c26e8944",
+                    "name": "\\xd0f6c74f8ddef4fc02791d2b5263576b657fa098a7ad9154d4a130845cde3a8a",
+                    "pre_js": "\\xe4b08665b2511bc86ca7cf1116f4a4df34ec5c7f0a19329e166cd8a00e862382",
+                    "post_js": "\\x8b8b10210acfe37d11a36b4903305ab35ab8d992e5dd91833a558eba40c809b1",
+                    "common_js": "\\xe3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+                    "server_js": "\\xe3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+                },
+                "(widget,widget,{id},{67f905b7-9d6f-40b0-bd4c-a644d4faa4ec})": {
+                    "id": "\\xcd57204c6a780a175a2f7eacc5a0a438673071f08287633a96e7196f3597b139",
+                    "css": "\\x0ba9b693da6b2dbb83cee744e953ac5cb5f3d2cb93a4a0550b607a7fdcca02c2",
+                    "help": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "html": "\\x2a90bf2ec5c7f7cd34d05dd583b327cf2dee1818be77fe12fc0f676bdb596aaf",
+                    "name": "\\x2dd61805c67f9c2aa781c07a3b10587cf247c4f80cd147226027373e47e4c6df",
+                    "pre_js": "\\xe4b08665b2511bc86ca7cf1116f4a4df34ec5c7f0a19329e166cd8a00e862382",
+                    "post_js": "\\x4938388f0c68650a2120ab03dfbf8e39b08edca0d086b3c3fd02e84e501a5fab",
+                    "common_js": "\\xe3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+                    "server_js": "\\xe3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+                },
+                "(widget,widget,{id},{8fdc7862-2dba-4e9a-b973-47fe4d293c6b})": {
+                    "id": "\\xd6219b7f18e0d510a965e60307774f65a41d92b456a429ac513fa34b7bc7c918",
+                    "css": "\\x2b843c3048e6ae9ccd07276c61c00b9a08a319f8dda7e51fd6a32e70b5d6ef42",
+                    "help": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "html": "\\x68fe26e34cee3d17173d14671d5e47c98c22909fe6f0c3f53115d05a3b65988f",
+                    "name": "\\x40a55c8eae30c72616632afbca6f218d6f5b1b9a59697dff7d435a03fe1b6cb0",
+                    "pre_js": "\\xe4b08665b2511bc86ca7cf1116f4a4df34ec5c7f0a19329e166cd8a00e862382",
+                    "post_js": "\\x69ed642adbb6ae1457fe172cc7e8ba40805b2c9ffdd72f1ddd28516286d01db2",
+                    "common_js": "\\xe3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+                    "server_js": "\\xe3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+                },
+                "(widget,widget,{id},{ba62b0bf-fd7f-4b75-b129-4ae7ae97523a})": {
+                    "id": "\\x03efbe1d14a4adee7bb1eba35e8f54e3c93ab52424696a67a74a2f6e5448533b",
+                    "css": "\\x0ba9b693da6b2dbb83cee744e953ac5cb5f3d2cb93a4a0550b607a7fdcca02c2",
+                    "help": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "html": "\\xb6d0ef4875e96df9727451504df6fb901e23e1470a747e15776d73079430df02",
+                    "name": "\\x532654f34aa745f4189f03e83e52843001a2ab37282b9e5d0310717ae37770f7",
+                    "pre_js": "\\xe4b08665b2511bc86ca7cf1116f4a4df34ec5c7f0a19329e166cd8a00e862382",
+                    "post_js": "\\x4938388f0c68650a2120ab03dfbf8e39b08edca0d086b3c3fd02e84e501a5fab",
+                    "common_js": "\\xe3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+                    "server_js": "\\xe3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+                },
+                "(widget,widget,{id},{bce2ca97-053f-48e4-8551-d6f03cd03ea4})": {
+                    "id": "\\xe6958b6d199ed9ffcc3ef2101b517208ff7c23351c391001092c757a799953a0",
+                    "css": "\\xdc80a79714795da2576be11722e24cd5156631acb145ade55480622593b18b52",
+                    "help": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "html": "\\x3d87a45f185c0d549a96535413658ff169d98bfc7c6e9b5ccc77d48dabc303bd",
+                    "name": "\\xcae662172fd450bb0cd710a769079c05bfc5d8e35efa6576edc7d0377afdd4a2",
+                    "pre_js": "\\xe4b08665b2511bc86ca7cf1116f4a4df34ec5c7f0a19329e166cd8a00e862382",
+                    "post_js": "\\x33399274499d3d18c68a4efef83220aa247e4a995ced32f96925f89b8b051923",
+                    "common_js": "\\xe3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+                    "server_js": "\\xe3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+                },
+                "(widget,widget,{id},{ebb21bca-47bc-4d54-a3a8-81d3d362f73a})": {
+                    "id": "\\x85a9efe66bfa83aaf1603171346048b3108ff5aae2242918288b04f494fb7fad",
+                    "css": "\\xe2aa7a9196192aadd73de3ead90a67e90eab72c9d0aa9def68b1f6d6b9902e3f",
+                    "help": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "html": "\\x0ec38c3af50fede4e0433f7ad70e436cec0981ac4a94f9249e0b19f9bbe0fe0c",
+                    "name": "\\xc0bd433e4e19e3e6e6b8fcf2bb4c957a077adfcb6485232c7110f49788000a13",
+                    "pre_js": "\\xe4b08665b2511bc86ca7cf1116f4a4df34ec5c7f0a19329e166cd8a00e862382",
+                    "post_js": "\\x5cf2c9608674a858232efa6283a05e911aec572a98afddc78fd22e68a7d1eff5",
+                    "common_js": "\\xe3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+                    "server_js": "\\xe3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+                },
+                "(widget,widget,{id},{f5f69879-360a-4915-983e-27440629f431})": {
+                    "id": "\\x77beadf9e07d7c4df13447b0e83f0ffb565b5e77fd433fbd7f68d966a97f5600",
+                    "css": "\\xe55479deca8fae016a12f5a6f480bff69bd5939a5be7f44796b903e4ba7d89e7",
+                    "help": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "html": "\\x971415941ceddd645c8447e2b6fa57ba09a4dd6323c0980cab8cc93777e6de7b",
+                    "name": "\\x8fb6d5f37e8055ce720bd0b1d56587f88c0071f285966ba17e72b2b12672aa73",
+                    "pre_js": "\\xe4b08665b2511bc86ca7cf1116f4a4df34ec5c7f0a19329e166cd8a00e862382",
+                    "post_js": "\\xa95033e027db23f73617c0a7231072b10b3b81ce427f2aab26329eaae12022a0",
+                    "common_js": "\\xe3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+                    "server_js": "\\xe3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+                },
+                "(endpoint,resource,{id},{385fb542-b0ed-4802-8eda-938ae7068ed4})": {
+                    "id": "\\xd0f1756ddc3ffa1a73c98c2aa3561bc7ae899baa3d5273a0996ab567af191702",
+                    "path": "\\x347a1e2537cc7aea90a4938443f967a544ea0e3f60fdc4cb45c3347a3df94bc9",
+                    "active": "\\xb5bea41b6c623f7c09f1bf24dcae58ebab3c0cdd90ad966bc43a45b44867e12b",
+                    "content": "\\xe8ea95712bf5e78b8c4b163d4ce3e059a9522b988a2337552071d3e011a93872",
+                    "mimetype_id": "\\xdd2741e2734916143a6dbf1d1939cbc04396f10356faf54aba282066cec41b5f"
+                }
+            },
+            "repository_id": "5ddb6055-5ece-4e9d-8af6-c15118726f1d",
+            "merge_parent_id": null
         }
     ],
     "repository": {
         "id": "5ddb6055-5ece-4e9d-8af6-c15118726f1d",
         "name": "org.aquameta.core.bootloader",
-        "head_commit_id": "b65d6d75-4a45-45fb-b1de-f8d1afe980c4",
-        "stage_rows_to_add": [
-        ],
-        "checkout_commit_id": "b65d6d75-4a45-45fb-b1de-f8d1afe980c4",
-        "tracked_rows_added": [
-        ],
-        "stage_rows_to_remove": [
-        ],
-        "stage_fields_to_change": [
-        ]
+        "head_commit_id": "b31682b4-c4d2-4ba0-b839-dd27386c3133"
     }
 }

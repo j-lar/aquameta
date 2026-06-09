@@ -1,0 +1,204 @@
+{
+    "blobs": [
+        {
+            "hash": "\\x0bdf837edd1324ff3cd782e954c740ce527b94db0d8d468e99377f864340fa32",
+            "value": "\"Both inventory() and search() accept bundle_names text[] default null. NULL = all installed bundles. Always scope to the relevant bundle(s) when working on a specific bundle to avoid noise from unrelated surfaces. Example: SELECT * FROM navigation.inventory(ARRAY['io.bundle.ai.core']);\""
+        },
+        {
+            "hash": "\\xe0f2ac03f1dd34662584ab9778ce5a47f6bb768b3c9187fd0589ac317e7015b1",
+            "value": "\"convention\""
+        },
+        {
+            "hash": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+            "value": null
+        },
+        {
+            "hash": "\\xb873fd8942d735739c5ff7084e383cbfe61ea0974615dcbf30575f5c50a2851b",
+            "value": "\"navigation.search()\""
+        },
+        {
+            "hash": "\\x6f71cfd96687cad6c5bf0427604e7567e061ba1e835ee10dc2b9e19dd57e9bed",
+            "value": "{\"pk_values\": [\"(navigation,search,\\\"{text,text[]}\\\")\"], \"schema_name\": \"navigation\", \"relation_name\": \"function\", \"pk_column_names\": [\"id\"]}"
+        },
+        {
+            "hash": "\\x6d9cbbf3e5c1db4f7a44424e558bc21d16620a1e4e5e97dbc2238e96df02ecd3",
+            "value": "\"233a5336-99f2-4b44-81e7-0d4ae68f3a1d\""
+        },
+        {
+            "hash": "\\xe1f7c690544cadb5941427bb2bf0cbfc6c5025d6baefa9be9e8bbff50bd11f93",
+            "value": "\"entry_point\""
+        },
+        {
+            "hash": "\\x84fa39d5ad8ba323b0c726fb687c7eced7bd169d0f21832d0e80bc634c0c4ba1",
+            "value": "\"2026-06-03T23:05:16.914612+00:00\""
+        },
+        {
+            "hash": "\\xa64e2a45aa86c6145257bf5943ed14ce918cd04269002e26f51caa207f7a8e75",
+            "value": "\"Primary entry point for agent orientation. Returns (bundle, kind, name, detail) for every tracked surface: bundles, schemas, tables, functions, widgets, endpoint resources, template routes. Call with no args for all bundles; pass bundle_names[] to scope. Untracked rows excluded.\""
+        },
+        {
+            "hash": "\\x1f5fb8db50392a9963068189e0d21342c9237d2cb49e0cc6e7f68be16c6030f2",
+            "value": "\"8f09a01d-d245-4c0c-9f62-1464a650d0c7\""
+        },
+        {
+            "hash": "\\xef3c8ed0656bbb429ec4a117e8079ed9b2ecd6dd8ff15b27c6842bddb6fbe007",
+            "value": "\"a0476fe5-d732-49df-8160-a7c07b6bf371\""
+        },
+        {
+            "hash": "\\x2cc27b867af44ee54f7fe8ccad7fe18ab90e4b84e47a74aba3aa16e590786716",
+            "value": "\"inventory() and search() only show rows that appear in a bundle head commit. Rows in the stage or not tracked by any bundle are invisible. If you just inserted a row and it does not appear, check that it has been tracked and the bundle committed.\""
+        },
+        {
+            "hash": "\\xdef32e473a731cc272e4a81b155029bc0a1ef6f18342c89e5f2def9e0eb3e422",
+            "value": "\"readme\""
+        },
+        {
+            "hash": "\\x643773dfbc7535470592af54c29bc51897d771213a26fa7aa94dfb5b58593f41",
+            "value": "\"Navigation bundle purpose\""
+        },
+        {
+            "hash": "\\xb9fda90f90e664b5f56ddc99c02c0866328735e013873e6bdf0cd14981495bbe",
+            "value": "\"Search across all DB-resident code. Returns (surface, bundle, location, column_, pk). Covers: widget pre_js/common_js/post_js/server_js/html/css, endpoint.resource.content, meta.function.definition. Use this to find which bundle or widget contains a given pattern.\""
+        },
+        {
+            "hash": "\\x16e4a8a547011cd690da997dde21b02bbe021742bde6300f721c9775562a06ac",
+            "value": "\"8d48040f-5219-44d6-ab51-7e1f93f77fb8\""
+        },
+        {
+            "hash": "\\x7e94d8abfca22294d0554b326aff404f92a04bf838a622eb7d28b3098906f4ab",
+            "value": "{\"pk_values\": [\"(navigation,inventory,{text[]})\"], \"schema_name\": \"navigation\", \"relation_name\": \"function\", \"pk_column_names\": [\"id\"]}"
+        },
+        {
+            "hash": "\\xefb45d5636a6cf51a907898d6030a671dcfdf8f0dbd8ad28a3f19654926c5b64",
+            "value": "\"9c23fc90-6987-4952-a3c4-bd5841230ea0\""
+        },
+        {
+            "hash": "\\x409a8683a72438bb9a1b593b78a5c265c12ff554393af30624d8159bebaec0d0",
+            "value": "\"Bundle scoping via bundle_names[]\""
+        },
+        {
+            "hash": "\\x6850b4acbd54e4caae6dd9c57a67a42d593134ddbc39c68c3032e9637851e926",
+            "value": "\"navigation.inventory()\""
+        },
+        {
+            "hash": "\\x339e4323cf2727c71aaa1837ad76570f91977f55cb6726734049b3fdf4715b45",
+            "value": "\"Agent navigation substrate for Aquameta. Provides two query-time entry points that are causally tied to the live DB state: inventory() enumerates every code-bearing surface across tracked bundles; search() does ILIKE across widget JS/HTML/CSS, resource content, and function definitions. Both scope via bundle_names[] parameter (NULL = all bundles). This is the layer that grep-over-files cannot replicate.\""
+        },
+        {
+            "hash": "\\x7cb9cf064f127a7b33aeb64bfe598c1359c0438e126645c0f8131f4fb2b9fb81",
+            "value": "\"Untracked rows are excluded\""
+        }
+    ],
+    "commits": [
+        {
+            "id": "ec842d0f-c0f1-4750-9b41-e109c3df9a34",
+            "message": "add navigation.surface table: per-bundle agent metadata declarations; seed with 5 initial rows",
+            "version": null,
+            "parent_id": null,
+            "jsonb_rows": [
+                {
+                    "pk_values": [
+                        "8f09a01d-d245-4c0c-9f62-1464a650d0c7"
+                    ],
+                    "schema_name": "navigation",
+                    "relation_name": "surface",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "a0476fe5-d732-49df-8160-a7c07b6bf371"
+                    ],
+                    "schema_name": "navigation",
+                    "relation_name": "surface",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "233a5336-99f2-4b44-81e7-0d4ae68f3a1d"
+                    ],
+                    "schema_name": "navigation",
+                    "relation_name": "surface",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "8d48040f-5219-44d6-ab51-7e1f93f77fb8"
+                    ],
+                    "schema_name": "navigation",
+                    "relation_name": "surface",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "9c23fc90-6987-4952-a3c4-bd5841230ea0"
+                    ],
+                    "schema_name": "navigation",
+                    "relation_name": "surface",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                }
+            ],
+            "author_name": "claude_code",
+            "commit_time": "2026-06-03T23:05:24.702791+00:00",
+            "author_email": "claude@aquameta.org",
+            "jsonb_fields": {
+                "{\"pk_values\": [\"233a5336-99f2-4b44-81e7-0d4ae68f3a1d\"], \"schema_name\": \"navigation\", \"relation_name\": \"surface\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\x6d9cbbf3e5c1db4f7a44424e558bc21d16620a1e4e5e97dbc2238e96df02ecd3",
+                    "kind": "\\xe1f7c690544cadb5941427bb2bf0cbfc6c5025d6baefa9be9e8bbff50bd11f93",
+                    "name": "\\xb873fd8942d735739c5ff7084e383cbfe61ea0974615dcbf30575f5c50a2851b",
+                    "created_at": "\\x84fa39d5ad8ba323b0c726fb687c7eced7bd169d0f21832d0e80bc634c0c4ba1",
+                    "target_row": "\\x6f71cfd96687cad6c5bf0427604e7567e061ba1e835ee10dc2b9e19dd57e9bed",
+                    "description": "\\xb9fda90f90e664b5f56ddc99c02c0866328735e013873e6bdf0cd14981495bbe"
+                },
+                "{\"pk_values\": [\"8d48040f-5219-44d6-ab51-7e1f93f77fb8\"], \"schema_name\": \"navigation\", \"relation_name\": \"surface\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\x16e4a8a547011cd690da997dde21b02bbe021742bde6300f721c9775562a06ac",
+                    "kind": "\\xe0f2ac03f1dd34662584ab9778ce5a47f6bb768b3c9187fd0589ac317e7015b1",
+                    "name": "\\x409a8683a72438bb9a1b593b78a5c265c12ff554393af30624d8159bebaec0d0",
+                    "created_at": "\\x84fa39d5ad8ba323b0c726fb687c7eced7bd169d0f21832d0e80bc634c0c4ba1",
+                    "target_row": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "description": "\\x0bdf837edd1324ff3cd782e954c740ce527b94db0d8d468e99377f864340fa32"
+                },
+                "{\"pk_values\": [\"8f09a01d-d245-4c0c-9f62-1464a650d0c7\"], \"schema_name\": \"navigation\", \"relation_name\": \"surface\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\x1f5fb8db50392a9963068189e0d21342c9237d2cb49e0cc6e7f68be16c6030f2",
+                    "kind": "\\xdef32e473a731cc272e4a81b155029bc0a1ef6f18342c89e5f2def9e0eb3e422",
+                    "name": "\\x643773dfbc7535470592af54c29bc51897d771213a26fa7aa94dfb5b58593f41",
+                    "created_at": "\\x84fa39d5ad8ba323b0c726fb687c7eced7bd169d0f21832d0e80bc634c0c4ba1",
+                    "target_row": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "description": "\\x339e4323cf2727c71aaa1837ad76570f91977f55cb6726734049b3fdf4715b45"
+                },
+                "{\"pk_values\": [\"9c23fc90-6987-4952-a3c4-bd5841230ea0\"], \"schema_name\": \"navigation\", \"relation_name\": \"surface\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\xefb45d5636a6cf51a907898d6030a671dcfdf8f0dbd8ad28a3f19654926c5b64",
+                    "kind": "\\xe0f2ac03f1dd34662584ab9778ce5a47f6bb768b3c9187fd0589ac317e7015b1",
+                    "name": "\\x7cb9cf064f127a7b33aeb64bfe598c1359c0438e126645c0f8131f4fb2b9fb81",
+                    "created_at": "\\x84fa39d5ad8ba323b0c726fb687c7eced7bd169d0f21832d0e80bc634c0c4ba1",
+                    "target_row": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "description": "\\x2cc27b867af44ee54f7fe8ccad7fe18ab90e4b84e47a74aba3aa16e590786716"
+                },
+                "{\"pk_values\": [\"a0476fe5-d732-49df-8160-a7c07b6bf371\"], \"schema_name\": \"navigation\", \"relation_name\": \"surface\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\xef3c8ed0656bbb429ec4a117e8079ed9b2ecd6dd8ff15b27c6842bddb6fbe007",
+                    "kind": "\\xe1f7c690544cadb5941427bb2bf0cbfc6c5025d6baefa9be9e8bbff50bd11f93",
+                    "name": "\\x6850b4acbd54e4caae6dd9c57a67a42d593134ddbc39c68c3032e9637851e926",
+                    "created_at": "\\x84fa39d5ad8ba323b0c726fb687c7eced7bd169d0f21832d0e80bc634c0c4ba1",
+                    "target_row": "\\x7e94d8abfca22294d0554b326aff404f92a04bf838a622eb7d28b3098906f4ab",
+                    "description": "\\xa64e2a45aa86c6145257bf5943ed14ce918cd04269002e26f51caa207f7a8e75"
+                }
+            },
+            "repository_id": "be78f027-fabb-41b0-9d13-db48c8fdefc5",
+            "merge_parent_id": null
+        }
+    ],
+    "repository": {
+        "id": "be78f027-fabb-41b0-9d13-db48c8fdefc5",
+        "name": "io.bundle.aquameta.navigation",
+        "head_commit_id": "ec842d0f-c0f1-4750-9b41-e109c3df9a34"
+    }
+}

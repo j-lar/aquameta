@@ -1,0 +1,322 @@
+{
+    "blobs": [
+        {
+            "hash": "\\xa0d92561536dbc822cfd24948d9e7cc4738dd86576a4523dd4b34ba55eedd480",
+            "value": "\".rl_game {\\n    display: flex;\\n    flex-direction: column;\\n    align-items: center;\\n    padding: 16px;\\n    gap: 14px;\\n    max-width: 720px;\\n    margin: 0 auto;\\n    min-height: 100vh;\\n}\""
+        },
+        {
+            "hash": "\\x4d948629d732fa7eddb6c3db7d684c9f497b40f2138b371fc547c6e1b089667d",
+            "value": "\"rl_game\""
+        },
+        {
+            "hash": "\\x9be8783ef26f4128e7b922fd22169ff126298f7cc7ff8868aef8714675ea87b7",
+            "value": "\"rl_wheel\""
+        },
+        {
+            "hash": "\\x2873a6a329107d55cf117bf8ae8e1759eec7ec3120d8cac38187a4b1281ddabb",
+            "value": "\"rl_board\""
+        },
+        {
+            "hash": "\\xf48a62e0df33bdee27153dfc367571e2ccf2aecde438cc61669fd05a492c67b0",
+            "value": "\"/roulette\""
+        },
+        {
+            "hash": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+            "value": null
+        },
+        {
+            "hash": "\\x3a26fd017f2c6af2b2094c00642f35223707175f5ca24345157952679aceb5dc",
+            "value": "\"return {};\""
+        },
+        {
+            "hash": "\\x01c3f6badebb82bd2bb8ea9e8db76102383af3e12203379c0a1128c5d35b32a9",
+            "value": "\".rl_board { width: 100%; overflow-x: auto; }\\n.rl-grid {\\n    display: grid;\\n    grid-template-columns: 36px repeat(12, 36px) 52px;\\n    grid-template-rows: repeat(3, 40px) 34px 34px;\\n    gap: 2px;\\n    min-width: 546px;\\n}\\n.rl-cell {\\n    display: flex;\\n    align-items: center;\\n    justify-content: center;\\n    font-weight: bold;\\n    font-size: 13px;\\n    border-radius: 3px;\\n    position: relative;\\n    user-select: none;\\n    -webkit-user-select: none;\\n}\\n.rl-clickable { cursor: pointer; }\\n.rl-clickable:hover { opacity: 0.75; outline: 2px solid #FFD700; }\\n.rl-red    { background: #c0392b; color: white; }\\n.rl-black  { background: #1a1a1a; color: white; }\\n.rl-green  { background: #27ae60; color: white; }\\n.rl-outside { background: rgba(255,255,255,0.12); color: white; font-size: 11px; }\\n.rl-result-num { background: #FFD700 !important; color: #111 !important; outline: none !important; }\\n.rl-won { outline: 3px solid #FFD700 !important; }\\n.rl-bet-amt {\\n    position: absolute;\\n    bottom: 1px;\\n    right: 2px;\\n    font-size: 9px;\\n    background: rgba(255,215,0,0.9);\\n    color: #111;\\n    border-radius: 8px;\\n    padding: 0 3px;\\n    line-height: 14px;\\n    font-weight: bold;\\n    pointer-events: none;\\n}\\n.rl-spinning {\\n    text-align: center;\\n    font-size: 26px;\\n    font-weight: bold;\\n    padding: 24px;\\n    color: #FFD700;\\n    letter-spacing: 3px;\\n    width: 100%;\\n}\""
+        },
+        {
+            "hash": "\\x1b7e50d6fb9d4ddd8557ff54ccf763925a930fff1967d7fa41a29bd851a0b16e",
+            "value": "\"var w = $('#' + id);\\nvar game = w.closest('.rl_game');\\n\\nvar RED_NUMBERS = [1,3,5,7,9,12,14,16,18,19,21,23,25,27,30,32,34,36];\\n\\nfunction numColor(n) {\\n    if (n === 0) return 'green';\\n    return RED_NUMBERS.indexOf(n) >= 0 ? 'red' : 'black';\\n}\\n\\nfunction cellWon(betKey) {\\n    if (!result) return false;\\n    var n = result.number, c = result.color;\\n    if (betKey === 'red')    return c === 'red';\\n    if (betKey === 'black')  return c === 'black';\\n    if (betKey === 'odd')    return n > 0 && n % 2 === 1;\\n    if (betKey === 'even')   return n > 0 && n % 2 === 0;\\n    if (betKey === 'low')    return n >= 1 && n <= 18;\\n    if (betKey === 'high')   return n >= 19 && n <= 36;\\n    if (betKey === 'dozen1') return n >= 1  && n <= 12;\\n    if (betKey === 'dozen2') return n >= 13 && n <= 24;\\n    if (betKey === 'dozen3') return n >= 25 && n <= 36;\\n    if (betKey === 'col1')   return n > 0 && n % 3 === 0;\\n    if (betKey === 'col2')   return n > 0 && n % 3 === 2;\\n    if (betKey === 'col3')   return n > 0 && n % 3 === 1;\\n    return parseInt(betKey) === n;\\n}\\n\\nif (phase === 'spinning') {\\n    w.append($('<div class=\\\"rl-spinning\\\">Spinning…</div>'));\\n    return;\\n}\\n\\nvar clickable = phase === 'betting' || phase === 'result';\\n\\nfunction makeCell(betKey, label, colorCls, gridCol, gridRow, colSpan, rowSpan) {\\n    colSpan = colSpan || 1;\\n    rowSpan = rowSpan || 1;\\n    var isResultNum = result && !isNaN(parseInt(betKey)) && parseInt(betKey) === result.number;\\n    var won = bets[betKey] && cellWon(betKey);\\n    var cls = 'rl-cell ' + colorCls;\\n    if (isResultNum) cls += ' rl-result-num';\\n    if (won) cls += ' rl-won';\\n    if (clickable && betKey !== null) cls += ' rl-clickable';\\n\\n    var div = $('<div></div>').attr('class', cls).text(label);\\n    div.css({ 'grid-column': gridCol + ' / span ' + colSpan, 'grid-row': gridRow + ' / span ' + rowSpan });\\n\\n    if (bets[betKey]) {\\n        div.append($('<span class=\\\"rl-bet-amt\\\">$' + bets[betKey] + '</span>'));\\n    }\\n    if (clickable && betKey !== null) {\\n        div.on('click', function() { game.trigger('rl_place_bet', [betKey]); });\\n    }\\n    return div;\\n}\\n\\nvar grid = $('<div class=\\\"rl-grid\\\"></div>');\\n\\n// 0 cell: col 1, rows 1-3\\ngrid.append(makeCell('0', '0', 'rl-green', 1, 1, 1, 3));\\n\\n// Numbers 1-36\\n// Layout: row 1=multiples of 3, row 2=n%3===2, row 3=n%3===1\\n// Grid col = ceil(n/3) + 1  (cols 2-13)\\nfor (var n = 1; n <= 36; n++) {\\n    var gridRow = (n % 3 === 0) ? 1 : (n % 3 === 2) ? 2 : 3;\\n    var gridCol = Math.ceil(n / 3) + 1;\\n    var color = numColor(n);\\n    grid.append(makeCell(String(n), n, 'rl-' + color, gridCol, gridRow, 1, 1));\\n}\\n\\n// Column bets: grid col 14, rows 1-3\\ngrid.append(makeCell('col1', '2:1', 'rl-outside', 14, 1, 1, 1));\\ngrid.append(makeCell('col2', '2:1', 'rl-outside', 14, 2, 1, 1));\\ngrid.append(makeCell('col3', '2:1', 'rl-outside', 14, 3, 1, 1));\\n\\n// Dozen bets: row 4, cols 2-5 / 6-9 / 10-13\\ngrid.append(makeCell('dozen1', '1st 12', 'rl-outside', 2,  4, 4, 1));\\ngrid.append(makeCell('dozen2', '2nd 12', 'rl-outside', 6,  4, 4, 1));\\ngrid.append(makeCell('dozen3', '3rd 12', 'rl-outside', 10, 4, 4, 1));\\n\\n// Outside bets: row 5, pairs of cols from 2-13\\ngrid.append(makeCell('low',   '1-18',  'rl-outside', 2,  5, 2, 1));\\ngrid.append(makeCell('even',  'EVEN',  'rl-outside', 4,  5, 2, 1));\\ngrid.append(makeCell('red',   'RED',   'rl-red',     6,  5, 2, 1));\\ngrid.append(makeCell('black', 'BLACK', 'rl-black',   8,  5, 2, 1));\\ngrid.append(makeCell('odd',   'ODD',   'rl-outside', 10, 5, 2, 1));\\ngrid.append(makeCell('high',  '19-36', 'rl-outside', 12, 5, 2, 1));\\n\\nw.append(grid);\""
+        },
+        {
+            "hash": "\\xb5bea41b6c623f7c09f1bf24dcae58ebab3c0cdd90ad966bc43a45b44867e12b",
+            "value": "true"
+        },
+        {
+            "hash": "\\x604f494bbe6074e64985806d0f85c4adee667c305dedf5bc3c56bd6d72e4a167",
+            "value": "\"rl_controls\""
+        },
+        {
+            "hash": "\\x0eb249524398e078fdc15f38521d4a4a88bb85888d690bb9aaf63943d0913584",
+            "value": "\".rl_wheel {\\n    width: 100%;\\n    display: flex;\\n    justify-content: center;\\n    padding: 8px 0;\\n}\""
+        },
+        {
+            "hash": "\\x8c3cb464341946d7df94f6af7a82cdc8a1c14b5a6e2b1dde28da0d0eb1354219",
+            "value": "\"57ab890d-4533-405b-b98a-92e57d4eeb91\""
+        },
+        {
+            "hash": "\\x47ba971566a629c0d620fed0c12c4a4f42468012df7bd2f36d612ea057b61385",
+            "value": "\"93c47b24-cc3e-456f-b6b3-8a52ea2d123e\""
+        },
+        {
+            "hash": "\\xe90d3f21e687d81e701426964ec9afeb91f81a4ab5cccee0b9e89eca2954b47b",
+            "value": "\"<div id=\\\"{{= id }}\\\" class=\\\"{{= name }}\\\"></div>\""
+        },
+        {
+            "hash": "\\xc5c0564a7e5964f73dd828fc445faf0137ccf0e1d3e12fe8ee7a27e7b2de2960",
+            "value": "\"var w = $('#' + id);\\n\\nvar RED_NUMBERS = [1,3,5,7,9,12,14,16,18,19,21,23,25,27,30,32,34,36];\\n\\nfunction numColor(n) {\\n    if (n === 0) return 'green';\\n    return RED_NUMBERS.indexOf(n) >= 0 ? 'red' : 'black';\\n}\\n\\nvar state = {\\n    bankroll: 1000,\\n    bets: {},\\n    selectedChip: 25,\\n    result: null,\\n    phase: 'betting',\\n    message: ''\\n};\\n\\nfunction totalBet() {\\n    return Object.keys(state.bets).reduce(function(s, k) { return s + state.bets[k]; }, 0);\\n}\\n\\nfunction calcPayout(betKey, num, color) {\\n    if (betKey === 'red')    return color === 'red'   ? 1 : 0;\\n    if (betKey === 'black')  return color === 'black' ? 1 : 0;\\n    if (betKey === 'odd')    return num > 0 && num % 2 === 1 ? 1 : 0;\\n    if (betKey === 'even')   return num > 0 && num % 2 === 0 ? 1 : 0;\\n    if (betKey === 'low')    return num >= 1 && num <= 18 ? 1 : 0;\\n    if (betKey === 'high')   return num >= 19 && num <= 36 ? 1 : 0;\\n    if (betKey === 'dozen1') return num >= 1  && num <= 12 ? 2 : 0;\\n    if (betKey === 'dozen2') return num >= 13 && num <= 24 ? 2 : 0;\\n    if (betKey === 'dozen3') return num >= 25 && num <= 36 ? 2 : 0;\\n    if (betKey === 'col1')   return num > 0 && num % 3 === 0 ? 2 : 0;\\n    if (betKey === 'col2')   return num > 0 && num % 3 === 2 ? 2 : 0;\\n    if (betKey === 'col3')   return num > 0 && num % 3 === 1 ? 2 : 0;\\n    return parseInt(betKey) === num ? 35 : 0;\\n}\\n\\nfunction spin() {\\n    if (totalBet() === 0) { state.message = 'Place a bet first!'; render(); return; }\\n    state.phase = 'spinning';\\n    render();\\n    setTimeout(function() {\\n        var num = Math.floor(Math.random() * 37);\\n        var color = numColor(num);\\n        state.result = { number: num, color: color };\\n\\n        var totalWagered = totalBet();\\n        var totalReturn = 0;\\n        Object.keys(state.bets).forEach(function(k) {\\n            var amt = state.bets[k];\\n            var mult = calcPayout(k, num, color);\\n            if (mult > 0) totalReturn += amt * (1 + mult);\\n        });\\n\\n        var net = totalReturn - totalWagered;\\n        state.bankroll += net;\\n\\n        if (net > 0) {\\n            state.message = '★ ' + num + ' ' + color.toUpperCase() + '! You win $' + net + '!';\\n        } else if (net < 0) {\\n            state.message = num + ' ' + color.toUpperCase() + '. You lose $' + Math.abs(net) + '.';\\n        } else {\\n            state.message = num + ' ' + color.toUpperCase() + '. Push.';\\n        }\\n        if (state.bankroll <= 0) { state.bankroll = 1000; state.message += ' Bankroll reset.'; }\\n\\n        state.phase = 'result';\\n        state.bets = {};\\n        render();\\n    }, 1200);\\n}\\n\\nfunction render() {\\n    w.empty();\\n    w.append(widget('rl:rl_board', {\\n        bets: state.bets,\\n        phase: state.phase,\\n        result: state.result\\n    }));\\n    w.append(widget('rl:rl_controls', {\\n        bankroll: state.bankroll,\\n        selectedChip: state.selectedChip,\\n        totalBet: totalBet(),\\n        phase: state.phase,\\n        message: state.message\\n    }));\\n}\\n\\nw.on('rl_place_bet', function(e, betKey) {\\n    if (state.phase === 'spinning') return;\\n    if (state.phase === 'result') {\\n        state.phase = 'betting';\\n        state.result = null;\\n        state.message = '';\\n    }\\n    var available = state.bankroll - totalBet();\\n    if (state.selectedChip > available) return;\\n    state.bets[betKey] = (state.bets[betKey] || 0) + state.selectedChip;\\n    render();\\n});\\n\\nw.on('rl_clear_bets', function() {\\n    if (state.phase === 'spinning') return;\\n    state.bets = {};\\n    state.phase = 'betting';\\n    state.result = null;\\n    state.message = '';\\n    render();\\n});\\n\\nw.on('rl_spin', function() { spin(); });\\n\\nw.on('rl_select_chip', function(e, amount) {\\n    state.selectedChip = amount;\\n    render();\\n});\\n\\nrender();\""
+        },
+        {
+            "hash": "\\x3f8a1b111f0046164e620b892bbd8b40675a9e5b5a079a16c7e958237c5b5b39",
+            "value": "\"var w = $('#' + id);\\nvar game = w.closest('.rl_game');\\nvar CHIPS = [5, 25, 50, 100, 200];\\n\\nw.append($('<div class=\\\"rl-bankroll\\\">Bankroll: $' + bankroll + '</div>'));\\nw.append($('<div class=\\\"rl-msg\\\"></div>').text(message || ' '));\\n\\nvar chipRow = $('<div class=\\\"rl-chip-row\\\"></div>');\\nCHIPS.forEach(function(amt) {\\n    if (amt <= bankroll) {\\n        var cls = 'rl-chip' + (amt === selectedChip ? ' active' : '');\\n        var chip = $('<button class=\\\"' + cls + '\\\">$' + amt + '</button>');\\n        chip.on('click', function() { game.trigger('rl_select_chip', [amt]); });\\n        chipRow.append(chip);\\n    }\\n});\\nw.append(chipRow);\\n\\nif (totalBet > 0) {\\n    w.append($('<div class=\\\"rl-total-bet\\\">Bet on table: $' + totalBet + '</div>'));\\n}\\n\\nvar btnRow = $('<div class=\\\"rl-btn-row\\\"></div>');\\n\\nif (phase !== 'spinning') {\\n    var clearBtn = $('<button class=\\\"rl-btn rl-clear-btn\\\">Clear</button>');\\n    clearBtn.on('click', function() { game.trigger('rl_clear_bets'); });\\n    btnRow.append(clearBtn);\\n}\\n\\nvar spinLabel = phase === 'spinning' ? 'Spinning…'\\n              : phase === 'result'   ? 'New Round'\\n              : 'Spin — $' + totalBet;\\nvar spinBtn = $('<button class=\\\"rl-btn rl-spin-btn\\\">' + spinLabel + '</button>');\\nif (phase === 'spinning' || (phase === 'betting' && totalBet === 0)) {\\n    spinBtn.prop('disabled', true);\\n}\\nif (phase === 'result') {\\n    spinBtn.on('click', function() { game.trigger('rl_clear_bets'); });\\n} else {\\n    spinBtn.on('click', function() { game.trigger('rl_spin'); });\\n}\\nbtnRow.append(spinBtn);\\nw.append(btnRow);\""
+        },
+        {
+            "hash": "\\x12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
+            "value": "\"\""
+        },
+        {
+            "hash": "\\xee8cfeb88610b78862a5711805b210ecbb3c745d11b37eb26df7561552a82511",
+            "value": "\"4b738b0a-bb82-47fc-b623-9e7ed8bb86dd\""
+        },
+        {
+            "hash": "\\x4ab2053b84a17317b9d892a5dffda97a4369ca0b27a20da8903bc819a98065e1",
+            "value": "\"2112d89d-6889-4d56-be8e-687616d5dc8b\""
+        },
+        {
+            "hash": "\\xd013c57f22b3fe57191623ee6facbfdf020d5f5b0cde2e74417dfcd7e514318e",
+            "value": "\"<!DOCTYPE html>\\n<html lang=\\\"en\\\">\\n<head>\\n    <script src='/system.js'></script>\\n    <title>Roulette</title>\\n    <meta http-equiv=\\\"Content-type\\\" content=\\\"text/html; charset=utf-8\\\">\\n    <meta name=\\\"viewport\\\" content=\\\"width=device-width, initial-scale=1, maximum-scale=1\\\">\\n    <style>\\n        html { box-sizing: border-box; background-color: #1a5c2a; color: white; }\\n        *, *:before, *:after { box-sizing: inherit; }\\n        html, body { height: 100%; margin: 0; }\\n        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }\\n    </style>\\n</head>\\n<body></body>\\n<script>\\n    System.import('/widget.js').then(function(widget) {\\n        var db = new AQ.Database('/endpoint/0.3', { evented: 'no' });\\n        window.endpoint = db;\\n        AQ.Widget.import('org.aquameta.games.roulette', 'rl', db);\\n        $('body').append(widget('rl:rl_game'));\\n    });\\n</script>\\n</html>\""
+        },
+        {
+            "hash": "\\x274f2d3e66add18cea43ceaabd6e70e0164432d5990144affb00a6f96a19be5f",
+            "value": "\"882442ed-eea3-453f-848e-70b8ca8b8f01\""
+        },
+        {
+            "hash": "\\xbd19b3bd31839b702bb4da14a6ec336a18447761c2f1abf11141c57567de8d60",
+            "value": "\".rl_controls {\\n    width: 100%;\\n    display: flex;\\n    flex-direction: column;\\n    gap: 10px;\\n}\\n.rl-bankroll {\\n    font-size: 22px;\\n    font-weight: bold;\\n    text-align: center;\\n}\\n.rl-msg {\\n    text-align: center;\\n    font-size: 18px;\\n    font-weight: bold;\\n    min-height: 28px;\\n    color: #FFD700;\\n}\\n.rl-chip-row {\\n    display: flex;\\n    flex-wrap: wrap;\\n    gap: 8px;\\n    justify-content: center;\\n}\\n.rl-chip {\\n    width: 54px;\\n    height: 54px;\\n    border-radius: 50%;\\n    border: 3px solid rgba(255,255,255,0.3);\\n    background: rgba(255,255,255,0.1);\\n    color: white;\\n    font-size: 13px;\\n    font-weight: bold;\\n    cursor: pointer;\\n    display: flex;\\n    align-items: center;\\n    justify-content: center;\\n    touch-action: manipulation;\\n    -webkit-tap-highlight-color: transparent;\\n    transition: all 0.15s;\\n}\\n.rl-chip.active {\\n    background: #FFD700;\\n    color: #111;\\n    border-color: #FFD700;\\n    transform: scale(1.15);\\n}\\n.rl-total-bet {\\n    text-align: center;\\n    font-size: 13px;\\n    color: rgba(255,255,255,0.65);\\n}\\n.rl-btn {\\n    padding: 18px;\\n    font-size: 20px;\\n    font-weight: bold;\\n    border: none;\\n    border-radius: 10px;\\n    cursor: pointer;\\n    touch-action: manipulation;\\n    -webkit-tap-highlight-color: transparent;\\n    letter-spacing: 0.5px;\\n    transition: opacity 0.15s;\\n}\\n.rl-btn:disabled { opacity: 0.4; cursor: default; }\\n.rl-spin-btn  { flex: 1; background: #f59e0b; color: #111; }\\n.rl-clear-btn { flex: 0 0 110px; background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.2); }\\n.rl-btn-row { display: flex; gap: 8px; }\""
+        },
+        {
+            "hash": "\\xffe2f5aa39e40771651b6acaa39801e5906da4e4eef155d86cf91cb1e48ed8db",
+            "value": "\"var w = $('#' + id);\\n\\n// Persist wheel state across re-renders\\nif (window._rl_wheel_cancel) { window._rl_wheel_cancel(); }\\nif (!window._rl_wheel) { window._rl_wheel = { angle: 0, ballAngle: -Math.PI / 2, ballRadius: 101 }; }\\nvar ws = window._rl_wheel;\\n\\nvar WHEEL = [0,32,15,19,4,21,2,25,17,34,6,27,13,36,11,30,8,23,10,5,24,16,33,1,20,14,31,9,22,18,29,7,28,12,35,3,26];\\nvar RED   = [1,3,5,7,9,12,14,16,18,19,21,23,25,27,30,32,34,36];\\nvar N     = 37;\\nvar SLOT  = 2 * Math.PI / N;\\n\\nvar SIZE    = 260;\\nvar CX      = SIZE / 2;\\nvar CY      = SIZE / 2;\\nvar RO      = 110;\\nvar RI      = 65;\\nvar BALL_R  = RO - 9;\\nvar POCKET_R = Math.round((RO + RI) / 2);\\n\\nvar canvas = document.createElement('canvas');\\ncanvas.width = SIZE;\\ncanvas.height = SIZE;\\ncanvas.style.cssText = 'display:block;margin:0 auto;';\\nw.append(canvas);\\nvar ctx = canvas.getContext('2d');\\n\\nfunction pocketColor(n) {\\n    if (n === 0) return '#1e8449';\\n    return RED.indexOf(n) >= 0 ? '#c0392b' : '#1a1a1a';\\n}\\n\\nfunction draw() {\\n    ctx.clearRect(0, 0, SIZE, SIZE);\\n\\n    // Wooden outer rim\\n    ctx.beginPath();\\n    ctx.arc(CX, CY, RO + 13, 0, 2 * Math.PI);\\n    ctx.fillStyle = '#3d2008';\\n    ctx.fill();\\n    ctx.strokeStyle = '#b8860b';\\n    ctx.lineWidth = 3;\\n    ctx.stroke();\\n\\n    // Pockets (annular segments)\\n    for (var i = 0; i < N; i++) {\\n        var a0 = ws.angle + i * SLOT - SLOT / 2;\\n        var a1 = a0 + SLOT;\\n        ctx.beginPath();\\n        ctx.arc(CX, CY, RO, a0, a1);\\n        ctx.arc(CX, CY, RI, a1, a0, true);\\n        ctx.closePath();\\n        ctx.fillStyle = pocketColor(WHEEL[i]);\\n        ctx.fill();\\n        ctx.strokeStyle = 'rgba(184,134,11,0.5)';\\n        ctx.lineWidth = 0.5;\\n        ctx.stroke();\\n    }\\n\\n    // Numbers\\n    for (var i = 0; i < N; i++) {\\n        var midA = ws.angle + i * SLOT;\\n        var nr = (RO + RI) / 2;\\n        ctx.save();\\n        ctx.translate(CX + nr * Math.cos(midA), CY + nr * Math.sin(midA));\\n        ctx.rotate(midA + Math.PI / 2);\\n        ctx.fillStyle = 'white';\\n        ctx.font = 'bold 7px sans-serif';\\n        ctx.textAlign = 'center';\\n        ctx.textBaseline = 'middle';\\n        ctx.fillText(String(WHEEL[i]), 0, 0);\\n        ctx.restore();\\n    }\\n\\n    // Inner bowl\\n    ctx.beginPath();\\n    ctx.arc(CX, CY, RI - 2, 0, 2 * Math.PI);\\n    var bowlGrad = ctx.createRadialGradient(CX, CY - 20, 5, CX, CY, RI);\\n    bowlGrad.addColorStop(0, '#3d2008');\\n    bowlGrad.addColorStop(1, '#1a0f0a');\\n    ctx.fillStyle = bowlGrad;\\n    ctx.fill();\\n    ctx.strokeStyle = '#b8860b';\\n    ctx.lineWidth = 2;\\n    ctx.stroke();\\n\\n    // Center hub\\n    ctx.beginPath();\\n    ctx.arc(CX, CY, 16, 0, 2 * Math.PI);\\n    ctx.fillStyle = '#b8860b';\\n    ctx.fill();\\n    ctx.beginPath();\\n    ctx.arc(CX, CY, 10, 0, 2 * Math.PI);\\n    ctx.fillStyle = '#2c1810';\\n    ctx.fill();\\n\\n    // Indicator triangle at top (points down into wheel)\\n    ctx.beginPath();\\n    ctx.moveTo(CX,     CY - RO - 1);\\n    ctx.lineTo(CX - 7, CY - RO - 13);\\n    ctx.lineTo(CX + 7, CY - RO - 13);\\n    ctx.closePath();\\n    ctx.fillStyle = '#FFD700';\\n    ctx.fill();\\n\\n    // Ball\\n    var bx = CX + ws.ballRadius * Math.cos(ws.ballAngle);\\n    var by = CY + ws.ballRadius * Math.sin(ws.ballAngle);\\n    ctx.save();\\n    ctx.shadowColor = 'rgba(0,0,0,0.6)';\\n    ctx.shadowBlur = 5;\\n    ctx.beginPath();\\n    ctx.arc(bx, by, 6, 0, 2 * Math.PI);\\n    var ballGrad = ctx.createRadialGradient(bx - 2, by - 2, 1, bx, by, 6);\\n    ballGrad.addColorStop(0, '#ffffff');\\n    ballGrad.addColorStop(1, '#cccccc');\\n    ctx.fillStyle = ballGrad;\\n    ctx.fill();\\n    ctx.restore();\\n}\\n\\nif (phase === 'spinning' && spinResult !== null) {\\n    var resultIdx = WHEEL.indexOf(spinResult.number);\\n    // Target: result pocket aligned with indicator at top (-PI/2)\\n    var baseTarget = -Math.PI / 2 - resultIdx * SLOT;\\n    var minTarget  = ws.angle + 5 * 2 * Math.PI;\\n    while (baseTarget < minTarget) baseTarget += 2 * Math.PI;\\n    var targetAngle = baseTarget;\\n\\n    var startWheelAngle = ws.angle;\\n    var startBallAngle  = ws.ballAngle;\\n    var DURATION = 1300;\\n    var startTime = null;\\n    var active = true;\\n    var lastOrbitAngle = startBallAngle;\\n\\n    window._rl_wheel_cancel = function() { active = false; };\\n\\n    function easeOut(t) { return 1 - Math.pow(1 - t, 4); }\\n\\n    function animate(ts) {\\n        if (!active) return;\\n        if (!startTime) startTime = ts;\\n        var t = Math.min((ts - startTime) / DURATION, 1);\\n        var e = easeOut(t);\\n\\n        ws.angle = startWheelAngle + (targetAngle - startWheelAngle) * e;\\n\\n        // Ball orbits counter-clockwise, 2.5x wheel speed; drops into pocket in last 15%\\n        if (t < 0.85) {\\n            ws.ballAngle  = startBallAngle - 2.5 * (ws.angle - startWheelAngle);\\n            ws.ballRadius = BALL_R;\\n            lastOrbitAngle = ws.ballAngle;\\n        } else {\\n            var dropT = (t - 0.85) / 0.15;\\n            ws.ballAngle  = lastOrbitAngle + (-Math.PI / 2 - lastOrbitAngle) * dropT;\\n            ws.ballRadius = BALL_R - (BALL_R - POCKET_R) * dropT;\\n        }\\n\\n        draw();\\n\\n        if (t < 1) {\\n            requestAnimationFrame(animate);\\n        } else {\\n            active = false;\\n            ws.angle      = targetAngle;\\n            ws.ballAngle  = -Math.PI / 2;\\n            ws.ballRadius = POCKET_R;\\n            draw();\\n        }\\n    }\\n\\n    requestAnimationFrame(animate);\\n\\n} else {\\n    // result or betting: static draw\\n    if (phase === 'result' && result !== null) {\\n        ws.ballAngle  = -Math.PI / 2;\\n        ws.ballRadius = POCKET_R;\\n    } else if (phase === 'betting') {\\n        ws.ballRadius = BALL_R;\\n    }\\n    draw();\\n}\""
+        },
+        {
+            "hash": "\\xea9c49684e23fa4ba26275311c3225982d158f8b468f4524b9dfd5eafe6f7105",
+            "value": "\"944b5a05-be70-45a1-a549-1301d38799e4\""
+        }
+    ],
+    "commits": [
+        {
+            "id": "7f7f5f88-3c74-4fb1-af8a-5c0831182c05",
+            "message": "initial roulette game",
+            "version": null,
+            "parent_id": null,
+            "jsonb_rows": [
+                {
+                    "pk_values": [
+                        "57ab890d-4533-405b-b98a-92e57d4eeb91"
+                    ],
+                    "schema_name": "widget",
+                    "relation_name": "widget",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "2112d89d-6889-4d56-be8e-687616d5dc8b"
+                    ],
+                    "schema_name": "widget",
+                    "relation_name": "widget",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "4b738b0a-bb82-47fc-b623-9e7ed8bb86dd"
+                    ],
+                    "schema_name": "widget",
+                    "relation_name": "widget",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "882442ed-eea3-453f-848e-70b8ca8b8f01"
+                    ],
+                    "schema_name": "endpoint",
+                    "relation_name": "resource",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                }
+            ],
+            "author_name": "claude_code",
+            "commit_time": "2026-06-03T10:10:04.049957+00:00",
+            "author_email": "claude@aquameta.org",
+            "jsonb_fields": {
+                "{\"pk_values\": [\"2112d89d-6889-4d56-be8e-687616d5dc8b\"], \"schema_name\": \"widget\", \"relation_name\": \"widget\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\x4ab2053b84a17317b9d892a5dffda97a4369ca0b27a20da8903bc819a98065e1",
+                    "css": "\\x01c3f6badebb82bd2bb8ea9e8db76102383af3e12203379c0a1128c5d35b32a9",
+                    "help": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "html": "\\xe90d3f21e687d81e701426964ec9afeb91f81a4ab5cccee0b9e89eca2954b47b",
+                    "name": "\\x2873a6a329107d55cf117bf8ae8e1759eec7ec3120d8cac38187a4b1281ddabb",
+                    "pre_js": "\\x3a26fd017f2c6af2b2094c00642f35223707175f5ca24345157952679aceb5dc",
+                    "post_js": "\\x1b7e50d6fb9d4ddd8557ff54ccf763925a930fff1967d7fa41a29bd851a0b16e",
+                    "common_js": "\\x12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
+                    "server_js": "\\x12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126"
+                },
+                "{\"pk_values\": [\"4b738b0a-bb82-47fc-b623-9e7ed8bb86dd\"], \"schema_name\": \"widget\", \"relation_name\": \"widget\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\xee8cfeb88610b78862a5711805b210ecbb3c745d11b37eb26df7561552a82511",
+                    "css": "\\xbd19b3bd31839b702bb4da14a6ec336a18447761c2f1abf11141c57567de8d60",
+                    "help": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "html": "\\xe90d3f21e687d81e701426964ec9afeb91f81a4ab5cccee0b9e89eca2954b47b",
+                    "name": "\\x604f494bbe6074e64985806d0f85c4adee667c305dedf5bc3c56bd6d72e4a167",
+                    "pre_js": "\\x3a26fd017f2c6af2b2094c00642f35223707175f5ca24345157952679aceb5dc",
+                    "post_js": "\\x3f8a1b111f0046164e620b892bbd8b40675a9e5b5a079a16c7e958237c5b5b39",
+                    "common_js": "\\x12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
+                    "server_js": "\\x12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126"
+                },
+                "{\"pk_values\": [\"57ab890d-4533-405b-b98a-92e57d4eeb91\"], \"schema_name\": \"widget\", \"relation_name\": \"widget\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\x8c3cb464341946d7df94f6af7a82cdc8a1c14b5a6e2b1dde28da0d0eb1354219",
+                    "css": "\\xa0d92561536dbc822cfd24948d9e7cc4738dd86576a4523dd4b34ba55eedd480",
+                    "help": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "html": "\\xe90d3f21e687d81e701426964ec9afeb91f81a4ab5cccee0b9e89eca2954b47b",
+                    "name": "\\x4d948629d732fa7eddb6c3db7d684c9f497b40f2138b371fc547c6e1b089667d",
+                    "pre_js": "\\x3a26fd017f2c6af2b2094c00642f35223707175f5ca24345157952679aceb5dc",
+                    "post_js": "\\xc5c0564a7e5964f73dd828fc445faf0137ccf0e1d3e12fe8ee7a27e7b2de2960",
+                    "common_js": "\\x12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
+                    "server_js": "\\x12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126"
+                },
+                "{\"pk_values\": [\"882442ed-eea3-453f-848e-70b8ca8b8f01\"], \"schema_name\": \"endpoint\", \"relation_name\": \"resource\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\x274f2d3e66add18cea43ceaabd6e70e0164432d5990144affb00a6f96a19be5f",
+                    "path": "\\xf48a62e0df33bdee27153dfc367571e2ccf2aecde438cc61669fd05a492c67b0",
+                    "active": "\\xb5bea41b6c623f7c09f1bf24dcae58ebab3c0cdd90ad966bc43a45b44867e12b",
+                    "content": "\\xd013c57f22b3fe57191623ee6facbfdf020d5f5b0cde2e74417dfcd7e514318e",
+                    "mimetype_id": "\\xea9c49684e23fa4ba26275311c3225982d158f8b468f4524b9dfd5eafe6f7105"
+                }
+            },
+            "repository_id": "29222f3d-24ad-4e92-bc31-5eb955e2cc17",
+            "merge_parent_id": null
+        },
+        {
+            "id": "0df6c4f6-30ad-4661-95db-ddd060f0414f",
+            "message": "add spinning wheel canvas animation",
+            "version": null,
+            "parent_id": "7f7f5f88-3c74-4fb1-af8a-5c0831182c05",
+            "jsonb_rows": [
+                {
+                    "pk_values": [
+                        "57ab890d-4533-405b-b98a-92e57d4eeb91"
+                    ],
+                    "schema_name": "widget",
+                    "relation_name": "widget",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "2112d89d-6889-4d56-be8e-687616d5dc8b"
+                    ],
+                    "schema_name": "widget",
+                    "relation_name": "widget",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "4b738b0a-bb82-47fc-b623-9e7ed8bb86dd"
+                    ],
+                    "schema_name": "widget",
+                    "relation_name": "widget",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "93c47b24-cc3e-456f-b6b3-8a52ea2d123e"
+                    ],
+                    "schema_name": "widget",
+                    "relation_name": "widget",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "882442ed-eea3-453f-848e-70b8ca8b8f01"
+                    ],
+                    "schema_name": "endpoint",
+                    "relation_name": "resource",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                }
+            ],
+            "author_name": "claude_code",
+            "commit_time": "2026-06-03T10:26:20.934745+00:00",
+            "author_email": "claude@aquameta.org",
+            "jsonb_fields": {
+                "{\"pk_values\": [\"2112d89d-6889-4d56-be8e-687616d5dc8b\"], \"schema_name\": \"widget\", \"relation_name\": \"widget\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\x4ab2053b84a17317b9d892a5dffda97a4369ca0b27a20da8903bc819a98065e1",
+                    "css": "\\x01c3f6badebb82bd2bb8ea9e8db76102383af3e12203379c0a1128c5d35b32a9",
+                    "help": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "html": "\\xe90d3f21e687d81e701426964ec9afeb91f81a4ab5cccee0b9e89eca2954b47b",
+                    "name": "\\x2873a6a329107d55cf117bf8ae8e1759eec7ec3120d8cac38187a4b1281ddabb",
+                    "pre_js": "\\x3a26fd017f2c6af2b2094c00642f35223707175f5ca24345157952679aceb5dc",
+                    "post_js": "\\x1b7e50d6fb9d4ddd8557ff54ccf763925a930fff1967d7fa41a29bd851a0b16e",
+                    "common_js": "\\x12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
+                    "server_js": "\\x12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126"
+                },
+                "{\"pk_values\": [\"4b738b0a-bb82-47fc-b623-9e7ed8bb86dd\"], \"schema_name\": \"widget\", \"relation_name\": \"widget\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\xee8cfeb88610b78862a5711805b210ecbb3c745d11b37eb26df7561552a82511",
+                    "css": "\\xbd19b3bd31839b702bb4da14a6ec336a18447761c2f1abf11141c57567de8d60",
+                    "help": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "html": "\\xe90d3f21e687d81e701426964ec9afeb91f81a4ab5cccee0b9e89eca2954b47b",
+                    "name": "\\x604f494bbe6074e64985806d0f85c4adee667c305dedf5bc3c56bd6d72e4a167",
+                    "pre_js": "\\x3a26fd017f2c6af2b2094c00642f35223707175f5ca24345157952679aceb5dc",
+                    "post_js": "\\x3f8a1b111f0046164e620b892bbd8b40675a9e5b5a079a16c7e958237c5b5b39",
+                    "common_js": "\\x12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
+                    "server_js": "\\x12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126"
+                },
+                "{\"pk_values\": [\"57ab890d-4533-405b-b98a-92e57d4eeb91\"], \"schema_name\": \"widget\", \"relation_name\": \"widget\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\x8c3cb464341946d7df94f6af7a82cdc8a1c14b5a6e2b1dde28da0d0eb1354219",
+                    "css": "\\xa0d92561536dbc822cfd24948d9e7cc4738dd86576a4523dd4b34ba55eedd480",
+                    "help": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "html": "\\xe90d3f21e687d81e701426964ec9afeb91f81a4ab5cccee0b9e89eca2954b47b",
+                    "name": "\\x4d948629d732fa7eddb6c3db7d684c9f497b40f2138b371fc547c6e1b089667d",
+                    "pre_js": "\\x3a26fd017f2c6af2b2094c00642f35223707175f5ca24345157952679aceb5dc",
+                    "post_js": "\\xc5c0564a7e5964f73dd828fc445faf0137ccf0e1d3e12fe8ee7a27e7b2de2960",
+                    "common_js": "\\x12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
+                    "server_js": "\\x12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126"
+                },
+                "{\"pk_values\": [\"93c47b24-cc3e-456f-b6b3-8a52ea2d123e\"], \"schema_name\": \"widget\", \"relation_name\": \"widget\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\x47ba971566a629c0d620fed0c12c4a4f42468012df7bd2f36d612ea057b61385",
+                    "css": "\\x0eb249524398e078fdc15f38521d4a4a88bb85888d690bb9aaf63943d0913584",
+                    "help": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "html": "\\xe90d3f21e687d81e701426964ec9afeb91f81a4ab5cccee0b9e89eca2954b47b",
+                    "name": "\\x9be8783ef26f4128e7b922fd22169ff126298f7cc7ff8868aef8714675ea87b7",
+                    "pre_js": "\\x3a26fd017f2c6af2b2094c00642f35223707175f5ca24345157952679aceb5dc",
+                    "post_js": "\\xffe2f5aa39e40771651b6acaa39801e5906da4e4eef155d86cf91cb1e48ed8db",
+                    "common_js": "\\x12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
+                    "server_js": "\\x12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126"
+                },
+                "{\"pk_values\": [\"882442ed-eea3-453f-848e-70b8ca8b8f01\"], \"schema_name\": \"endpoint\", \"relation_name\": \"resource\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\x274f2d3e66add18cea43ceaabd6e70e0164432d5990144affb00a6f96a19be5f",
+                    "path": "\\xf48a62e0df33bdee27153dfc367571e2ccf2aecde438cc61669fd05a492c67b0",
+                    "active": "\\xb5bea41b6c623f7c09f1bf24dcae58ebab3c0cdd90ad966bc43a45b44867e12b",
+                    "content": "\\xd013c57f22b3fe57191623ee6facbfdf020d5f5b0cde2e74417dfcd7e514318e",
+                    "mimetype_id": "\\xea9c49684e23fa4ba26275311c3225982d158f8b468f4524b9dfd5eafe6f7105"
+                }
+            },
+            "repository_id": "29222f3d-24ad-4e92-bc31-5eb955e2cc17",
+            "merge_parent_id": null
+        }
+    ],
+    "repository": {
+        "id": "29222f3d-24ad-4e92-bc31-5eb955e2cc17",
+        "name": "org.aquameta.games.roulette",
+        "head_commit_id": "0df6c4f6-30ad-4661-95db-ddd060f0414f"
+    }
+}

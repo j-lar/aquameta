@@ -45,13 +45,14 @@
         {
             "id": "116740d0-ca4e-47d6-942c-d603063af3fd",
             "message": "Initial import from v0.4",
+            "version": null,
             "parent_id": null,
             "jsonb_rows": [
                 "(widget,dependency_js,{id},{c8b9c599-9d1b-417a-8e29-43080bb7dd88})",
                 "(endpoint,resource,{id},{55dcddd1-0b18-4ef1-a789-3d565c7114bf})"
             ],
             "author_name": "Eric Hanson",
-            "commit_time": "2025-07-10T01:44:30.232095-06:00",
+            "commit_time": "2025-07-10T07:44:30.232095+00:00",
             "author_email": "eric@aquameta.com",
             "jsonb_fields": {
                 "(endpoint,resource,{id},{55dcddd1-0b18-4ef1-a789-3d565c7114bf})": {
@@ -76,15 +77,6 @@
     "repository": {
         "id": "f556b6b0-1640-40e6-a276-d86fba29e6a4",
         "name": "org.aquameta.core.widget",
-        "head_commit_id": "116740d0-ca4e-47d6-942c-d603063af3fd",
-        "stage_rows_to_add": [
-        ],
-        "checkout_commit_id": "116740d0-ca4e-47d6-942c-d603063af3fd",
-        "tracked_rows_added": [
-        ],
-        "stage_rows_to_remove": [
-        ],
-        "stage_fields_to_change": [
-        ]
+        "head_commit_id": "116740d0-ca4e-47d6-942c-d603063af3fd"
     }
 }

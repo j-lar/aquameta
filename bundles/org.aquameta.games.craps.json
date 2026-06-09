@@ -1,0 +1,116 @@
+{
+    "blobs": [
+        {
+            "hash": "\\xe95e85c816db7819937dea0407306df28259baeead03246d6785c0d841380639",
+            "value": "\"d8f8a3ea-1c3c-4b48-869f-09749615e76e\""
+        },
+        {
+            "hash": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+            "value": null
+        },
+        {
+            "hash": "\\x3a3afcebe05191fe2e96d114cc4e693f939cd5ab209c5e0e41d04e1d42622ed0",
+            "value": "\"/craps\""
+        },
+        {
+            "hash": "\\x3a26fd017f2c6af2b2094c00642f35223707175f5ca24345157952679aceb5dc",
+            "value": "\"return {};\""
+        },
+        {
+            "hash": "\\xf4f23f93a77a132de0780a4dabff99ebc925f2be5be145fe974bcbd5b5d50e22",
+            "value": "\"be46a1b3-c84e-4502-95be-04f9d490fc5b\""
+        },
+        {
+            "hash": "\\x34be99589e41e73e6bac2155b8beedb28a08cdfcca738595d200a6f27452b8de",
+            "value": "\"<!DOCTYPE html>\\n<html lang=\\\"en\\\">\\n  <head>\\n    <script src=\\\"/system.js\\\"></script>\\n    <title>Craps</title>\\n    <meta http-equiv=\\\"Content-type\\\" content=\\\"text/html; charset=utf-8\\\">\\n    <meta name=\\\"viewport\\\" content=\\\"width=device-width, initial-scale=1\\\">\\n    <style>\\n      *, *:before, *:after { box-sizing: border-box; margin: 0; padding: 0; }\\n      html, body { height: 100%; background: #0d3b1e; }\\n    </style>\\n  </head>\\n  <body></body>\\n  <script>\\n    System.import(\\\"/widget.js\\\").then(function(widget) {\\n      var db = new AQ.Database(\\\"/endpoint/0.3\\\", { evented: \\\"no\\\" });\\n      window.endpoint = db;\\n      AQ.Widget.import(\\\"org.aquameta.games.craps\\\", \\\"c\\\", db);\\n      $(\\\"body\\\").append(widget(\\\"c:craps\\\"));\\n    });\\n  </script>\\n</html>\""
+        },
+        {
+            "hash": "\\xb5bea41b6c623f7c09f1bf24dcae58ebab3c0cdd90ad966bc43a45b44867e12b",
+            "value": "true"
+        },
+        {
+            "hash": "\\xc8f4ef858c098451f6a923c31e82e499eb20d007aab3520934a8c260441fb41d",
+            "value": "\"var w = $(\\\"#\\\" + id);\\n\\nvar die1 = w.find(\\\"#die1\\\");\\nvar die2 = w.find(\\\"#die2\\\");\\nvar sumVal = w.find(\\\".sum-value\\\");\\nvar pointVal = w.find(\\\".point-value\\\");\\nvar status = w.find(\\\".status\\\");\\nvar btn = w.find(\\\".roll-btn\\\");\\n\\nvar point = null;\\nvar rolling = false;\\n\\nfunction rollDie() {\\n  return Math.floor(Math.random() * 6) + 1;\\n}\\n\\nfunction updateDice(d1, d2) {\\n  die1.text(d1);\\n  die2.text(d2);\\n  sumVal.text(d1 + d2);\\n}\\n\\nfunction setStatus(msg, cls) {\\n  status.text(msg).removeClass(\\\"win lose\\\");\\n  if (cls) status.addClass(cls);\\n}\\n\\nbtn.on(\\\"click\\\", function() {\\n  if (rolling) return;\\n  rolling = true;\\n  btn.prop(\\\"disabled\\\", true);\\n  die1.addClass(\\\"rolling\\\");\\n  die2.addClass(\\\"rolling\\\");\\n  setStatus(\\\"Rolling...\\\");\\n\\n  var steps = 0;\\n  var interval = setInterval(function() {\\n    updateDice(rollDie(), rollDie());\\n    steps++;\\n    if (steps >= 10) {\\n      clearInterval(interval);\\n      finishRoll();\\n    }\\n  }, 80);\\n});\\n\\nfunction finishRoll() {\\n  var d1 = rollDie();\\n  var d2 = rollDie();\\n  var total = d1 + d2;\\n  updateDice(d1, d2);\\n  die1.removeClass(\\\"rolling\\\");\\n  die2.removeClass(\\\"rolling\\\");\\n\\n  if (point === null) {\\n    // Come-out roll\\n    if (total === 7 || total === 11) {\\n      setStatus(total + \\\" — Natural! You win!\\\", \\\"win\\\");\\n      btn.text(\\\"Play Again\\\");\\n      rolling = false;\\n      btn.prop(\\\"disabled\\\", false);\\n    } else if (total === 2 || total === 3 || total === 12) {\\n      setStatus(total + \\\" — Craps! You lose.\\\", \\\"lose\\\");\\n      btn.text(\\\"Play Again\\\");\\n      rolling = false;\\n      btn.prop(\\\"disabled\\\", false);\\n    } else {\\n      point = total;\\n      pointVal.text(point);\\n      setStatus(\\\"Point is \\\" + point + \\\". Roll again!\\\");\\n      btn.text(\\\"Roll\\\");\\n      rolling = false;\\n      btn.prop(\\\"disabled\\\", false);\\n    }\\n  } else {\\n    // Point phase\\n    if (total === point) {\\n      setStatus(total + \\\" — You hit the point! You win!\\\", \\\"win\\\");\\n      point = null;\\n      pointVal.text(\\\"None\\\");\\n      btn.text(\\\"Play Again\\\");\\n      rolling = false;\\n      btn.prop(\\\"disabled\\\", false);\\n    } else if (total === 7) {\\n      setStatus(\\\"7 — Seven out! You lose.\\\", \\\"lose\\\");\\n      point = null;\\n      pointVal.text(\\\"None\\\");\\n      btn.text(\\\"Play Again\\\");\\n      rolling = false;\\n      btn.prop(\\\"disabled\\\", false);\\n    } else {\\n      setStatus(total + \\\" — Keep rolling...\\\");\\n      rolling = false;\\n      btn.prop(\\\"disabled\\\", false);\\n    }\\n  }\\n}\\n\""
+        },
+        {
+            "hash": "\\x12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
+            "value": "\"\""
+        },
+        {
+            "hash": "\\x6f12efdf1783923d4e80a106e4ef6368e9f38c85f70044de6c06cc0fce99184f",
+            "value": "\"<div id=\\\"{{= id }}\\\" class=\\\"{{= name }}\\\">\\n  <h1>Craps</h1>\\n  <div class=\\\"dice-container\\\">\\n    <div class=\\\"die\\\" id=\\\"die1\\\">🎲</div>\\n    <div class=\\\"die\\\" id=\\\"die2\\\">🎲</div>\\n  </div>\\n  <div class=\\\"sum\\\">Roll: <span class=\\\"sum-value\\\">-</span></div>\\n  <div class=\\\"point\\\">Point: <span class=\\\"point-value\\\">None</span></div>\\n  <div class=\\\"status\\\">Click Roll to start</div>\\n  <button class=\\\"roll-btn\\\">Roll Dice</button>\\n</div>\""
+        },
+        {
+            "hash": "\\x9349f474681f5ffcb1750681e0f83131aa1ac9b8e82405f3e895838fb70de56d",
+            "value": "\"craps\""
+        },
+        {
+            "hash": "\\x788c386e4501a3fc843323186eabe1cbc8b4a14e6187a8517fc1386dad22dd2b",
+            "value": "\".{{= name }} {\\n  display: flex;\\n  flex-direction: column;\\n  align-items: center;\\n  justify-content: center;\\n  min-height: 100vh;\\n  background: #0d3b1e;\\n  font-family: \\\"Segoe UI\\\", Tahoma, Geneva, Verdana, sans-serif;\\n  color: #f0f0f0;\\n}\\n.{{= name }} h1 {\\n  font-size: 3rem;\\n  margin-bottom: 1rem;\\n  text-shadow: 2px 2px 4px rgba(0,0,0,0.5);\\n}\\n.{{= name }} .dice-container {\\n  display: flex;\\n  gap: 1.5rem;\\n  margin: 1rem 0;\\n}\\n.{{= name }} .die {\\n  width: 80px;\\n  height: 80px;\\n  background: #fff;\\n  border-radius: 12px;\\n  display: flex;\\n  align-items: center;\\n  justify-content: center;\\n  font-size: 2.5rem;\\n  font-weight: bold;\\n  color: #333;\\n  box-shadow: 0 4px 12px rgba(0,0,0,0.4);\\n  transition: transform 0.2s ease;\\n}\\n.{{= name }} .die.rolling {\\n  animation: rollShake 0.3s ease-in-out infinite;\\n}\\n@keyframes rollShake {\\n  0% { transform: rotate(0deg) translate(0,0); }\\n  25% { transform: rotate(10deg) translate(2px,-2px); }\\n  50% { transform: rotate(-10deg) translate(-2px,2px); }\\n  75% { transform: rotate(5deg) translate(1px,1px); }\\n  100% { transform: rotate(0deg) translate(0,0); }\\n}\\n.{{= name }} .sum {\\n  font-size: 1.5rem;\\n  margin-top: 1rem;\\n}\\n.{{= name }} .point {\\n  font-size: 1.2rem;\\n  margin-top: 0.5rem;\\n  color: #c8e6c9;\\n}\\n.{{= name }} .status {\\n  font-size: 1.3rem;\\n  margin: 1rem 0;\\n  min-height: 2rem;\\n  font-weight: bold;\\n  text-align: center;\\n}\\n.{{= name }} .status.win { color: #ffeb3b; }\\n.{{= name }} .status.lose { color: #ff5252; }\\n.{{= name }} .roll-btn {\\n  padding: 0.75rem 2rem;\\n  font-size: 1.2rem;\\n  font-weight: bold;\\n  color: #0d3b1e;\\n  background: #ffca28;\\n  border: none;\\n  border-radius: 8px;\\n  cursor: pointer;\\n  box-shadow: 0 4px 8px rgba(0,0,0,0.3);\\n  transition: transform 0.1s ease, background 0.2s ease;\\n}\\n.{{= name }} .roll-btn:hover {\\n  background: #ffc107;\\n  transform: scale(1.05);\\n}\\n.{{= name }} .roll-btn:active {\\n  transform: scale(0.98);\\n}\\n.{{= name }} .roll-btn:disabled {\\n  background: #999;\\n  cursor: not-allowed;\\n  transform: none;\\n}\""
+        },
+        {
+            "hash": "\\xea9c49684e23fa4ba26275311c3225982d158f8b468f4524b9dfd5eafe6f7105",
+            "value": "\"944b5a05-be70-45a1-a549-1301d38799e4\""
+        }
+    ],
+    "commits": [
+        {
+            "id": "19ecdb26-fa38-4fc8-858c-1ff01bb6d21e",
+            "message": "Initial craps game bundle with widget and endpoint resource",
+            "version": null,
+            "parent_id": null,
+            "jsonb_rows": [
+                {
+                    "pk_values": [
+                        "be46a1b3-c84e-4502-95be-04f9d490fc5b"
+                    ],
+                    "schema_name": "widget",
+                    "relation_name": "widget",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "d8f8a3ea-1c3c-4b48-869f-09749615e76e"
+                    ],
+                    "schema_name": "endpoint",
+                    "relation_name": "resource",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                }
+            ],
+            "author_name": "Claude Code",
+            "commit_time": "2026-06-06T18:30:17.179261+00:00",
+            "author_email": "claude@aquameta.org",
+            "jsonb_fields": {
+                "{\"pk_values\": [\"be46a1b3-c84e-4502-95be-04f9d490fc5b\"], \"schema_name\": \"widget\", \"relation_name\": \"widget\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\xf4f23f93a77a132de0780a4dabff99ebc925f2be5be145fe974bcbd5b5d50e22",
+                    "css": "\\x788c386e4501a3fc843323186eabe1cbc8b4a14e6187a8517fc1386dad22dd2b",
+                    "help": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "html": "\\x6f12efdf1783923d4e80a106e4ef6368e9f38c85f70044de6c06cc0fce99184f",
+                    "name": "\\x9349f474681f5ffcb1750681e0f83131aa1ac9b8e82405f3e895838fb70de56d",
+                    "pre_js": "\\x3a26fd017f2c6af2b2094c00642f35223707175f5ca24345157952679aceb5dc",
+                    "post_js": "\\xc8f4ef858c098451f6a923c31e82e499eb20d007aab3520934a8c260441fb41d",
+                    "common_js": "\\x12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
+                    "server_js": "\\x12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126"
+                },
+                "{\"pk_values\": [\"d8f8a3ea-1c3c-4b48-869f-09749615e76e\"], \"schema_name\": \"endpoint\", \"relation_name\": \"resource\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\xe95e85c816db7819937dea0407306df28259baeead03246d6785c0d841380639",
+                    "path": "\\x3a3afcebe05191fe2e96d114cc4e693f939cd5ab209c5e0e41d04e1d42622ed0",
+                    "active": "\\xb5bea41b6c623f7c09f1bf24dcae58ebab3c0cdd90ad966bc43a45b44867e12b",
+                    "content": "\\x34be99589e41e73e6bac2155b8beedb28a08cdfcca738595d200a6f27452b8de",
+                    "mimetype_id": "\\xea9c49684e23fa4ba26275311c3225982d158f8b468f4524b9dfd5eafe6f7105"
+                }
+            },
+            "repository_id": "27641fdc-29e1-4bf4-81e4-9ce57e2739b1",
+            "merge_parent_id": null
+        }
+    ],
+    "repository": {
+        "id": "27641fdc-29e1-4bf4-81e4-9ce57e2739b1",
+        "name": "org.aquameta.games.craps",
+        "head_commit_id": "19ecdb26-fa38-4fc8-858c-1ff01bb6d21e"
+    }
+}
