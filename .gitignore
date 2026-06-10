@@ -6,5 +6,8 @@
 aquameta
 bootloader.db/
 extensions/*/*--*.sql
+!extensions/meta/meta--*.sql
+!extensions/meta_triggers/meta_triggers--*.sql
 conf/*.toml
 pgfs/
+.env

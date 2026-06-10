@@ -1,11 +1,3 @@
-[submodule "meta"]
-	path = extensions/meta
-	url = git@github.com:aquameta/meta.git
-    branch = master
-[submodule "meta_triggers"]
-	path = extensions/meta_triggers
-	url = git@github.com:aquameta/meta_triggers.git
-    branch = master
 [submodule "extensions/pg_bundle"]
 	path = extensions/pg_bundle
 	url = git@github.com:erichanson/pg_bundle.git
