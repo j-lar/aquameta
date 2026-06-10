@@ -36,7 +36,7 @@ CREATE TRIGGER plan_updated_at
 
 CREATE TABLE companion.plan_step (
     id          uuid        NOT NULL DEFAULT public.uuid_generate_v4() PRIMARY KEY,
-    plan_id     uuid        NOT NULL REFERENCES companion.plan(id) ON DELETE CASCADE,
+    plan_id     uuid        NOT NULL,
     position    integer     NOT NULL CHECK (position > 0),
     title       text        NOT NULL CHECK (title <> ''),
     detail      text,
@@ -45,12 +45,21 @@ CREATE TABLE companion.plan_step (
     agent_id    uuid        REFERENCES ai.agent(id),
     claimed_at  timestamptz,
     result      text,
-    experiment_id uuid       REFERENCES ai.experiment(id),
+    experiment_id uuid,
     created_at  timestamptz NOT NULL DEFAULT now(),
     updated_at  timestamptz NOT NULL DEFAULT now(),
     UNIQUE (plan_id, position),
     -- claimed/running steps must have agent_id and claimed_at
-    CHECK (status NOT IN ('claimed','running') OR (agent_id IS NOT NULL AND claimed_at IS NOT NULL))
+    CHECK (status NOT IN ('claimed','running') OR (agent_id IS NOT NULL AND claimed_at IS NOT NULL)),
+    -- DEFERRABLE: plan_step rows in io.bundle.ai.core reference companion.plan rows in
+    -- io.bundle.aquameta.plan, and vice versa. Both bundles must be checked out in a
+    -- single transaction with SET CONSTRAINTS ALL DEFERRED to avoid circular FK failures.
+    CONSTRAINT plan_step_plan_id_fkey
+        FOREIGN KEY (plan_id) REFERENCES companion.plan(id) ON DELETE CASCADE
+        DEFERRABLE INITIALLY IMMEDIATE,
+    CONSTRAINT plan_step_experiment_id_fkey
+        FOREIGN KEY (experiment_id) REFERENCES ai.experiment(id)
+        DEFERRABLE INITIALLY IMMEDIATE
 );
 
 CREATE TRIGGER plan_step_updated_at
