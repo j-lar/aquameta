@@ -153,6 +153,106 @@
             "merge_parent_id": null
         },
         {
+            "id": "51aa5a72-d16b-4078-9455-967ca3e10fc1",
+            "message": "Investigate Remotes functionality - research session",
+            "version": null,
+            "parent_id": "e2cb9c99-94d3-4fe4-a7eb-f1ef70b4933b",
+            "jsonb_rows": [
+                {
+                    "pk_values": [
+                        "a8c917df-e977-4267-b86c-a292106ebb15"
+                    ],
+                    "schema_name": "companion",
+                    "relation_name": "note",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "c64b3e00-141e-491a-aef3-9e4ede389db9"
+                    ],
+                    "schema_name": "companion",
+                    "relation_name": "note",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "e8ec5246-b39c-448d-a276-e64b9ecb0781"
+                    ],
+                    "schema_name": "companion",
+                    "relation_name": "note",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "715dbcf8-1715-4ab4-ab0c-085da155c026"
+                    ],
+                    "schema_name": "companion",
+                    "relation_name": "note",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "e3462cae-2a03-4599-8d40-9314fe07a695"
+                    ],
+                    "schema_name": "companion",
+                    "relation_name": "note",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                }
+            ],
+            "author_name": "mistral_vibe",
+            "commit_time": "2026-06-09T19:21:42.348706+00:00",
+            "author_email": "mistral_vibe@aquameta.org",
+            "jsonb_fields": {
+                "{\"pk_values\": [\"715dbcf8-1715-4ab4-ab0c-085da155c026\"], \"schema_name\": \"companion\", \"relation_name\": \"note\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\xd2cc32e6c05f10667d3bef3c79fa74c50f46fc17a2d2566aa454fdbb68a92cb5",
+                    "body": "\\xbcf1ececa7a99a45f64a2354dee645f0a6154d8e5174b77982ca89437a3bdd1e",
+                    "title": "\\xba2e58e9f3245045e622a85b2e0cf82797d4355eedaf1a65ea0ba0af133b7d84",
+                    "topic": "\\xe996ee63bc2d00dfcba6388c8ddeee47d4fbce806e00f97d2e6f15e8e697e6cf",
+                    "updated_at": "\\x81a541ed9040cb504d062f652845c7089b41c19a36df4fa5cc414840e1511e86"
+                },
+                "{\"pk_values\": [\"a8c917df-e977-4267-b86c-a292106ebb15\"], \"schema_name\": \"companion\", \"relation_name\": \"note\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\x0fe63662a5be01146a2187865526f93a7a5ddee767bd3cfb8837aa708ecd6032",
+                    "body": "\\x4dbf49994a5df608b01c8eaed586b8001c0050e1d322e813f1361fed33a0a088",
+                    "title": "\\xbf34f110caa3e564aebb64c38e50fa487fd57055f7adc493ae6b7045a7147f2e",
+                    "topic": "\\xe996ee63bc2d00dfcba6388c8ddeee47d4fbce806e00f97d2e6f15e8e697e6cf",
+                    "updated_at": "\\x2e2b480edb7e67078d90c0a7838248e0105d31f688fc870612295914b16caa18"
+                },
+                "{\"pk_values\": [\"c64b3e00-141e-491a-aef3-9e4ede389db9\"], \"schema_name\": \"companion\", \"relation_name\": \"note\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\x3161c355f4a4306a3107133b2811f87d153d47f16a4ecd48de958720ec481161",
+                    "body": "\\xfdb5b554487e0e6b6a7c28226682a620e89a03237170d571da153c394cf73757",
+                    "title": "\\xc7ebbca733e2995cd335cb2db7f09536b5269715b4bb48d87b6b1899b4905e51",
+                    "topic": "\\xe996ee63bc2d00dfcba6388c8ddeee47d4fbce806e00f97d2e6f15e8e697e6cf",
+                    "updated_at": "\\x5928fbab8f76b3e4e88318aa03118f1f5ac7f63d0076c8b41dcdaee09d0c101b"
+                },
+                "{\"pk_values\": [\"e3462cae-2a03-4599-8d40-9314fe07a695\"], \"schema_name\": \"companion\", \"relation_name\": \"note\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\xec0b51e282e64afac1367ca9599ca07309125a792b0898f56df4c746f3ba0bc7",
+                    "body": "\\xb04ace76ec5759b6445e731b8cdedf841703dece844a7337e2f74df99a8d7f12",
+                    "title": "\\x63fe71f43f4b62c19a4c76ffa29c68b3bd3394c041b3bf791ca9c17a7ca94577",
+                    "topic": "\\xe996ee63bc2d00dfcba6388c8ddeee47d4fbce806e00f97d2e6f15e8e697e6cf",
+                    "updated_at": "\\x7b967d19f7a924fd7322cc41d3654daf2b77b3845618f14f5acf378fcabbe3c6"
+                },
+                "{\"pk_values\": [\"e8ec5246-b39c-448d-a276-e64b9ecb0781\"], \"schema_name\": \"companion\", \"relation_name\": \"note\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\x2b1e7150ae4193259b3520ee8ec35c91604a91df1620b9de124e3ad0da6e064c",
+                    "body": "\\xd2f46937423eaa1a807033512ae22e652a94263d883a01cef8b799ec18108fe1",
+                    "title": "\\x68fb8cdf70f2fef50cac2a330b0ae869dcd55af8e4fadadb43c38a364dbe6ea0",
+                    "topic": "\\xe996ee63bc2d00dfcba6388c8ddeee47d4fbce806e00f97d2e6f15e8e697e6cf",
+                    "updated_at": "\\x186ba30e006e8bd553e265c0240ccbc03706d7374cd3f153cba91bb126d1906d"
+                }
+            },
+            "repository_id": "8fb5d6f5-e605-4e5a-a747-cf98c6841aad",
+            "merge_parent_id": null
+        },
+        {
             "id": "fe1c3f00-71a0-4275-b56c-b11f8e181b25",
             "message": "Add orientation findings note",
             "version": null,
@@ -520,6 +620,6 @@
     "repository": {
         "id": "8fb5d6f5-e605-4e5a-a747-cf98c6841aad",
         "name": "companion.mistral_vibe.aquameta",
-        "head_commit_id": "e2cb9c99-94d3-4fe4-a7eb-f1ef70b4933b"
+        "head_commit_id": "51aa5a72-d16b-4078-9455-967ca3e10fc1"
     }
 }
