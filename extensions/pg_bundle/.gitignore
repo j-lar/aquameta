@@ -1,0 +1,8 @@
+# Generated agent context
+AGENTS.md
+CLAUDE.md
+
+# Editor temp files
+*.swp
+*.swo
+*~

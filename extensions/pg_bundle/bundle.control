@@ -1,0 +1,5 @@
+comment = 'Row-level version control for PostgreSQL'
+default_version = '0.5.0'
+relocatable = false
+schema = 'bundle'
+requires = 'meta,meta_triggers'
