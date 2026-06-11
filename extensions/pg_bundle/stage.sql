@@ -47,23 +47,17 @@ begin
     -- for each relation in this commit
     for rel in
         select
-            row_id->>'relation_name' as relation_name,
-            row_id->>'schema_name' as schema_name,
-            row_id->'pk_column_names' as pk_column_names_jsonb
+            (row_id::meta.relation_id).name as relation_name,
+            (row_id::meta.relation_id).schema_name as schema_name,
+            (row_id).pk_column_names as pk_column_names
         from bundle._get_commit_rows(_commit_id) row_id
-        where meta.row_id_to_relation_id(row_id) =
+        where row_id::meta.relation_id =
             case
-                when _relation_id is null then meta.row_id_to_relation_id(row_id)
+                when _relation_id is null then row_id::meta.relation_id
                 else _relation_id
             end
-        group by row_id->>'relation_name', row_id->>'schema_name', row_id->'pk_column_names'
+        group by row_id::meta.relation_id, (row_id).pk_column_names
     loop
-        -- Convert JSONB array to PostgreSQL text array
-        declare
-            pk_column_names text[];
-        begin
-            select array_agg(value::text) from jsonb_array_elements_text(rel.pk_column_names_jsonb) into pk_column_names;
-
         -- raise notice '#### _db_commit_rows rel: %', rel;
 
         -- for this relation, select the commit_rows that are in this relation, and also in this
@@ -75,18 +69,17 @@ begin
         -- generate the pk comparisons line
         -- FIXME: fails on composite keys because row('a','b','c') != '(a,b,c)':
         -- 'ERROR:  input of anonymous composite types is not implemented' (bug in pg)
-        pk_comparison_stmt := meta._pk_stmt(pk_column_names, pk_column_names, 'x.%1$I::text = (row_id)->''pk_values''->>(%3$s-1)');
+        pk_comparison_stmt := meta._pk_stmt(rel.pk_column_names, rel.pk_column_names, 'x.%1$I::text = (row_id).pk_values[%3$s]');
         -- WAS: pk_comparison_stmt := meta._pk_stmt(rel.pk_column_names, rel.pk_column_names, '(row_id).pk_values[%3$s] = x.%1$I::text', ' and ');
-
 
         stmts := array_append(stmts, format('
             select row_id, x.%I is not null as exists
-            from bundle._get_commit_rows(%L, meta.make_relation_id(%L,%L)) row_id
+            from bundle._get_commit_rows(%L, meta.relation_id(%L,%L)) row_id
                 left join %I.%I x on
                     %s and
-                    (row_id)->>''schema_name'' = %L and
-                    (row_id)->>''relation_name'' = %L',
-            pk_column_names[1], -- 1 is ok here because we're just checking for exist w/ left join & pks cannot be null.  TODO: non-table_rel??
+                    (row_id).schema_name = %L and
+                    (row_id).relation_name = %L',
+            rel.pk_column_names[1], -- 1 is ok here because we're just checking for exist w/ left join & pks cannot be null.  TODO: non-table_rel??
             _commit_id,
             rel.schema_name,
             rel.relation_name,
@@ -96,7 +89,6 @@ begin
             rel.schema_name,
             rel.relation_name
         ));
-        end;
     end loop;
 
     literals_stmt := array_to_string(stmts,E'\nunion\n');
@@ -174,9 +166,9 @@ begin
     -- all relations in the head commit
     for rel in
         select distinct
-            (meta.row_id_to_relation_id(row_id))->>'name' as relation_name,
-            (meta.row_id_to_relation_id(row_id))->>'schema_name' as schema_name,
-            row_id->'pk_column_names' as pk_column_names
+            (row_id::meta.relation_id).name as relation_name,
+            (row_id::meta.relation_id).schema_name as schema_name,
+            (row_id).pk_column_names as pk_column_names
         from bundle._get_commit_rows(commit_id) row_id
     loop
         -- for each relation, select head commit rows in this relation and also
@@ -186,22 +178,16 @@ begin
         -- TODO: check that each relation exists and has not been deleted.
         -- currently, when that happens, this function will fail.
 
-        -- Convert JSONB array to PostgreSQL text array
-        declare
-            pk_column_names text[];
-        begin
-            select array_agg(value::text) from jsonb_array_elements_text(rel.pk_column_names) into pk_column_names;
-
-        pk_comparison_stmt := meta._pk_stmt(pk_column_names, '{}'::text[], 'x.%1$I::text = (row_id)->''pk_values''->>(%3$s-1)');
+        pk_comparison_stmt := meta._pk_stmt(rel.pk_column_names, '{}'::text[], 'x.%1$I::text = (row_id).pk_values[%3$s]');
         -- WAS: pk_comparison_stmt := meta._pk_stmt(rel.pk_column_names, '{}'::text[], '(row_id).pk_values[%3$s] = x.%1$I::text', ' and ');
 
         stmts := array_append(stmts, format('
             select row_id, jsonb_each_text(bundle.row_to_jsonb_hash_obj(x)) as keyval
-            from bundle._get_db_commit_rows(%L, meta.make_relation_id(%L,%L)) row_id
+            from bundle._get_db_commit_rows(%L, meta.relation_id(%L,%L)) row_id
                 left join %I.%I x on
                     %s and
-                    (row_id)->>''schema_name'' = %L and
-                    (row_id)->>''relation_name'' = %L',
+                    (row_id).schema_name = %L and
+                    (row_id).relation_name = %L',
             commit_id,
             rel.schema_name,
             rel.relation_name,
@@ -211,7 +197,6 @@ begin
             rel.schema_name,
             rel.relation_name
         ));
-        end;
     end loop;
 
     literals_stmt := array_to_string(stmts,E'\nunion\n');
@@ -221,7 +206,7 @@ begin
     -- wrap stmt to beautify columns
     literals_stmt := format('
         select
-            meta.make_field_id(row_id, (keyval).key),
+            meta.field_id((row_id).schema_name, (row_id).relation_name, (row_id).pk_column_names, (row_id).pk_values, (keyval).key),
             -- TODO bundle.hash((keyval).value)::text as value_hash
             ((keyval).value)::text as value_hash
         from (%s) fields;',

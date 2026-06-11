@@ -75,7 +75,7 @@ declare
 begin
     -- extract row_id and column_name from field_id
     _row_id := meta.field_id_to_row_id(_field_id);
-    _column_name := _field_id->>'column_name';
+    _column_name := (_field_id).column_name;
 
     -- look up the hash
     select jsonb_fields->(_row_id::text)->>_column_name

@@ -28,11 +28,11 @@ create index stash_created_at_idx on bundle.stash(created_at);
 -- Extract row_id from field_id
 create or replace function bundle._field_to_row(_fid meta.field_id)
 returns meta.row_id as $$
-    select meta.make_row_id(
-        _fid->>'schema_name',
-        _fid->>'relation_name',
-        array(select jsonb_array_elements_text(_fid->'pk_column_names')),
-        array(select jsonb_array_elements_text(_fid->'pk_values'))
+    select meta.row_id(
+        (_fid).schema_name,
+        (_fid).relation_name,
+        (_fid).pk_column_names,
+        (_fid).pk_values
     );
 $$ language sql immutable;
 
