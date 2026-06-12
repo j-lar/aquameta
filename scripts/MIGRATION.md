@@ -66,7 +66,18 @@ sudo scripts/make_install_extensions.sh
 If `make` fails on a missing build dependency (e.g. `pgxs` not found), install
 `postgresql-server-dev-17` (or the matching dev package for your PG version) and retry.
 
-### Step 2 — Prepare a clean database
+### Step 2 — Build the Go daemon
+
+```bash
+cd ~/aquameta
+go build -o aquameta .
+```
+
+This produces the `aquameta` binary that `systemctl start aquameta` expects at
+`~/aquameta/aquameta`. Requires Go 1.21+; check with `go version`.
+
+### Step 3 — Prepare a clean database
+
 
 
 ```bash
@@ -79,7 +90,7 @@ sudo -u postgres psql -c "CREATE DATABASE aquameta OWNER aquameta;"
 If Aquameta was already started and failed during install, treat the database as
 partially installed and recreate it before continuing.
 
-### Step 3 — Run the proof installer
+### Step 4 — Run the proof installer
 
 Copy these two scripts to the target first:
 
@@ -113,7 +124,7 @@ A successful run exits `0` and has no `ERROR` output. The compat script itself i
 quiet except for normal `CREATE FUNCTION` / `CREATE OPERATOR` output when run
 through `psql`.
 
-### Step 4 — Start Aquameta
+### Step 5 — Start Aquameta
 
 After the proof installer succeeds, start the daemon. It should see the core
 install as complete and skip auto-install.
@@ -130,7 +141,7 @@ custom layer below.
 
 ## Custom Layer Install
 
-### Step 5 — Load custom extensions
+### Step 6 — Load custom extensions
 
 Load in dependency order (ai -> companion -> navigation -> advisor):
 
@@ -155,7 +166,7 @@ psql $DB_URL -f scripts/create_ai_run_binding.sql
 
 > GRANT statements in that file will fail if the agent roles don't exist yet.
 > That's expected. The tables and functions are still created. Re-run the grants
-> after Step 7 once the roles exist.
+> after Step 8 once the roles exist.
 
 **Idempotency:** the extension scripts must not INSERT rows that are also tracked
 in bundles (agent registrations, capability rows, etc.). If they do, checkout
@@ -166,7 +177,7 @@ Extension SQL creates schemas, tables, functions, triggers, and views only. Web
 surfaces such as `/ai/experiments`, `/plans`, and game pages are endpoint and
 widget rows; those come from bundle import/checkout in the next steps.
 
-The scripted path for Steps 6-7 is:
+The scripted path for Steps 7-8 is:
 
 ```bash
 cd ~/aquameta
@@ -181,7 +192,7 @@ loads `scripts/pg_bundle-cda47c6-checkout-compat.sql`, applies the historical
 compatibility stubs required by the current exported bundle data, and uses
 `bundle.checkout(..., true)`.
 
-### Step 6 — Import custom bundle JSON files
+### Step 7 — Import custom bundle JSON files
 
 ```bash
 cd bundles
@@ -195,7 +206,7 @@ for f in io.bundle.ai.core.json \
 done
 ```
 
-### Step 7 — Checkout bundles
+### Step 8 — Checkout bundles
 
 The ai.core, aquameta.plan, and companion bundles form a circular FK cycle.
 Check them out in a single deferred-constraint transaction. Start from a clean `aquameta=#` prompt; if psql shows `aquameta-#`, type `\r` first because psql is still buffering an unfinished statement:
@@ -303,7 +314,7 @@ COMMIT;
 If `SET CONSTRAINTS ALL DEFERRED` still fails, the most likely causes are:
 (a) a non-deferrable FK firing out of checkout order, or
 (b) duplicate-key errors from extension SQL having seeded rows the bundle also carries
-(see idempotency note in Step 5).
+(see idempotency note in Step 6).
 
 
 Optional game bundles are not all part of the core proof install. Import and
@@ -336,7 +347,7 @@ WHERE name IN ('ai_experiment', 'ai_run_summary', 'ai_idea', 'companion_session_
 ORDER BY name;
 ```
 
-### Step 8 — Verify roles and grant permissions
+### Step 9 — Verify roles and grant permissions
 
 Do not manually `CREATE ROLE ai_agent_*` before checkout. `ai.agent` rows create
 those PostgreSQL roles through the `ai.agent_insert` trigger. If a manual role was
@@ -344,7 +355,7 @@ created before checkout and the matching `ai.agent` row is absent, drop that
 stray role and rerun checkout so the bundle can create the agent row and role
 together.
 
-After Step 7, verify the expected roles exist:
+After Step 8, verify the expected roles exist:
 
 ```sql
 SELECT rolname
@@ -354,9 +365,9 @@ ORDER BY rolname;
 ```
 
 Re-run `scripts/create_ai_run_binding.sql` to apply the GRANT statements that
-were skipped in Step 5.
+were skipped in Step 6.
 
-### Step 9 — Restart Aquameta
+### Step 10 — Restart Aquameta
 
 ```bash
 systemctl restart aquameta
@@ -419,6 +430,6 @@ patching pg_bundle.
 | Issues 2-8 (import_repository / `_checkout_row` failures) | Target had older pg_bundle than source | Resolved by using the target pg_bundle commit consistently |
 | Issues 9-10 (CREATE VIEW/FUNCTION not OR REPLACE) | meta_triggers generated plain CREATE DDL; bundle carried same schema objects | **Resolved:** `io.bundle.ai.core` no longer tracks `meta.function`/`meta.view` rows (commit `c2ed1f6`) |
 | Issue 11 (`companion.assessment` missing) | Schema object added in DB, never written to extension SQL | Fixed: `extensions/companion/003-assessment.sql` |
-| Issue 12 (circular FK on checkout) | Bundle decomposition spans ai.core + plan + companion | Fixed: DEFERRABLE FKs + `SET CONSTRAINTS ALL DEFERRED` in Step 7 |
+| Issue 12 (circular FK on checkout) | Bundle decomposition spans ai.core + plan + companion | Fixed: DEFERRABLE FKs + `SET CONSTRAINTS ALL DEFERRED` in Step 8 |
 | Issue 13 (`companion.decision.supersedes_id`) | Column dropped; orphaned in bundle data | Checkout compatibility shim skips fields whose target columns no longer exist |
 | Issue 14 (`checkout_commit_id` not set) | False diagnosis; symptom of earlier failures | Non-issue: `checkout.sql` sets it correctly |
