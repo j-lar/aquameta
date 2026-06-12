@@ -347,8 +347,8 @@ for b in \
   org.aquameta.games.roulette; do
   cp "bundles/$b.json" "/tmp/$b.json"
   chmod 0644 "/tmp/$b.json"
-  psql -v ON_ERROR_STOP=1 -c "SELECT bundle.import_repository(pg_read_file('/tmp/$b.json'));"
-  psql -v ON_ERROR_STOP=1 -c "SELECT bundle.checkout('$b', true);"
+  psql $DB_URL -v ON_ERROR_STOP=1 -c "SELECT bundle.import_repository(pg_read_file('/tmp/$b.json'));"
+  psql $DB_URL -v ON_ERROR_STOP=1 -c "SELECT bundle.checkout('$b', true);"
 done
 ```
 
