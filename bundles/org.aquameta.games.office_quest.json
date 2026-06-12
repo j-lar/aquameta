@@ -106,11 +106,64 @@
             },
             "repository_id": "7b891811-8c7a-463f-b61d-95eaff3d9ad5",
             "merge_parent_id": null
+        },
+        {
+            "id": "347fdf9f-d2b0-40aa-a167-2b8f47332503",
+            "message": "update game content: css, post_js, resource",
+            "version": null,
+            "parent_id": "1a99b4aa-6418-49cf-ac56-4e049e08bca8",
+            "jsonb_rows": [
+                {
+                    "pk_values": [
+                        "1ed4b7ad-943e-4199-8a9e-ecf9a7fcbefa"
+                    ],
+                    "schema_name": "widget",
+                    "relation_name": "widget",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "8bc354f1-a337-44cc-ad19-32cda21dee82"
+                    ],
+                    "schema_name": "endpoint",
+                    "relation_name": "resource",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                }
+            ],
+            "author_name": "claude_code",
+            "commit_time": "2026-06-12T09:00:15.184177+00:00",
+            "author_email": "claude@aquameta.org",
+            "jsonb_fields": {
+                "{\"pk_values\": [\"1ed4b7ad-943e-4199-8a9e-ecf9a7fcbefa\"], \"schema_name\": \"widget\", \"relation_name\": \"widget\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\x66e7bfddfff4da98961638d39035ed5816819a954659c26ae4c3b27f5c191492",
+                    "css": "\\xfc0291f24cfd00d671de3ab42c24ca7b64f9d13347a708087ca5747165c8dd01",
+                    "help": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "html": "\\xe90d3f21e687d81e701426964ec9afeb91f81a4ab5cccee0b9e89eca2954b47b",
+                    "name": "\\xa079d3f485addec6cfc338fbda302249d4e24fb340aaf3be3b1385a80c67c8f3",
+                    "pre_js": "\\x3a26fd017f2c6af2b2094c00642f35223707175f5ca24345157952679aceb5dc",
+                    "post_js": "\\x42b2e236dbb57025a480fdc0c79ca762fac5d78687466c38abe56ac3cb4cb836",
+                    "common_js": "\\x12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
+                    "server_js": "\\x12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126"
+                },
+                "{\"pk_values\": [\"8bc354f1-a337-44cc-ad19-32cda21dee82\"], \"schema_name\": \"endpoint\", \"relation_name\": \"resource\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\xfe37d66f0cd9a6d7b82daa706000be0390a1bd47e50f21b99a592671389c8923",
+                    "path": "\\x828e1073fb2dc29f7dcfe80a9e001d02d4e72c4039731965f54114dd38226492",
+                    "active": "\\xb5bea41b6c623f7c09f1bf24dcae58ebab3c0cdd90ad966bc43a45b44867e12b",
+                    "content": "\\xba94269d3accd86166a2461e66f1db21e9c4f8fdc182e683d4b2a4eb7bec99c1",
+                    "mimetype_id": "\\xea9c49684e23fa4ba26275311c3225982d158f8b468f4524b9dfd5eafe6f7105"
+                }
+            },
+            "repository_id": "7b891811-8c7a-463f-b61d-95eaff3d9ad5",
+            "merge_parent_id": null
         }
     ],
     "repository": {
         "id": "7b891811-8c7a-463f-b61d-95eaff3d9ad5",
         "name": "org.aquameta.games.office_quest",
-        "head_commit_id": "1a99b4aa-6418-49cf-ac56-4e049e08bca8"
+        "head_commit_id": "347fdf9f-d2b0-40aa-a167-2b8f47332503"
     }
 }

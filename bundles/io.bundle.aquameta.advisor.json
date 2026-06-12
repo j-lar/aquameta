@@ -884,11 +884,242 @@
             },
             "repository_id": "bf331198-6e98-4ae5-8958-21e6ce686e41",
             "merge_parent_id": null
+        },
+        {
+            "id": "9bf882e8-a83f-448e-9b95-86a92d34855c",
+            "message": "update context documents",
+            "version": null,
+            "parent_id": "3626a334-7f77-486c-8bf5-ac621acb43b8",
+            "jsonb_rows": [
+                {
+                    "pk_values": [
+                        "a7dd5f67-e67e-4fb0-b994-60e5e6335862"
+                    ],
+                    "schema_name": "advisor",
+                    "relation_name": "advisor",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "9abff1a5-3fd3-4b52-860a-2d152d1e8e7c"
+                    ],
+                    "schema_name": "advisor",
+                    "relation_name": "context_document",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "e855717b-6335-4de5-bb9e-92b439ca825c"
+                    ],
+                    "schema_name": "advisor",
+                    "relation_name": "context_document",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "606c6721-71ee-463a-ac4b-4a686bb9110c"
+                    ],
+                    "schema_name": "advisor",
+                    "relation_name": "context_document",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "414741c2-262d-4a81-b58f-93ac6475ab61"
+                    ],
+                    "schema_name": "advisor",
+                    "relation_name": "context_document",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "e796ffe9-9e6d-4baf-abd9-199c766f7d73"
+                    ],
+                    "schema_name": "advisor",
+                    "relation_name": "context_document",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "63e0f8da-2509-4de1-bb73-ecf347de3509"
+                    ],
+                    "schema_name": "advisor",
+                    "relation_name": "context_document",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "4f87e9d1-733e-4b3f-9aa4-bafa1aeb8431"
+                    ],
+                    "schema_name": "advisor",
+                    "relation_name": "context_document",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "f9339a19-0f78-4917-8ba5-3fad00acacfe"
+                    ],
+                    "schema_name": "advisor",
+                    "relation_name": "context_document",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "944faee9-f1a4-4d58-a5d4-ae01c55af0e3"
+                    ],
+                    "schema_name": "advisor",
+                    "relation_name": "context_document",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "54a896ab-7698-46ef-a492-f992ee2eea85"
+                    ],
+                    "schema_name": "advisor",
+                    "relation_name": "context_document",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "ecb8d2c2-2fa6-4103-9f72-1fbae8a6eda9"
+                    ],
+                    "schema_name": "advisor",
+                    "relation_name": "context_document",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                }
+            ],
+            "author_name": "claude_code",
+            "commit_time": "2026-06-12T09:00:22.157397+00:00",
+            "author_email": "claude@aquameta.org",
+            "jsonb_fields": {
+                "{\"pk_values\": [\"a7dd5f67-e67e-4fb0-b994-60e5e6335862\"], \"schema_name\": \"advisor\", \"relation_name\": \"advisor\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\x8e1a95dc22da1cddc1e29d45c1642b3c3e825ee50f5936c42e29a03d570c0d4f",
+                    "name": "\\xccd09005f7fbbf5322128b20f4716e45127cbe6f3b4a60b2eb825ca9bb629b87",
+                    "model": "\\x1dd2d2c2c192890034b69f515dde98792d98b514c0656bcc806a6e58a61c8797",
+                    "created_at": "\\xe89c7246d8142e7d3d0a4415f8e94c6a0f0a8149a9af0e296e720694f15c8134",
+                    "description": "\\x00da5917aa8fd16059e391479bff53e5d2f2390960f84e1eef5640ffdff3d231",
+                    "system_prompt": "\\x365beca5c14838f88fa8c31991daca2a93e0211074de59f0401df16de52ea9f4"
+                },
+                "{\"pk_values\": [\"414741c2-262d-4a81-b58f-93ac6475ab61\"], \"schema_name\": \"advisor\", \"relation_name\": \"context_document\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\xd3fea9e6ecbe29b5ed9a276af8cef97b72b43c906eafeb4b9183814940b1a926",
+                    "body": "\\x8657f73591a450fb00099d9443a75731c6e1d7a7d89d7db0e3249911c81661f9",
+                    "title": "\\xb4e384861412e4bcbe24a33cf803ee7a3314775527c215afa81b3085af11795f",
+                    "advisor_id": "\\x8e1a95dc22da1cddc1e29d45c1642b3c3e825ee50f5936c42e29a03d570c0d4f",
+                    "sort_order": "\\xd59eced1ded07f84c145592f65bdf854358e009c5cd705f5215bf18697fed103",
+                    "updated_at": "\\x049e0a948e07b9ab5992b60446ef26ba90f89278bcb0c7ebcc498ae088355005"
+                },
+                "{\"pk_values\": [\"4f87e9d1-733e-4b3f-9aa4-bafa1aeb8431\"], \"schema_name\": \"advisor\", \"relation_name\": \"context_document\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\x39fb415b433fe919939f27c61d00edd93824fbbdf5cc757ef5aa1ecebea92a91",
+                    "body": "\\x0ca00a13553966e20cba916743ea97e39a451e16fc4c802ea1bb4118f9d549c7",
+                    "title": "\\x1bb072da62f1ade9a65ddb55f1059196546faa5763c5fc331cdb08c95d374e32",
+                    "advisor_id": "\\x8e1a95dc22da1cddc1e29d45c1642b3c3e825ee50f5936c42e29a03d570c0d4f",
+                    "sort_order": "\\xff5a1ae012afa5d4c889c50ad427aaf545d31a4fac04ffc1c4d03d403ba4250a",
+                    "updated_at": "\\x049e0a948e07b9ab5992b60446ef26ba90f89278bcb0c7ebcc498ae088355005"
+                },
+                "{\"pk_values\": [\"54a896ab-7698-46ef-a492-f992ee2eea85\"], \"schema_name\": \"advisor\", \"relation_name\": \"context_document\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\xc57582aec3e3e99f0f2168b26d83fa2f8e504a47c9b57249a7c97b126f78e35f",
+                    "body": "\\xdcb3379521cba87954e0e1b405359f7ba33fa628bab21294058aa0b050fa407c",
+                    "title": "\\xc99733b430a1d542f368b0c05c7dd4c40da5a061153f66bbe8b8e801d634a8a3",
+                    "advisor_id": "\\x8e1a95dc22da1cddc1e29d45c1642b3c3e825ee50f5936c42e29a03d570c0d4f",
+                    "sort_order": "\\xad57366865126e55649ecb23ae1d48887544976efea46a48eb5d85a6eeb4d306",
+                    "updated_at": "\\x049e0a948e07b9ab5992b60446ef26ba90f89278bcb0c7ebcc498ae088355005"
+                },
+                "{\"pk_values\": [\"606c6721-71ee-463a-ac4b-4a686bb9110c\"], \"schema_name\": \"advisor\", \"relation_name\": \"context_document\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\x517d366433109006d4fa8bb65749f3095c4b7718db46a034988ecacccd523688",
+                    "body": "\\x7f51226955c885cc0e8153e51553038ee34e1ad8742a48c35a6c59e26eef90ec",
+                    "title": "\\xd9f19cc834527bc2fd9405219cdc3d2a507efa45329569df65e4c4f4b3dccf82",
+                    "advisor_id": "\\x8e1a95dc22da1cddc1e29d45c1642b3c3e825ee50f5936c42e29a03d570c0d4f",
+                    "sort_order": "\\x624b60c58c9d8bfb6ff1886c2fd605d2adeb6ea4da576068201b6c6958ce93f4",
+                    "updated_at": "\\x049e0a948e07b9ab5992b60446ef26ba90f89278bcb0c7ebcc498ae088355005"
+                },
+                "{\"pk_values\": [\"63e0f8da-2509-4de1-bb73-ecf347de3509\"], \"schema_name\": \"advisor\", \"relation_name\": \"context_document\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\xc82bc116038fba9595c15e19c0ea99fc413c604c521f09c3985916f1b9573d8a",
+                    "body": "\\x8f7bda329ac023858e0719a9c73af75ef48dd0e8b5396c20df116b55764a5720",
+                    "title": "\\x917d333df99a03b2e12c559cc4d78c28a8affde3154e83af84b8a137efb9340e",
+                    "advisor_id": "\\x8e1a95dc22da1cddc1e29d45c1642b3c3e825ee50f5936c42e29a03d570c0d4f",
+                    "sort_order": "\\x39fa9ec190eee7b6f4dff1100d6343e10918d044c75eac8f9e9a2596173f80c9",
+                    "updated_at": "\\x049e0a948e07b9ab5992b60446ef26ba90f89278bcb0c7ebcc498ae088355005"
+                },
+                "{\"pk_values\": [\"944faee9-f1a4-4d58-a5d4-ae01c55af0e3\"], \"schema_name\": \"advisor\", \"relation_name\": \"context_document\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\x3e13ef1c1aa4ed986e4763cf8d0f5fe94daa411b6845ea4e5e0c03dcd2c6d1e5",
+                    "body": "\\xa0ec35ede46a7160ef384902c2de7cae1eebceb81bec6e5638e3437bc330737f",
+                    "title": "\\x5a5120d3f575bf9e1cc9a2674797e1dfe92229cf441c17821ce0332616126d8b",
+                    "advisor_id": "\\x8e1a95dc22da1cddc1e29d45c1642b3c3e825ee50f5936c42e29a03d570c0d4f",
+                    "sort_order": "\\x69f59c273b6e669ac32a6dd5e1b2cb63333d8b004f9696447aee2d422ce63763",
+                    "updated_at": "\\x049e0a948e07b9ab5992b60446ef26ba90f89278bcb0c7ebcc498ae088355005"
+                },
+                "{\"pk_values\": [\"9abff1a5-3fd3-4b52-860a-2d152d1e8e7c\"], \"schema_name\": \"advisor\", \"relation_name\": \"context_document\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\x52db3b29a335a9d54ce50265a8bc2e06e00a36cf4a364e1c04ded369314cb0c9",
+                    "body": "\\xfe1c1af4a6b4978020c3c5e82164d1dd0122155d576ec23f4cf3df12b7b4f3d8",
+                    "title": "\\x00ecbf38bf618dd2e26b875f8bce4ff782e94123b1a7c04a614975e5441c2c29",
+                    "advisor_id": "\\x8e1a95dc22da1cddc1e29d45c1642b3c3e825ee50f5936c42e29a03d570c0d4f",
+                    "sort_order": "\\x4a44dc15364204a80fe80e9039455cc1608281820fe2b24f1e5233ade6af1dd5",
+                    "updated_at": "\\x049e0a948e07b9ab5992b60446ef26ba90f89278bcb0c7ebcc498ae088355005"
+                },
+                "{\"pk_values\": [\"e796ffe9-9e6d-4baf-abd9-199c766f7d73\"], \"schema_name\": \"advisor\", \"relation_name\": \"context_document\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\x5f59287b65430b3be11e852f4d89a40208a15aae7d06a7fe1f47228893448764",
+                    "body": "\\x4a769c1bdaa57229e2481ee6886960b399a64d4183bf7006f2fea368c6ebbe98",
+                    "title": "\\x30955fd23070377f2801c042cb6df0ca838cd385af88abfabb95e0e64de32348",
+                    "advisor_id": "\\x8e1a95dc22da1cddc1e29d45c1642b3c3e825ee50f5936c42e29a03d570c0d4f",
+                    "sort_order": "\\x1a6562590ef19d1045d06c4055742d38288e9e6dcd71ccde5cee80f1d5a774eb",
+                    "updated_at": "\\x049e0a948e07b9ab5992b60446ef26ba90f89278bcb0c7ebcc498ae088355005"
+                },
+                "{\"pk_values\": [\"e855717b-6335-4de5-bb9e-92b439ca825c\"], \"schema_name\": \"advisor\", \"relation_name\": \"context_document\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\x7b5ffe4cbdbfe6875c89211518d0e59e053fd1af1061527128a75fb8d4766d98",
+                    "body": "\\x26eaf46137c5de36b0275bedf6f40a38c1f5a428b428d919c718e4ccf4f123fd",
+                    "title": "\\x5e2d55070b78ad5755b8f9aa4dded0918e2470a4c7ec3443a8e1b2408ef6f2a0",
+                    "advisor_id": "\\x8e1a95dc22da1cddc1e29d45c1642b3c3e825ee50f5936c42e29a03d570c0d4f",
+                    "sort_order": "\\xf5ca38f748a1d6eaf726b8a42fb575c3c71f1864a8143301782de13da2d9202b",
+                    "updated_at": "\\x049e0a948e07b9ab5992b60446ef26ba90f89278bcb0c7ebcc498ae088355005"
+                },
+                "{\"pk_values\": [\"ecb8d2c2-2fa6-4103-9f72-1fbae8a6eda9\"], \"schema_name\": \"advisor\", \"relation_name\": \"context_document\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\x51e53f362892a07f2683cf10c84d3a36e7e23de8b5666f8b96e0692a5bc811e2",
+                    "body": "\\xc7c019a07b7648644b75ef620023e66ade09a7f4c2c3ea49c5766e183a5e09a4",
+                    "title": "\\x3984f54f07d3116a100505d4768ce1b591e6f6c538f4cbf7fddb0ac4d2e13d98",
+                    "advisor_id": "\\x8e1a95dc22da1cddc1e29d45c1642b3c3e825ee50f5936c42e29a03d570c0d4f",
+                    "sort_order": "\\x02d20bbd7e394ad5999a4cebabac9619732c343a4cac99470c03e23ba2bdc2bc",
+                    "updated_at": "\\xaa1df42145b7415fae15cc81109a61b6513d3a64beb77caf1a248d4f99f5a7c6"
+                },
+                "{\"pk_values\": [\"f9339a19-0f78-4917-8ba5-3fad00acacfe\"], \"schema_name\": \"advisor\", \"relation_name\": \"context_document\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\x2ab265a8889bbb6fb8221034f9c443eb5250652464217ece40e9ca75b7df3626",
+                    "body": "\\x21a8ca5cac54f0203ce2a300c9eb0a67814b8e629ea4ef2271fc4ae2279a8f06",
+                    "title": "\\x860ebeba44639cdff391cb94a1c7c1fa5e224a40c1dc04996c43b33d7f6777c2",
+                    "advisor_id": "\\x8e1a95dc22da1cddc1e29d45c1642b3c3e825ee50f5936c42e29a03d570c0d4f",
+                    "sort_order": "\\x48449a14a4ff7d79bb7a1b6f3d488eba397c36ef25634c111b49baf362511afc",
+                    "updated_at": "\\x049e0a948e07b9ab5992b60446ef26ba90f89278bcb0c7ebcc498ae088355005"
+                }
+            },
+            "repository_id": "bf331198-6e98-4ae5-8958-21e6ce686e41",
+            "merge_parent_id": null
         }
     ],
     "repository": {
         "id": "bf331198-6e98-4ae5-8958-21e6ce686e41",
         "name": "io.bundle.aquameta.advisor",
-        "head_commit_id": "3626a334-7f77-486c-8bf5-ac621acb43b8"
+        "head_commit_id": "9bf882e8-a83f-448e-9b95-86a92d34855c"
     }
 }

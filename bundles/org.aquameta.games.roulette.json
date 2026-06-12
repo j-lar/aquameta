@@ -312,11 +312,127 @@
             },
             "repository_id": "29222f3d-24ad-4e92-bc31-5eb955e2cc17",
             "merge_parent_id": null
+        },
+        {
+            "id": "b7d14ca5-28c1-44aa-980a-338e7ea3c837",
+            "message": "update post_js",
+            "version": null,
+            "parent_id": "0df6c4f6-30ad-4661-95db-ddd060f0414f",
+            "jsonb_rows": [
+                {
+                    "pk_values": [
+                        "57ab890d-4533-405b-b98a-92e57d4eeb91"
+                    ],
+                    "schema_name": "widget",
+                    "relation_name": "widget",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "2112d89d-6889-4d56-be8e-687616d5dc8b"
+                    ],
+                    "schema_name": "widget",
+                    "relation_name": "widget",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "4b738b0a-bb82-47fc-b623-9e7ed8bb86dd"
+                    ],
+                    "schema_name": "widget",
+                    "relation_name": "widget",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "93c47b24-cc3e-456f-b6b3-8a52ea2d123e"
+                    ],
+                    "schema_name": "widget",
+                    "relation_name": "widget",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                },
+                {
+                    "pk_values": [
+                        "882442ed-eea3-453f-848e-70b8ca8b8f01"
+                    ],
+                    "schema_name": "endpoint",
+                    "relation_name": "resource",
+                    "pk_column_names": [
+                        "id"
+                    ]
+                }
+            ],
+            "author_name": "claude_code",
+            "commit_time": "2026-06-12T09:00:18.658815+00:00",
+            "author_email": "claude@aquameta.org",
+            "jsonb_fields": {
+                "{\"pk_values\": [\"2112d89d-6889-4d56-be8e-687616d5dc8b\"], \"schema_name\": \"widget\", \"relation_name\": \"widget\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\x4ab2053b84a17317b9d892a5dffda97a4369ca0b27a20da8903bc819a98065e1",
+                    "css": "\\x01c3f6badebb82bd2bb8ea9e8db76102383af3e12203379c0a1128c5d35b32a9",
+                    "help": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "html": "\\xe90d3f21e687d81e701426964ec9afeb91f81a4ab5cccee0b9e89eca2954b47b",
+                    "name": "\\x2873a6a329107d55cf117bf8ae8e1759eec7ec3120d8cac38187a4b1281ddabb",
+                    "pre_js": "\\x3a26fd017f2c6af2b2094c00642f35223707175f5ca24345157952679aceb5dc",
+                    "post_js": "\\x1b7e50d6fb9d4ddd8557ff54ccf763925a930fff1967d7fa41a29bd851a0b16e",
+                    "common_js": "\\x12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
+                    "server_js": "\\x12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126"
+                },
+                "{\"pk_values\": [\"4b738b0a-bb82-47fc-b623-9e7ed8bb86dd\"], \"schema_name\": \"widget\", \"relation_name\": \"widget\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\xee8cfeb88610b78862a5711805b210ecbb3c745d11b37eb26df7561552a82511",
+                    "css": "\\xbd19b3bd31839b702bb4da14a6ec336a18447761c2f1abf11141c57567de8d60",
+                    "help": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "html": "\\xe90d3f21e687d81e701426964ec9afeb91f81a4ab5cccee0b9e89eca2954b47b",
+                    "name": "\\x604f494bbe6074e64985806d0f85c4adee667c305dedf5bc3c56bd6d72e4a167",
+                    "pre_js": "\\x3a26fd017f2c6af2b2094c00642f35223707175f5ca24345157952679aceb5dc",
+                    "post_js": "\\x3f8a1b111f0046164e620b892bbd8b40675a9e5b5a079a16c7e958237c5b5b39",
+                    "common_js": "\\x12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
+                    "server_js": "\\x12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126"
+                },
+                "{\"pk_values\": [\"57ab890d-4533-405b-b98a-92e57d4eeb91\"], \"schema_name\": \"widget\", \"relation_name\": \"widget\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\x8c3cb464341946d7df94f6af7a82cdc8a1c14b5a6e2b1dde28da0d0eb1354219",
+                    "css": "\\xa0d92561536dbc822cfd24948d9e7cc4738dd86576a4523dd4b34ba55eedd480",
+                    "help": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "html": "\\xe90d3f21e687d81e701426964ec9afeb91f81a4ab5cccee0b9e89eca2954b47b",
+                    "name": "\\x4d948629d732fa7eddb6c3db7d684c9f497b40f2138b371fc547c6e1b089667d",
+                    "pre_js": "\\x3a26fd017f2c6af2b2094c00642f35223707175f5ca24345157952679aceb5dc",
+                    "post_js": "\\xc5c0564a7e5964f73dd828fc445faf0137ccf0e1d3e12fe8ee7a27e7b2de2960",
+                    "common_js": "\\x12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
+                    "server_js": "\\x12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126"
+                },
+                "{\"pk_values\": [\"93c47b24-cc3e-456f-b6b3-8a52ea2d123e\"], \"schema_name\": \"widget\", \"relation_name\": \"widget\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\x47ba971566a629c0d620fed0c12c4a4f42468012df7bd2f36d612ea057b61385",
+                    "css": "\\x0eb249524398e078fdc15f38521d4a4a88bb85888d690bb9aaf63943d0913584",
+                    "help": "\\xc0178022ef029933301a5585abee372c28ad47d08e3b5b6b748ace8e5263d2c9",
+                    "html": "\\xe90d3f21e687d81e701426964ec9afeb91f81a4ab5cccee0b9e89eca2954b47b",
+                    "name": "\\x9be8783ef26f4128e7b922fd22169ff126298f7cc7ff8868aef8714675ea87b7",
+                    "pre_js": "\\x3a26fd017f2c6af2b2094c00642f35223707175f5ca24345157952679aceb5dc",
+                    "post_js": "\\xffe2f5aa39e40771651b6acaa39801e5906da4e4eef155d86cf91cb1e48ed8db",
+                    "common_js": "\\x12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
+                    "server_js": "\\x12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126"
+                },
+                "{\"pk_values\": [\"882442ed-eea3-453f-848e-70b8ca8b8f01\"], \"schema_name\": \"endpoint\", \"relation_name\": \"resource\", \"pk_column_names\": [\"id\"]}": {
+                    "id": "\\x274f2d3e66add18cea43ceaabd6e70e0164432d5990144affb00a6f96a19be5f",
+                    "path": "\\xf48a62e0df33bdee27153dfc367571e2ccf2aecde438cc61669fd05a492c67b0",
+                    "active": "\\xb5bea41b6c623f7c09f1bf24dcae58ebab3c0cdd90ad966bc43a45b44867e12b",
+                    "content": "\\xd013c57f22b3fe57191623ee6facbfdf020d5f5b0cde2e74417dfcd7e514318e",
+                    "mimetype_id": "\\xea9c49684e23fa4ba26275311c3225982d158f8b468f4524b9dfd5eafe6f7105"
+                }
+            },
+            "repository_id": "29222f3d-24ad-4e92-bc31-5eb955e2cc17",
+            "merge_parent_id": null
         }
     ],
     "repository": {
         "id": "29222f3d-24ad-4e92-bc31-5eb955e2cc17",
         "name": "org.aquameta.games.roulette",
-        "head_commit_id": "0df6c4f6-30ad-4661-95db-ddd060f0414f"
+        "head_commit_id": "b7d14ca5-28c1-44aa-980a-338e7ea3c837"
     }
 }
