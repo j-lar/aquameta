@@ -9,11 +9,12 @@ set -euo pipefail
 DB_NAME="${DB_NAME:-aquameta}"
 REPO_ROOT="${REPO_ROOT:-$(pwd)}"
 WITH_GAMES=0
+GAMES_ONLY=0
 SKIP_COMPAT=0
 
 usage() {
   cat <<'EOF'
-Usage: scripts/install_custom_layer_bundles.sh [--games] [--skip-compat]
+Usage: scripts/install_custom_layer_bundles.sh [--games] [--games-only] [--skip-compat]
 
 Environment:
   DB_NAME    Database name when DB_URL is unset. Default: aquameta
@@ -21,7 +22,9 @@ Environment:
   REPO_ROOT  Aquameta repo root. Default: current directory
 
 Options:
-  --games        Also import/checkout optional game bundles.
+  --games        Also import/checkout optional game bundles after the custom layer.
+  --games-only   Import/checkout game bundles only; skip the custom layer install.
+                 Use this when the custom layer is already installed.
   --skip-compat  Do not load scripts/pg_bundle-cda47c6-checkout-compat.sql.
 EOF
 }
@@ -29,6 +32,10 @@ EOF
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --games)
+      WITH_GAMES=1
+      ;;
+    --games-only)
+      GAMES_ONLY=1
       WITH_GAMES=1
       ;;
     --skip-compat)
@@ -114,7 +121,9 @@ import_bundle() {
   psql_cmd -c "SELECT bundle.import_repository(pg_read_file('$tmp_json'));"
 }
 
-check_bundle_files "${CUSTOM_BUNDLES[@]}"
+if [[ "$GAMES_ONLY" -eq 0 ]]; then
+  check_bundle_files "${CUSTOM_BUNDLES[@]}"
+fi
 if [[ "$WITH_GAMES" -eq 1 ]]; then
   check_bundle_files "${GAME_BUNDLES[@]}"
 fi
@@ -140,6 +149,8 @@ BEGIN
     END IF;
 END $$;
 SQL
+
+if [[ "$GAMES_ONLY" -eq 0 ]]; then
 
 if [[ "$SKIP_COMPAT" -eq 0 ]]; then
   echo "Loading pg_bundle cda47c6 checkout compatibility shim..."
@@ -247,6 +258,8 @@ SELECT bundle.checkout('companion.mistral_vibe.aquameta', true);
 
 COMMIT;
 SQL
+
+fi # end GAMES_ONLY guard
 
 if [[ "$WITH_GAMES" -eq 1 ]]; then
   echo "Importing and checking out optional game bundles..."
