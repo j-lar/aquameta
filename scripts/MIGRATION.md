@@ -1,7 +1,14 @@
 # Migration: Deploy Custom Layer to a Fresh Aquameta Install
 
 This covers deploying the ai/companion/navigation/advisor layer onto a fresh
-clone of the dev fork. All steps assume you are working from the repo root.
+clone of the `cda47c6-custom-layer-install` branch. All steps assume you are
+working from the repo root (`~/aquameta`).
+
+```bash
+git clone https://github.com/j-lar/aquameta.git ~/aquameta
+cd ~/aquameta
+git checkout cda47c6-custom-layer-install
+```
 
 Current proof target: get the work from this Aquameta instance onto a fresh DB
 while using erichanson/pg_bundle at commit `cda47c6` behavior, without editing
@@ -13,27 +20,29 @@ a small JSON-like compatibility surface.
 
 ## What you need
 
-A fresh clone of the dev fork is mostly self-contained. Everything required for
-the app layer is in git:
+The `cda47c6-custom-layer-install` branch is mostly self-contained. Everything
+required for the custom layer is in git:
 
 | Path | What it is |
 |------|-----------|
 | `extensions/meta/` | meta extension currently carried by this fork |
 | `extensions/meta_triggers/` | meta_triggers extension currently carried by this fork |
-| `extensions/pg_bundle/` | pg_bundle source; for the proof use the pre-`29f276d` tree so pg_bundle is not patched directly |
+| `extensions/pg_bundle/` | pg_bundle source at the pre-patch `9023f10` base |
 | `extensions/ai/`, `extensions/companion/`, `extensions/navigation/`, `extensions/advisor/` | Custom schema extensions |
 | `bundles/*.json` | Bundle JSON files (core + custom layer) |
+| `scripts/install_custom_layer_bundles.sh` | Custom layer bundle import and checkout |
+| `scripts/pg_bundle-cda47c6-checkout-compat.sql` | Post-load checkout compatibility shim (used by the install script) |
 
-**Not in git for the short-term proof:**
+**Still required outside the repo:**
 
-- `/tmp/pg_bundle-cda47c6-meta-compat.sql` — local compatibility shim loaded after meta/meta_triggers and before pg_bundle
-- `/tmp/aquameta-cda47c6-proof-install.sh` — local installer that runs the shim in the correct order
+- `/tmp/pg_bundle-cda47c6-meta-compat.sql` — pre-load compatibility shim; must be present before pg_bundle is installed (copy to the target server manually)
+- `/tmp/aquameta-cda47c6-proof-install.sh` — core Aquameta installer; runs the meta compat shim in the correct order before pg_bundle loads (copy to the target server manually)
 - `conf/bootloader.toml` — copy from `conf/boot.toml.dist` and fill in DB credentials
 - PostgreSQL must be installed and accessible (or use embedded mode)
 
-The `/tmp` scripts are intentionally outside the repo for this proof. They do not
-represent a desired long-term Aquameta install model; they are a way to prove the
-compatibility layer before deciding whether to wire it into the repo.
+The `/tmp` scripts cover the core Aquameta install only. The custom layer install
+(`scripts/install_custom_layer_bundles.sh`) is already in the repo and handles
+its own compat shim from `scripts/pg_bundle-cda47c6-checkout-compat.sql`.
 
 ---
 
@@ -49,19 +58,6 @@ proof. The proof installer creates the extensions in the needed order. If
 PostgreSQL cannot find the packaged extension control/SQL files, run only the
 build/copy step needed to make those files visible to PostgreSQL, then rerun the
 proof installer.
-
-### Step 0 — Use the unpatched pg_bundle tree
-
-For the current proof, use the commit immediately before the direct pg_bundle
-patch:
-
-```bash
-git checkout 9023f1096610d15b56fe59128abcf78340bd98bf
-```
-
-That is `29f276d^`. It preserves the target pg_bundle behavior while we test the
-external compatibility shim. Switch back to `dev` afterward if you are working on
-this development machine.
 
 ### Step 1 — Prepare a clean database
 
@@ -87,7 +83,7 @@ Copy these two scripts to the target first:
 Then run only the proof installer. It runs the compat SQL internally:
 
 ```bash
-cd /opt/aquameta
+cd ~/aquameta
 DB_URL=postgresql://aquameta:aquameta@localhost:5432/aquameta \
   /tmp/aquameta-cda47c6-proof-install.sh
 ```
@@ -131,20 +127,22 @@ custom layer below.
 Load in dependency order (ai -> companion -> navigation -> advisor):
 
 ```bash
-psql -f extensions/ai/000-ai.sql
-psql -f extensions/ai/001-ideas.sql
-psql -f extensions/companion/000-companion.sql
-psql -f extensions/companion/001-plan.sql
-psql -f extensions/companion/002-review.sql
-psql -f extensions/companion/003-assessment.sql
-psql -f extensions/navigation/000-navigation.sql
-psql -f extensions/advisor/000-advisor.sql
+DB_URL=postgresql://aquameta:aquameta@localhost:5432/aquameta
+
+psql $DB_URL -f extensions/ai/000-ai.sql
+psql $DB_URL -f extensions/ai/001-ideas.sql
+psql $DB_URL -f extensions/companion/000-companion.sql
+psql $DB_URL -f extensions/companion/001-plan.sql
+psql $DB_URL -f extensions/companion/002-review.sql
+psql $DB_URL -f extensions/companion/003-assessment.sql
+psql $DB_URL -f extensions/navigation/000-navigation.sql
+psql $DB_URL -f extensions/advisor/000-advisor.sql
 ```
 
 Then create the ai_agent roles and wire up run tracking:
 
 ```bash
-psql -f scripts/create_ai_run_binding.sql
+psql $DB_URL -f scripts/create_ai_run_binding.sql
 ```
 
 > GRANT statements in that file will fail if the agent roles don't exist yet.
@@ -163,16 +161,17 @@ widget rows; those come from bundle import/checkout in the next steps.
 The scripted path for Steps 5-6 is:
 
 ```bash
-cd /path/to/aquameta
+cd ~/aquameta
 scripts/install_custom_layer_bundles.sh
 
 # Include optional game bundles too:
 scripts/install_custom_layer_bundles.sh --games
 ```
 
-The script imports the custom bundle JSON files, reloads the pg_bundle checkout
-compatibility shim, applies the historical compatibility stubs required by the
-current exported bundle data, and uses `bundle.checkout(..., true)`.
+The script is committed to this branch. It imports the custom bundle JSON files,
+loads `scripts/pg_bundle-cda47c6-checkout-compat.sql`, applies the historical
+compatibility stubs required by the current exported bundle data, and uses
+`bundle.checkout(..., true)`.
 
 ### Step 5 — Import custom bundle JSON files
 
