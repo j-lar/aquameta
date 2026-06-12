@@ -164,9 +164,10 @@ Then create the ai_agent roles and wire up run tracking:
 psql $DB_URL -f scripts/create_ai_run_binding.sql
 ```
 
-> GRANT statements in that file will fail if the agent roles don't exist yet.
-> That's expected. The tables and functions are still created. Re-run the grants
-> after Step 8 once the roles exist.
+> GRANT statements in that file will fail if the agent roles don't exist yet —
+> those roles are created by the `ai.agent` insert trigger during bundle checkout
+> in Step 8. That's expected; the tables and functions are still created.
+> Re-run `psql $DB_URL -f scripts/create_ai_run_binding.sql` after Step 8.
 
 **Idempotency:** the extension scripts must not INSERT rows that are also tracked
 in bundles (agent registrations, capability rows, etc.). If they do, checkout
@@ -181,10 +182,12 @@ The scripted path for Steps 7-8 is:
 
 ```bash
 cd ~/aquameta
-scripts/install_custom_layer_bundles.sh
+DB_URL=postgresql://aquameta:aquameta@localhost:5432/aquameta \
+  scripts/install_custom_layer_bundles.sh
 
 # Include optional game bundles too:
-scripts/install_custom_layer_bundles.sh --games
+DB_URL=postgresql://aquameta:aquameta@localhost:5432/aquameta \
+  scripts/install_custom_layer_bundles.sh --games
 ```
 
 The script is committed to this branch. It imports the custom bundle JSON files,
@@ -194,15 +197,23 @@ compatibility stubs required by the current exported bundle data, and uses
 
 ### Step 7 — Import custom bundle JSON files
 
+`pg_read_file()` runs as the PostgreSQL server process, which cannot read files
+under home directories. Copy the bundle JSON files to `/tmp/` first so the server
+can read them, then import. Set `DB_URL` so psql connects as the aquameta role
+rather than trying the OS user via the Unix socket.
+
 ```bash
-cd bundles
-for f in io.bundle.ai.core.json \
-          io.bundle.aquameta.plan.json \
-          io.bundle.aquameta.navigation.json \
-          io.bundle.aquameta.advisor.json \
-          companion.claude_code.aquameta.json \
-          companion.mistral_vibe.aquameta.json; do
-  psql -c "SELECT bundle.import_repository(pg_read_file('$(pwd)/$f'));"
+export DB_URL=postgresql://aquameta:aquameta@localhost:5432/aquameta
+
+for f in io.bundle.ai.core \
+          io.bundle.aquameta.plan \
+          io.bundle.aquameta.navigation \
+          io.bundle.aquameta.advisor \
+          companion.claude_code.aquameta \
+          companion.mistral_vibe.aquameta; do
+  cp ~/aquameta/bundles/$f.json /tmp/$f.json
+  chmod 644 /tmp/$f.json
+  psql $DB_URL -c "SELECT bundle.import_repository(pg_read_file('/tmp/$f.json'));"
 done
 ```
 
@@ -210,6 +221,12 @@ done
 
 The ai.core, aquameta.plan, and companion bundles form a circular FK cycle.
 Check them out in a single deferred-constraint transaction. Start from a clean `aquameta=#` prompt; if psql shows `aquameta-#`, type `\r` first because psql is still buffering an unfinished statement:
+
+```bash
+psql $DB_URL
+```
+
+At the `aquameta=#` prompt (if psql shows `aquameta-#`, type `\r` first — psql is still buffering an unfinished statement):
 
 ```sql
 -- If a previous attempt manually created ai_agent_* roles, remove only roles

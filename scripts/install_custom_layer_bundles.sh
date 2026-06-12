@@ -143,7 +143,11 @@ SQL
 
 if [[ "$SKIP_COMPAT" -eq 0 ]]; then
   echo "Loading pg_bundle cda47c6 checkout compatibility shim..."
-  psql_cmd -f "$REPO_ROOT/scripts/pg_bundle-cda47c6-checkout-compat.sql"
+  local_compat_sql=$(mktemp /tmp/pg_bundle-cda47c6-checkout-compat.XXXXXX.sql)
+  trap 'rm -f "$local_compat_sql"' EXIT
+  cp "$REPO_ROOT/scripts/pg_bundle-cda47c6-checkout-compat.sql" "$local_compat_sql"
+  chmod 644 "$local_compat_sql"
+  psql_cmd -f "$local_compat_sql"
 fi
 
 for bundle in "${CUSTOM_BUNDLES[@]}"; do
