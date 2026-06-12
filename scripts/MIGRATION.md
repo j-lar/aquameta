@@ -53,10 +53,6 @@ Do not run `./aquameta` first: the daemon auto-installer loads pg_bundle
 immediately after meta/meta_triggers, and the compatibility shim must be inserted
 between those steps.
 
-Do not run `scripts/make_install_extensions.sh` as the install step for this
-proof — it runs `CREATE EXTENSION` internally in the wrong order. Use it only
-for the build/copy step below.
-
 ### Step 1 — Build and install extensions
 
 This copies the `.control` and SQL files into PostgreSQL's extension directory
