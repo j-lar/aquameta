@@ -430,6 +430,48 @@ patching pg_bundle.
 
 ---
 
+## Committing Bundle Changes
+
+Always use `bundle.stage_all()` before committing, not `bundle.stage_tracked_rows()`:
+
+```sql
+SELECT bundle.stage_all('org.aquameta.games.office_quest');
+SELECT bundle.commit('org.aquameta.games.office_quest', 'message', 'claude_code', 'claude@aquameta.org');
+```
+
+`stage_tracked_rows` only stages newly added rows (moves `tracked_rows_added` →
+`stage_rows_to_add`). It does **not** stage field updates. Modified fields on
+existing tracked rows require `stage_all`, which calls `_stage_tracked_rows` +
+`_stage_updated_fields` + `_stage_deleted_rows`. A commit after `stage_tracked_rows`
+will silently use the old blob content for any modified fields — the widget or
+resource in the bundle will not reflect the current DB state.
+
+## Re-importing Bundles on an Existing Install
+
+`import_repository` uses `ON CONFLICT DO NOTHING` for every table including
+`bundle.repository`. Re-importing a bundle that already exists on the target does
+**not** advance `head_commit_id`. The new commits and blobs are inserted, but
+checkout still uses the old HEAD.
+
+To update a bundle that is already installed on a target server:
+
+```sql
+-- Option A: delete the repository and re-import from scratch
+SELECT bundle.delete_repository('<bundle-name>');
+SELECT bundle.import_repository(pg_read_file('/tmp/<bundle>.json'));
+SELECT bundle.checkout('<bundle-name>', true);
+
+-- Option B: manually advance HEAD then re-checkout (preserves history already on target)
+UPDATE bundle.repository
+SET head_commit_id = '<new-commit-uuid>'
+WHERE name = '<bundle-name>';
+SELECT bundle.checkout('<bundle-name>', true);
+```
+
+The new commit UUID is in the exported JSON at `.repository.head_commit_id`.
+
+---
+
 ## Known Issues Log
 
 | Issue | Root cause | Status |
@@ -450,3 +492,5 @@ patching pg_bundle.
 | Issue 12 (circular FK on checkout) | Bundle decomposition spans ai.core + plan + companion | Fixed: DEFERRABLE FKs + `SET CONSTRAINTS ALL DEFERRED` in Step 8 |
 | Issue 13 (`companion.decision.supersedes_id`) | Column dropped; orphaned in bundle data | Checkout compatibility shim skips fields whose target columns no longer exist |
 | Issue 14 (`checkout_commit_id` not set) | False diagnosis; symptom of earlier failures | Non-issue: `checkout.sql` sets it correctly |
+| Issue 15 (widget blank page after import — JS `Invalid escape in identifier`) | `stage_tracked_rows` used instead of `stage_all`; modified fields not staged; exported blob had old content | Use `stage_all` before every bundle commit; see "Committing Bundle Changes" above |
+| Issue 16 (re-import does not fix blank page) | `import_repository` uses `ON CONFLICT DO NOTHING` on repository row; `head_commit_id` not updated | Manually `UPDATE bundle.repository SET head_commit_id = '...'` then re-checkout; see "Re-importing Bundles" above |
